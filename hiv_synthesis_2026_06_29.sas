@@ -933,7 +933,7 @@ end;
 * rate_choose_stop_prep_ami; 	%sample_uniform(rate_choose_stop_prep_ami, 0.01  0.03  0.05  0.1 0.15);		* sampled from same distribution as CAB PrEP initially;
 								* dependent_on_time_step_length ;                                          
 
-* add_pref_prep_ami;			%sample_uniform(add_pref_prep_ami, 0.1 0.2 0.3);
+* add_pref_prep_ami;			%sample_uniform(add_pref_prep_ami, 0.1 0.2 0.3);	* QUERY code this as for cab and len above? ;
 * pref_prep_ami_beta_s1;		pref_prep_ami_beta_s1 = pref_prep_oral_beta_s1 + add_pref_prep_ami ; 		* assume ami is more preferable than daily oral pill;
 * prep_ami_effect_res_partner;	prep_ami_effect_res_partner=1;												* Relative effect, 1 = no effect. Initially no impact of resistant virus in partner on ami PrEP efficacy;	
 																											* Note could sample this (cab and len use rel effect 0, 0.25, 0.5);
@@ -13708,15 +13708,15 @@ cost_condom_dn=0; if caldate{t} ge 1995 and 15 <= age < 65 then cost_condom_dn=c
 
 cost_sw_program=0; if sw_program_visit=1 then cost_sw_program = sw_program_cost;
 
-cost =  max(0,art_cost) +adc_cost+cd4_cost+vl_cost+vis_cost+non_tb_who3_cost+cot_cost+tb_cost+res_cost
-+max(0,t_adh_int_cost) + cost_test + max (0, cost_circ) + max (0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_cab) + max(0, cost_prep_len) 
-+ max(0, cost_prep_ami )+ max(0,cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0,cost_sw_program)
-+ max(0, tb_lam_cost ) + max(0, tb_proph_cost ) + max(0, crag_cost )  + max(0, crypm_proph_cost )  + max(0, sbi_proph_cost ) +max(0,cost_lencab_return); 
-;
+cost =  max(0,art_cost) + adc_cost + cd4_cost + vl_cost + vis_cost + non_tb_who3_cost + cot_cost + tb_cost + res_cost
++ max(0,t_adh_int_cost) + cost_test + max(0, cost_circ) + max(0, cost_switch_line) + max(0, cost_prep_oral) + max(0, cost_prep_cab) + max(0, cost_prep_len) 
++ max(0, cost_prep_ami) + max(0, cost_prep_visit)+ max(0,cost_avail_self_test)+ max(0,drug_level_test_cost) + max(0,cost_condom_dn) + max(0, cost_sw_program)
++ max(0, tb_lam_cost) + max(0, tb_proph_cost ) + max(0, crag_cost ) + max(0, crypm_proph_cost) + max(0, sbi_proph_cost ) + max(0,cost_lencab_return); 
+* QUERY - add self-test cost (evaluated a few lines below) to this total cost? ;
 
 
-cost_onart=0; if onart=1 then cost_onart=max(0,art_cost) + max (0, cd4_cost) + max (0, vl_cost) + max (0, vis_cost)
-+ max (0,adc_cost) + max (0, non_tb_who3_cost) + max (0, tb_cost) + max(0, cot_cost) +  max (0, res_cost) + max(0,t_adh_int_cost)
+cost_onart=0; if onart=1 then cost_onart = max(0, art_cost) + max(0, cd4_cost) + max(0, vl_cost) + max(0, vis_cost)
++ max (0, adc_cost) + max (0, non_tb_who3_cost) + max (0, tb_cost) + max(0, cot_cost) +  max(0, res_cost) + max(0,t_adh_int_cost)
 + max (0, cost_switch_line) +  max(0,drug_level_test_cost);
 
 cost_test_m=0; if gender=1 then cost_test_m = cost_test;
@@ -19257,7 +19257,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 
 	s_eph0_m + eph0_m ; s_eph0_w + eph0_w ; s_nip + nip ; s_epi + epi ; 
 
-	s_newp_hiv + newp_hiv ; s_newp_ge1_hiv_diag + newp_ge1_hiv_diag ; s_epdiag + epdiag ; s_diag_epun + diag_epun ; s_epart + epart ;
+	s_newp_hiv + newp_hiv ; s_newp_ge1_hiv_diag + newp_ge1_hiv_diag ; s_epdiag + epdiag ; s_diag_epun + diag_epun ;
 	s_epvls + epvls ; s_hiv1epi0_w + hiv1epi0_w ; s_hiv0epi1_w + hiv0epi1_w ; s_hiv1epi0_m + hiv1epi0_m ; s_hiv0epi1_m + hiv0epi1_m ;
 	s_hiv1epi1_m + hiv1epi1_m ; s_hiv1epi1_w + hiv1epi1_w ;s_primaryepi1_w + primaryepi1_w; s_primaryepi1_m + primaryepi1_m;
 	s_hiv0epart1_w + hiv0epart1_w; s_hiv0epart1_m + hiv0epart1_m;
@@ -21264,9 +21264,9 @@ s_start_restart_prep_oral 		s_start_restart_prep_cab 		s_start_restart_prep_cab_
 s_start_restart_prep_len s_start_restart_prep_len_prim  s_start_rest_prep_len_prim_lenr
 s_start_restart_prep_ami s_start_restart_prep_ami_prim 
 
-s_all_prep_criteria  	s_all_prep_criteria_hivneg	s_prep_elig_hivneg 		s_prep_elig_hivneg_onprep   
-s_prep_elig_onprep 		s_prep_elig_onprep_cab		s_prep_elig_onprep_len	s_prep_elig_onprep_ami 
-s_started_prep_any_hiv	s_started_prep_cab_hiv		s_started_prep_len_hiv 	s_started_prep_ami_hiv   
+s_all_prep_criteria  	s_all_prep_criteria_hivneg	s_prep_elig_hivneg 			s_prep_elig_hivneg_onprep   
+s_prep_elig_onprep 		s_prep_elig_onprep_oral		s_prep_elig_onprep_cab		s_prep_elig_onprep_len		s_prep_elig_onprep_ami 
+s_started_prep_any_hiv	s_started_prep_oral_hiv		s_started_prep_cab_hiv		s_started_prep_len_hiv 		s_started_prep_ami_hiv   
 s_pop_wide_tld_hiv   	s_pop_wide_tld_prep_elig	s_pop_wide_tld_neg_prep_inelig 
 
 
@@ -21472,45 +21472,47 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 
 
 /*costs and dalys (default to age 80) */
-s_cost				s_art_cost		s_onart_cost		s_cd4_cost		s_vl_cost		s_vis_cost		s_full_vis_cost		s_adc_cost  
-s_non_tb_who3_cost	s_cot_cost		s_tb_cost			s_cost_test		s_res_cost		s_cost_circ		s_cost_condom_dn 
-s_dtb_lam_cost		s_tb_lam_cost	s_dtb_proph_cost	s_tb_proph_cost	s_dcrag_cost	s_crag_cost		s_dcrypm_proph_cost	s_crypm_proph_cost 
-s_dsbi_proph_cost  	s_sbi_proph_cost 
-s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f 		s_cost_prep_visit	s_cost_avail_self_test
-s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_ami
-s_cost_prep_visit_oral 		s_cost_prep_visit_cab		s_cost_prep_visit_len	s_cost_prep_visit_ami  
-s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ	s_cost_test_f_anc	s_dcost_self_test
-s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line	s_cost_art_init		s_art_1_cost  
-s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  		
-s_cost_zdv	s_cost_ten	s_cost_3tc	s_cost_nev	s_cost_lpr	s_cost_dar	s_cost_taz	
-s_cost_efa	s_cost_dol	s_cost_cab  s_cost_len	s_cost_ole	s_cost_isl	s_cost_ami
-s_cost_non_aids_pre_death	s_drug_level_test_cost  
-s_cost_child_hiv_mo_art		s_cost_child_hiv_at_child_inf
-s_cost_lencab_return 		s_dcost_lencab_return
+s_cost						s_art_cost			s_onart_cost		s_cd4_cost		s_vl_cost		s_vis_cost		s_full_vis_cost		s_adc_cost  
+s_vis_cost_no_lencab 		s_vis_cost_lencab
+s_non_tb_who3_cost			s_cot_cost			s_tb_cost			s_cost_test		s_res_cost		s_cost_circ		s_cost_condom_dn 
+s_tb_lam_cost				s_tb_proph_cost		s_crag_cost			s_crypm_proph_cost 				s_sbi_proph_cost
 
-s_dcost_  s_dart_cost   	s_donart_cost  	s_dcd4_cost		s_dvl_cost     			s_dvis_cost    	s_dfull_vis_cost    	s_dadc_cost	
-s_dvis_cost_no_lencab 		s_dvis_cost_lencab
-s_dnon_tb_who3_cost 		s_dcot_cost    	s_dtb_cost		s_dtest_cost   			s_dres_cost   	s_dcost_circ	    	s_dcost_condom_dn
-s_dcost_sw_program      	s_d_t_adh_int_cost				s_dtest_cost_m 			s_dtest_cost_f	s_dtest_cost_type1
-s_dcost_prep_oral 			s_dcost_prep_cab   				s_dcost_prep_len  		s_dcost_prep_ami
-s_dcost_prep_visit 			s_dcost_prep_visit_oral 		s_dcost_prep_visit_cab 	s_dcost_prep_visit_len 	s_dcost_prep_visit_ami
+s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f			s_test_cost_type1		s_cost_self_test 		
+s_cost_prep_visit			s_cost_avail_self_test
+s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_ami
+s_cost_prep_visit			s_cost_prep_visit_oral 		s_cost_prep_visit_cab	s_cost_prep_visit_len	s_cost_prep_visit_ami  
+s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ		s_cost_test_f_anc	
+s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line		s_cost_art_init		
+ 
+s_art_1_cost	s_art_2_cost	s_art_3_cost	s_cost_vl_not_done  		
+s_cost_zdv		s_cost_ten		s_cost_3tc		s_cost_nev		s_cost_lpr		s_cost_dar		s_cost_taz	
+s_cost_efa		s_cost_dol		s_cost_cab  	s_cost_len		s_cost_ole		s_cost_isl		s_cost_ami
+s_cost_non_aids_pre_death	s_drug_level_test_cost  
+s_cost_child_hiv_mo_art		s_cost_child_hiv_at_child_inf	s_cost_lencab_return 		
+
+s_dcost_  				s_dart_cost   		s_donart_cost  		s_dcd4_cost		s_dvl_cost     	s_dvis_cost    	s_dfull_vis_cost   	s_dadc_cost	
+s_dvis_cost_no_lencab 	s_dvis_cost_lencab
+s_dnon_tb_who3_cost 	s_dcot_cost    		s_dtb_cost			s_dtest_cost   	s_dres_cost   	s_dcost_circ	s_dcost_condom_dn
+s_dtb_lam_cost			s_dtb_proph_cost	s_dcrag_cost		s_dcrypm_proph_cost				s_dsbi_proph_cost
+
+s_dcost_sw_program      	s_d_t_adh_int_cost			s_dtest_cost_m 			s_dtest_cost_f			s_dtest_cost_type1		s_dcost_self_test
+s_dcost_prep_oral 			s_dcost_prep_cab   			s_dcost_prep_len  		s_dcost_prep_ami
+s_dcost_prep_visit 			s_dcost_prep_visit_oral 	s_dcost_prep_visit_cab 	s_dcost_prep_visit_len	s_dcost_prep_visit_ami
 s_dcost_avail_self_test
-s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 			s_dcost_test_f_sympt  	s_dcost_test_m_circ 	s_dcost_test_f_anc 
-s_dcost_test_f_sw  			s_dcost_test_f_non_anc  		s_dpi_cost     			s_dcost_switch_line 	s_dcost_art_init    s_dart_1_cost
-s_dart_2_cost 	s_dart_3_cost 	s_dcost_vl_not_done	
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		s_dcost_test_f_sympt  	s_dcost_test_m_circ 	s_dcost_test_f_anc 
+s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	s_dpi_cost     			s_dcost_switch_line 	s_dcost_art_init    
+
+s_dart_1_cost	s_dart_2_cost 	s_dart_3_cost 	s_dcost_vl_not_done	
 s_dcost_zdv		s_dcost_ten		s_dcost_3tc		s_dcost_nev  	s_dcost_lpr		s_dcost_dar		s_dcost_taz		
 s_dcost_efa		s_dcost_dol		s_dcost_cab		s_dcost_len		s_dcost_ole		s_dcost_isl		s_dcost_ami	
 s_dcost_non_aids_pre_death  s_dcost_drug_level_test   
-s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf
+s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf		s_dcost_lencab_return
 
-s_dead_daly	   s_dead_ddaly   
-s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
-s_total_yll80le  s_total_yllag																			   
-s_yllag_total_test s_yllag_w s_yllag_m
-s_yllag_hiv_w s_yllag_hiv_m
-s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 s_dyll_GBD	 		 
-s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m	 		 
+s_dead_daly		s_live_daly		s_dead_daly_oth_dol_adv_birth_e		s_dead_daly_ntd		s_daly_mtct 	s_daly_non_aids_pre_death      
+s_total_yll80le	s_total_yllag	s_yllag_w		s_yllag_m			s_yllag_hiv_w		s_yllag_hiv_m	s_yllag_total_test
+
+s_dead_ddaly	s_live_ddaly	s_dead_ddaly_oth_dol_adv_birth_e	s_dead_ddaly_ntd	s_ddaly_mtct	s_ddaly_non_aids_pre_death 
+s_dyll_Optima80	s_dyll_GBD		s_dyllag_w		s_dyllag_m			s_dyllag_hiv_w		s_dyllag_hiv_m	s_dyllag_total		 
 
 
 /*visits*/
@@ -21823,13 +21825,12 @@ prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_e
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid prob_prep_elig_pwid msm_risk_cls  prob_prep_elig_msm
 msm_tr_factor switch_for_tox 
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat
-rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
+rate_test_startprep_any     circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 nnrti_res_no_effect
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency ami_higher_potency isl_higher_potency  isl_ole_adh_improve
-prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro date_prep_len_intro  cablen_extra_pref   
-cab_time_to_lower_threshold_g len_time_to_lower_threshold_g
+prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  
 ntd_risk_dol oth_dol_adv_birth_e_risk    zdv_potency_p75 
 double_rate_gas_tox_taz  
 sw_program  sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
@@ -21844,13 +21845,17 @@ prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependen
 rel_prep_oral_adh_younger 
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
-prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b prob_prep_len_b prob_prep_ami_b prep_cab_efficacy prep_len_efficacy  
+prep_oral_efficacy							prob_prep_oral_b	rate_choose_stop_prep_oral	annual_testing_prep_oral
+prep_cab_efficacy	date_prep_cab_intro		prob_prep_cab_b		rate_choose_stop_prep_cab	annual_testing_prep_cab
+prep_len_efficacy	date_prep_len_intro		prob_prep_len_b		rate_choose_stop_prep_len	annual_testing_prep_len
+prep_ami_efficacy	dur_prep_ami_scaleup	prob_prep_ami_b		rate_choose_stop_prep_ami	annual_testing_prep_ami
+
+higher_future_prep_oral_cov
+prep_cab_effect_inm_partner		cab_time_to_lower_threshold_g	incr_res_risk_cab_inf_3m
+prep_len_effect_cam_partner		len_time_to_lower_threshold_g	incr_res_risk_len_inf_3m
+cablen_extra_pref		pref_prep_cablen_beta_s1
+pref_prep_ami_beta_s1	add_pref_prep_ami		prep_ami_effect_res_partner		prep_ami_adh_uplift
 prop_pep  pep_efficacy 
-rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_ami 
-prep_cab_effect_inm_partner  prep_len_effect_cam_partner 
-pref_prep_cablen_beta_s1 incr_res_risk_cab_inf_3m  incr_res_risk_len_inf_3m 
-prep_ami_efficacy dur_prep_ami_scaleup annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
-prep_ami_effect_res_partner prep_ami_adh_uplift
 
 rr_testing_female
 
@@ -22466,9 +22471,9 @@ s_start_restart_prep_oral 		s_start_restart_prep_cab 		s_start_restart_prep_cab_
 s_start_restart_prep_len s_start_restart_prep_len_prim  s_start_rest_prep_len_prim_lenr
 s_start_restart_prep_ami s_start_restart_prep_ami_prim 
 
-s_all_prep_criteria  	s_all_prep_criteria_hivneg	s_prep_elig_hivneg 		s_prep_elig_hivneg_onprep   
-s_prep_elig_onprep 		s_prep_elig_onprep_cab		s_prep_elig_onprep_len	s_prep_elig_onprep_ami 
-s_started_prep_any_hiv	s_started_prep_cab_hiv		s_started_prep_len_hiv 	s_started_prep_ami_hiv   
+s_all_prep_criteria  	s_all_prep_criteria_hivneg	s_prep_elig_hivneg 			s_prep_elig_hivneg_onprep   
+s_prep_elig_onprep 		s_prep_elig_onprep_oral		s_prep_elig_onprep_cab		s_prep_elig_onprep_len		s_prep_elig_onprep_ami 
+s_started_prep_any_hiv	s_started_prep_oral_hiv		s_started_prep_cab_hiv		s_started_prep_len_hiv 		s_started_prep_ami_hiv   
 s_pop_wide_tld_hiv   	s_pop_wide_tld_prep_elig	s_pop_wide_tld_neg_prep_inelig 
 
 
@@ -22674,45 +22679,47 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 
 
 /*costs and dalys (default to age 80) */
-s_cost				s_art_cost		s_onart_cost		s_cd4_cost		s_vl_cost		s_vis_cost		s_full_vis_cost		s_adc_cost  
-s_non_tb_who3_cost	s_cot_cost		s_tb_cost			s_cost_test		s_res_cost		s_cost_circ		s_cost_condom_dn 
-s_dtb_lam_cost		s_tb_lam_cost	s_dtb_proph_cost	s_tb_proph_cost	s_dcrag_cost	s_crag_cost		s_dcrypm_proph_cost	s_crypm_proph_cost 
-s_dsbi_proph_cost  	s_sbi_proph_cost 
-s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f 		s_cost_prep_visit	s_cost_avail_self_test
+s_cost						s_art_cost			s_onart_cost		s_cd4_cost		s_vl_cost		s_vis_cost		s_full_vis_cost		s_adc_cost  
+s_vis_cost_no_lencab 		s_vis_cost_lencab
+s_non_tb_who3_cost			s_cot_cost			s_tb_cost			s_cost_test		s_res_cost		s_cost_circ		s_cost_condom_dn 
+s_tb_lam_cost				s_tb_proph_cost		s_crag_cost			s_crypm_proph_cost 				s_sbi_proph_cost
+
+s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f			s_test_cost_type1		s_cost_self_test 		
+s_cost_prep_visit			s_cost_avail_self_test
 s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_ami
-s_cost_prep_visit_oral 		s_cost_prep_visit_cab		s_cost_prep_visit_len	s_cost_prep_visit_ami  
-s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ	s_cost_test_f_anc	s_dcost_self_test
-s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line	s_cost_art_init		s_art_1_cost  
-s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  		
-s_cost_zdv	s_cost_ten	s_cost_3tc	s_cost_nev	s_cost_lpr	s_cost_dar 	s_cost_taz
-s_cost_efa	s_cost_dol	s_cost_cab	s_cost_len	s_cost_ole	s_cost_isl	s_cost_ami
+s_cost_prep_visit			s_cost_prep_visit_oral 		s_cost_prep_visit_cab	s_cost_prep_visit_len	s_cost_prep_visit_ami  
+s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ		s_cost_test_f_anc	
+s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line		s_cost_art_init		
+ 
+s_art_1_cost	s_art_2_cost	s_art_3_cost	s_cost_vl_not_done  		
+s_cost_zdv		s_cost_ten		s_cost_3tc		s_cost_nev		s_cost_lpr		s_cost_dar		s_cost_taz	
+s_cost_efa		s_cost_dol		s_cost_cab  	s_cost_len		s_cost_ole		s_cost_isl		s_cost_ami
 s_cost_non_aids_pre_death	s_drug_level_test_cost  
-s_cost_child_hiv_mo_art		s_cost_child_hiv_at_child_inf
-s_cost_lencab_return 		s_dcost_lencab_return
+s_cost_child_hiv_mo_art		s_cost_child_hiv_at_child_inf	s_cost_lencab_return 		
 
-s_dcost_  s_dart_cost   	s_donart_cost  	s_dcd4_cost		s_dvl_cost     			s_dvis_cost    	s_dfull_vis_cost    	s_dadc_cost	
-s_dvis_cost_no_lencab 		s_dvis_cost_lencab
-s_dnon_tb_who3_cost 		s_dcot_cost    	s_dtb_cost		s_dtest_cost   			s_dres_cost   	s_dcost_circ	    	s_dcost_condom_dn
-s_dcost_sw_program      	s_d_t_adh_int_cost				s_dtest_cost_m 			s_dtest_cost_f	s_dtest_cost_type1
-s_dcost_prep_oral 			s_dcost_prep_cab   				s_dcost_prep_len  		s_dcost_prep_ami
-s_dcost_prep_visit 			s_dcost_prep_visit_oral 		s_dcost_prep_visit_cab 	s_dcost_prep_visit_len 	s_dcost_prep_visit_ami
+s_dcost_  				s_dart_cost   		s_donart_cost  		s_dcd4_cost		s_dvl_cost     	s_dvis_cost    	s_dfull_vis_cost   	s_dadc_cost	
+s_dvis_cost_no_lencab 	s_dvis_cost_lencab
+s_dnon_tb_who3_cost 	s_dcot_cost    		s_dtb_cost			s_dtest_cost   	s_dres_cost   	s_dcost_circ	s_dcost_condom_dn
+s_dtb_lam_cost			s_dtb_proph_cost	s_dcrag_cost		s_dcrypm_proph_cost				s_dsbi_proph_cost
+
+s_dcost_sw_program      	s_d_t_adh_int_cost			s_dtest_cost_m 			s_dtest_cost_f			s_dtest_cost_type1		s_dcost_self_test
+s_dcost_prep_oral 			s_dcost_prep_cab   			s_dcost_prep_len  		s_dcost_prep_ami
+s_dcost_prep_visit 			s_dcost_prep_visit_oral 	s_dcost_prep_visit_cab 	s_dcost_prep_visit_len	s_dcost_prep_visit_ami
 s_dcost_avail_self_test
-s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 			s_dcost_test_f_sympt  	s_dcost_test_m_circ 	s_dcost_test_f_anc 
-s_dcost_test_f_sw  			s_dcost_test_f_non_anc  		s_dpi_cost     			s_dcost_switch_line 	s_dcost_art_init    s_dart_1_cost
-s_dart_2_cost 	s_dart_3_cost 	s_dcost_vl_not_done	
-s_dcost_zdv		s_dcost_ten		s_dcost_3tc		s_dcost_nev  	s_dcost_lpr		s_dcost_dar		s_dcost_taz
-s_dcost_efa		s_dcost_dol		s_dcost_cab		s_dcost_len		s_dcost_ole		s_dcost_isl		s_dcost_ami
-s_dcost_non_aids_pre_death  s_dcost_drug_level_test   
-s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		s_dcost_test_f_sympt  	s_dcost_test_m_circ 	s_dcost_test_f_anc 
+s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	s_dpi_cost     			s_dcost_switch_line 	s_dcost_art_init    
 
-s_dead_daly	   s_dead_ddaly   
-s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
-s_total_yll80le  s_total_yllag																			   
-s_yllag_total_test s_yllag_w s_yllag_m
-s_yllag_hiv_w s_yllag_hiv_m
-s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 s_dyll_GBD	 		 
-s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m	 		 
+s_dart_1_cost	s_dart_2_cost 	s_dart_3_cost 	s_dcost_vl_not_done	
+s_dcost_zdv		s_dcost_ten		s_dcost_3tc		s_dcost_nev  	s_dcost_lpr		s_dcost_dar		s_dcost_taz		
+s_dcost_efa		s_dcost_dol		s_dcost_cab		s_dcost_len		s_dcost_ole		s_dcost_isl		s_dcost_ami	
+s_dcost_non_aids_pre_death  s_dcost_drug_level_test   
+s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf		s_dcost_lencab_return
+
+s_dead_daly		s_live_daly		s_dead_daly_oth_dol_adv_birth_e		s_dead_daly_ntd		s_daly_mtct 	s_daly_non_aids_pre_death      
+s_total_yll80le	s_total_yllag	s_yllag_w		s_yllag_m			s_yllag_hiv_w		s_yllag_hiv_m	s_yllag_total_test
+
+s_dead_ddaly	s_live_ddaly	s_dead_ddaly_oth_dol_adv_birth_e	s_dead_ddaly_ntd	s_ddaly_mtct	s_ddaly_non_aids_pre_death 
+s_dyll_Optima80	s_dyll_GBD		s_dyllag_w		s_dyllag_m			s_dyllag_hiv_w		s_dyllag_hiv_m	s_dyllag_total		 
 
 
 /*visits*/
@@ -23012,7 +23019,7 @@ s_all_ai_e_pim_      	s_all_ai_e_r_       s_all_ai_e_rt184m_     	s_all_ai_e_rt6
 s_art_attrit_1yr     	s_art_attrit_1yr_on		s_art_attrit_2yr   	s_art_attrit_2yr_on		s_art_attrit_3yr   
 s_art_attrit_3yr_on     s_art_attrit_4yr		s_art_attrit_4yr_on s_art_attrit_5yr   
 s_art_attrit_5yr_on     s_art_attrit_6yr		s_art_attrit_6yr_on s_art_attrit_7yr		s_art_attrit_7yr_on   
-s_art_attrit_8yr    	s_art_attrit_8yr_on		s_epart       
+s_art_attrit_8yr    	s_art_attrit_8yr_on	       
 
 s_s_m_newp  s_s_w_newp
 
@@ -23500,9 +23507,9 @@ s_start_restart_prep_oral 		s_start_restart_prep_cab 		s_start_restart_prep_cab_
 s_start_restart_prep_len s_start_restart_prep_len_prim  s_start_rest_prep_len_prim_lenr
 s_start_restart_prep_ami s_start_restart_prep_ami_prim 
 
-s_all_prep_criteria  	s_all_prep_criteria_hivneg	s_prep_elig_hivneg 		s_prep_elig_hivneg_onprep   
-s_prep_elig_onprep 		s_prep_elig_onprep_cab		s_prep_elig_onprep_len	s_prep_elig_onprep_ami 
-s_started_prep_any_hiv	s_started_prep_cab_hiv		s_started_prep_len_hiv 	s_started_prep_ami_hiv   
+s_all_prep_criteria  	s_all_prep_criteria_hivneg	s_prep_elig_hivneg 			s_prep_elig_hivneg_onprep   
+s_prep_elig_onprep 		s_prep_elig_onprep_oral		s_prep_elig_onprep_cab		s_prep_elig_onprep_len		s_prep_elig_onprep_ami 
+s_started_prep_any_hiv	s_started_prep_oral_hiv		s_started_prep_cab_hiv		s_started_prep_len_hiv 		s_started_prep_ami_hiv   
 s_pop_wide_tld_hiv   	s_pop_wide_tld_prep_elig	s_pop_wide_tld_neg_prep_inelig 
 
 
@@ -23708,45 +23715,47 @@ s_art_54m_bcd4_ge500_adead s_art_57m_bcd4_ge500 s_art_57m_bcd4_ge500_adead s_art
 
 
 /*costs and dalys (default to age 80) */
-s_cost				s_art_cost		s_onart_cost		s_cd4_cost		s_vl_cost		s_vis_cost		s_full_vis_cost		s_adc_cost  
-s_non_tb_who3_cost	s_cot_cost		s_tb_cost			s_cost_test		s_res_cost		s_cost_circ		s_cost_condom_dn 
-s_dtb_lam_cost		s_tb_lam_cost	s_dtb_proph_cost	s_tb_proph_cost	s_dcrag_cost	s_crag_cost		s_dcrypm_proph_cost	s_crypm_proph_cost 
-s_dsbi_proph_cost  	s_sbi_proph_cost 
-s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f 		s_cost_prep_visit	s_cost_avail_self_test
+s_cost						s_art_cost			s_onart_cost		s_cd4_cost		s_vl_cost		s_vis_cost		s_full_vis_cost		s_adc_cost  
+s_vis_cost_no_lencab 		s_vis_cost_lencab
+s_non_tb_who3_cost			s_cot_cost			s_tb_cost			s_cost_test		s_res_cost		s_cost_circ		s_cost_condom_dn 
+s_tb_lam_cost				s_tb_proph_cost		s_crag_cost			s_crypm_proph_cost 				s_sbi_proph_cost
+
+s_cost_sw_program			s_t_adh_int_cost			s_cost_test_m  			s_cost_test_f			s_test_cost_type1		s_cost_self_test 		
+s_cost_prep_visit			s_cost_avail_self_test
 s_cost_prep_oral 			s_cost_prep_cab   			s_cost_prep_len  		s_cost_prep_ami
-s_cost_prep_visit_oral 		s_cost_prep_visit_cab		s_cost_prep_visit_len	s_cost_prep_visit_ami  
-s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ	s_cost_test_f_anc	s_dcost_self_test
-s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line	s_cost_art_init		s_art_1_cost  
-s_art_2_cost  s_art_3_cost 	s_cost_vl_not_done  		
-s_cost_zdv	s_cost_ten	s_cost_3tc	s_cost_nev	s_cost_lpr	s_cost_dar	s_cost_taz 	  
-s_cost_efa	s_cost_dol	s_cost_cab	s_cost_len	s_cost_ole	s_cost_isl	s_cost_ami
+s_cost_prep_visit			s_cost_prep_visit_oral 		s_cost_prep_visit_cab	s_cost_prep_visit_len	s_cost_prep_visit_ami  
+s_cost_prep_ac_adh			s_cost_test_m_sympt			s_cost_test_f_sympt		s_cost_test_m_circ		s_cost_test_f_anc	
+s_cost_test_f_sw 			s_cost_test_f_non_anc   	s_pi_cost				s_cost_switch_line		s_cost_art_init		
+ 
+s_art_1_cost	s_art_2_cost	s_art_3_cost	s_cost_vl_not_done  		
+s_cost_zdv		s_cost_ten		s_cost_3tc		s_cost_nev		s_cost_lpr		s_cost_dar		s_cost_taz	
+s_cost_efa		s_cost_dol		s_cost_cab  	s_cost_len		s_cost_ole		s_cost_isl		s_cost_ami
 s_cost_non_aids_pre_death	s_drug_level_test_cost  
-s_cost_child_hiv_mo_art		s_cost_child_hiv_at_child_inf
-s_cost_lencab_return 		s_dcost_lencab_return
+s_cost_child_hiv_mo_art		s_cost_child_hiv_at_child_inf	s_cost_lencab_return 		
 
-s_dcost_  s_dart_cost   	s_donart_cost  	s_dcd4_cost		s_dvl_cost     			s_dvis_cost    	s_dfull_vis_cost    	s_dadc_cost	
-s_dvis_cost_no_lencab 		s_dvis_cost_lencab
-s_dnon_tb_who3_cost 		s_dcot_cost    	s_dtb_cost		s_dtest_cost   			s_dres_cost   	s_dcost_circ	    	s_dcost_condom_dn
-s_dcost_sw_program      	s_d_t_adh_int_cost				s_dtest_cost_m 			s_dtest_cost_f	s_dtest_cost_type1
-s_dcost_prep_oral 			s_dcost_prep_cab   				s_dcost_prep_len  		s_dcost_prep_ami
-s_dcost_prep_visit 			s_dcost_prep_visit_oral 		s_dcost_prep_visit_cab 	s_dcost_prep_visit_len 	s_dcost_prep_visit_ami
+s_dcost_  				s_dart_cost   		s_donart_cost  		s_dcd4_cost		s_dvl_cost     	s_dvis_cost    	s_dfull_vis_cost   	s_dadc_cost	
+s_dvis_cost_no_lencab 	s_dvis_cost_lencab
+s_dnon_tb_who3_cost 	s_dcot_cost    		s_dtb_cost			s_dtest_cost   	s_dres_cost   	s_dcost_circ	s_dcost_condom_dn
+s_dtb_lam_cost			s_dtb_proph_cost	s_dcrag_cost		s_dcrypm_proph_cost				s_dsbi_proph_cost
+
+s_dcost_sw_program      	s_d_t_adh_int_cost			s_dtest_cost_m 			s_dtest_cost_f			s_dtest_cost_type1		s_dcost_self_test
+s_dcost_prep_oral 			s_dcost_prep_cab   			s_dcost_prep_len  		s_dcost_prep_ami
+s_dcost_prep_visit 			s_dcost_prep_visit_oral 	s_dcost_prep_visit_cab 	s_dcost_prep_visit_len	s_dcost_prep_visit_ami
 s_dcost_avail_self_test
-s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 			s_dcost_test_f_sympt  	s_dcost_test_m_circ 	s_dcost_test_f_anc 
-s_dcost_test_f_sw  			s_dcost_test_f_non_anc  		s_dpi_cost     			s_dcost_switch_line 	s_dcost_art_init    s_dart_1_cost
-s_dart_2_cost 	s_dart_3_cost 	s_dcost_vl_not_done	
-s_dcost_zdv		s_dcost_ten		s_dcost_3tc		s_dcost_nev  	s_dcost_lpr		s_dcost_dar		s_dcost_taz
-s_dcost_efa		s_dcost_dol		s_dcost_cab		s_dcost_len		s_dcost_ole		s_dcost_isl		s_dcost_ami
-s_dcost_non_aids_pre_death  s_dcost_drug_level_test   
-s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf
+s_dcost_prep_ac_adh     	s_dcost_test_m_sympt 		s_dcost_test_f_sympt  	s_dcost_test_m_circ 	s_dcost_test_f_anc 
+s_dcost_test_f_sw  			s_dcost_test_f_non_anc  	s_dpi_cost     			s_dcost_switch_line 	s_dcost_art_init    
 
-s_dead_daly	   s_dead_ddaly   
-s_live_daly    s_dead_daly_oth_dol_adv_birth_e   s_dead_daly_ntd   s_daly_mtct 	s_daly_non_aids_pre_death      
-s_total_yll80le  s_total_yllag																			   
-s_yllag_total_test s_yllag_w s_yllag_m
-s_yllag_hiv_w s_yllag_hiv_m
-s_live_ddaly   s_dead_ddaly_oth_dol_adv_birth_e  s_dead_ddaly_ntd  s_ddaly_mtct s_ddaly_non_aids_pre_death 
-s_dyll_Optima80 s_dyll_GBD	 		 
-s_dyllag_w s_dyllag_m s_dyllag_hiv_w s_dyllag_hiv_m	 		 
+s_dart_1_cost	s_dart_2_cost 	s_dart_3_cost 	s_dcost_vl_not_done	
+s_dcost_zdv		s_dcost_ten		s_dcost_3tc		s_dcost_nev  	s_dcost_lpr		s_dcost_dar		s_dcost_taz		
+s_dcost_efa		s_dcost_dol		s_dcost_cab		s_dcost_len		s_dcost_ole		s_dcost_isl		s_dcost_ami	
+s_dcost_non_aids_pre_death  s_dcost_drug_level_test   
+s_dcost_child_hiv_mo_art	s_dcost_child_hiv_at_child_inf		s_dcost_lencab_return
+
+s_dead_daly		s_live_daly		s_dead_daly_oth_dol_adv_birth_e		s_dead_daly_ntd		s_daly_mtct 	s_daly_non_aids_pre_death      
+s_total_yll80le	s_total_yllag	s_yllag_w		s_yllag_m			s_yllag_hiv_w		s_yllag_hiv_m	s_yllag_total_test
+
+s_dead_ddaly	s_live_ddaly	s_dead_ddaly_oth_dol_adv_birth_e	s_dead_ddaly_ntd	s_ddaly_mtct	s_ddaly_non_aids_pre_death 
+s_dyll_Optima80	s_dyll_GBD		s_dyllag_w		s_dyllag_m			s_dyllag_hiv_w		s_dyllag_hiv_m	s_dyllag_total		 
 
 
 /*visits*/
@@ -24049,10 +24058,7 @@ eprate  conc_ep  ch_risk_diag  ch_risk_diag_newp  ych_risk_beh_newp  ych2_risk_b
 exp_setting_lower_p_vl1000  external_exp_factor  rate_exp_set_lower_p_vl1000  prob_pregnancy_base 
 fold_change_w  fold_change_yw  fold_change_sti tr_rate_undetec_vl super_infection_pop  an_lin_incr_test  date_test_rate_plateau  
 rate_anc_inc prob_test_2ndtrim prob_test_postdel incr_test_rate_sympt  max_freq_testing  test_targeting  fx  gx adh_pattern  prob_loss_at_diag  
-pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice date_prep_len_intro 
-prep_ami_efficacy dur_prep_ami_scaleup annual_testing_prep_ami rate_choose_stop_prep_ami add_pref_prep_ami pref_prep_ami_beta_s1
-prep_ami_effect_res_partner prep_ami_adh_uplift
-rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
+pr_art_init  rate_lost  prob_lost_art  rate_return  rate_restart  rate_int_choice  rate_ch_art_init_str_4 rate_ch_art_init_str_9  red_int_risk_poc_vl 
 lencab_uptake_vlg1000 lencab_uptake rate_return_for_lencab  prob_strong_pref_lencab  prop_v_alert_perm
 rate_ch_art_init_str_10 rate_ch_art_init_str_3 clinic_not_aw_int_frac  ind_effect_art_hiv_disease_death incr_adh_poc_vl 
 res_trans_factor_nn res_trans_factor_ii  rate_loss_persistence  incr_rate_int_low_adh  poorer_cd4rise_fail_nn  
@@ -24062,13 +24068,12 @@ prob_vl_meas_done  red_adh_tb_adc  red_adh_tox_pop  red_adh_multi_pill_pop add_e
 prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fold_tr  fold_tr_pwid prob_prep_elig_pwid msm_risk_cls  prob_prep_elig_msm
 msm_tr_factor switch_for_tox 
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat
-rate_test_startprep_any   rate_choose_stop_prep_oral prob_prep_oral_b circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
+rate_test_startprep_any     circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
 prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 nnrti_res_no_effect
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency ami_higher_potency isl_higher_potency  isl_ole_adh_improve
-prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  date_prep_cab_intro cablen_extra_pref 
-cab_time_to_lower_threshold_g len_time_to_lower_threshold_g
+prop_bmi_ge23 pr_res_dol pr_res_len incr_len_res_mono  
 ntd_risk_dol oth_dol_adv_birth_e_risk    zdv_potency_p75 
 double_rate_gas_tox_taz  
 sw_program  sw_higher_int  rel_sw_lower_adh  sw_higher_prob_loss_at_diag  rate_engage_sw_program rate_disengage_sw_program 
@@ -24083,10 +24088,18 @@ prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependen
 rel_prep_oral_adh_younger 
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
-prep_oral_efficacy higher_future_prep_oral_cov prob_prep_cab_b prob_prep_len_b prob_prep_ami_b prep_cab_efficacy prep_len_efficacy  prop_pep  pep_efficacy 
-rate_choose_stop_prep_cab rate_choose_stop_prep_len rate_choose_stop_prep_ami 
-prep_cab_effect_inm_partner  prep_len_effect_cam_partner 
-pref_prep_cablen_beta_s1 incr_res_risk_cab_inf_3m  incr_res_risk_len_inf_3m 
+prep_oral_efficacy							prob_prep_oral_b	rate_choose_stop_prep_oral	annual_testing_prep_oral
+prep_cab_efficacy	date_prep_cab_intro		prob_prep_cab_b		rate_choose_stop_prep_cab	annual_testing_prep_cab
+prep_len_efficacy	date_prep_len_intro		prob_prep_len_b		rate_choose_stop_prep_len	annual_testing_prep_len
+prep_ami_efficacy	dur_prep_ami_scaleup	prob_prep_ami_b		rate_choose_stop_prep_ami	annual_testing_prep_ami
+
+higher_future_prep_oral_cov
+prep_cab_effect_inm_partner		cab_time_to_lower_threshold_g	incr_res_risk_cab_inf_3m
+prep_len_effect_cam_partner		len_time_to_lower_threshold_g	incr_res_risk_len_inf_3m
+cablen_extra_pref		pref_prep_cablen_beta_s1
+pref_prep_ami_beta_s1	add_pref_prep_ami		prep_ami_effect_res_partner		prep_ami_adh_uplift
+prop_pep  pep_efficacy 
+
 rr_testing_female
 
 artvis0_lower_adh  pop_wide_prep_adh_effect rate_lencab_to_tld  rel_rate_interrupt_lencab
@@ -24116,7 +24129,7 @@ incr_death_rate_tb incr_death_rate_oth_adc incr_death_rate_crypm incr_death_rate
 crag_cd4_l200 crag_cd4_l100  tblam_cd4_l200  tblam_cd4_l100  effect_tb_proph   effect_crypm_proph  effect_sbi_proph
 
 non_hiv_tb_risk non_hiv_tb_death_risk non_hiv_tb_prob_diag_e 
-prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed  
+prob_sbp_increase prob_test_sbp_undiagnosed prob_test_sbp_diagnosed 
 prob_intensify_1_2 prob_intensify_2_3
 
 discount
