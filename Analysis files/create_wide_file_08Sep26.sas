@@ -10,11 +10,22 @@ libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ss
    IF NOT AUTOMATICALLY DONE IN MYRIAD);
 
 data a;
-set a.pace_19Oct26;
+set a.pace_30Oct26;
 if run=. then delete; 
 proc sort;by run cald option;run;
 proc freq;table cald;run;
 
+/*
+***also read in second set;
+data b;
+set a.pace_30Oct26_;
+proc sort;by run cald option;run;
+proc freq;table cald;run;
+
+data c;
+set a b;
+run;
+*/
 
 ***SCALE UP SIMULATED POPULATION TO ZIMBABWE;
 data sf;
