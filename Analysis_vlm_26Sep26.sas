@@ -49,6 +49,7 @@ p_onart_diag_46_1 p_onart_diag_46_2 p_onart_diag_46_3 p_onart_diag_46_4	p_onart_
 p_onart_diag_46_7 p_onart_diag_46_8 p_onart_diag_46_9 p_onart_diag_46_10	p_onart_diag_46_11 p_onart_diag_46_12 ;
 run;
 
+
 %var(v=p_fail_this_per);
 /*
 
