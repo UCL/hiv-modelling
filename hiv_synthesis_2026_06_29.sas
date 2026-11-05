@@ -5024,7 +5024,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 				*assumes order of introduction is oral -> cab -> len -> ami;
 				select;
 
-					* Only oral PrEP available;
+					* Only daily oral PrEP available;
 					when (caldate{t} ge date_prep_oral_intro and 
 						(. < caldate{t} < min(date_prep_cab_intro, date_prep_len_intro, date_prep_ami_intro) or min(date_prep_cab_intro, date_prep_len_intro, date_prep_ami_intro)=.)) do;	
 						if prep_oral_willing=1 then do;		*Regardless of preference, person will test for oral PrEP if willing;
@@ -5034,43 +5034,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 						end;
 					end;
 
-					* Oral and injectable PrEP available only;
+					* Daily oral and injectable PrEP available;
 					when (caldate{t} ge min(date_prep_cab_intro,date_prep_len_intro) > . and (. < caldate{t} < date_prep_ami_intro or date_prep_ami_intro=.)) do;	
-
-						/*
-						select;
-							when (highest_prep_pref = 1)		do;		*Preference for oral PrEP;
-								tested=1; tested_prep_any_start=1; tested_prep_oral_start=1; 
-								if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
-								np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
-							end;
-							when (highest_prep_pref = 2)		do;		*Preference for cab PrEP;
-								tested=1; tested_prep_any_start=1; tested_prep_cab_start=1; 
-								if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
-								np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
-							end;
-							when (highest_prep_pref = 3)		do;		*Preference for len PrEP;
-								tested=1; tested_prep_any_start=1; tested_prep_len_start=1; 
-								if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
-								np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
-							end;
-							when (highest_prep_pref = 4)		do;		*Preference for ami/MK-8527 but not available;
-								*(1) prefer oral prep to inj and willing;
-								if pref_prep_oral > max(pref_prep_cab, pref_prep_len) and prep_oral_willing=1 then do; * note pref_prep_cab = pref_prep_len only one available at any given time;
-									tested=1; tested_prep_any_start=1; tested_prep_oral_start=1; 
-									if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
-									np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
-								end; 
-								*(2) prefer inj prep to oral and willing;
-								else if max(pref_prep_cab,pref_prep_len) > pref_prep_oral and (prep_cab_willing=1 or prep_len_willing=1) then do;
-									tested=1; tested_prep_any_start=1; if pref_prep_cab > 0 then tested_prep_cab_start=1; if pref_prep_len > 0 then tested_prep_len_start=1; * only one available at any given time; 
-									if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
-									np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
-								end; 
-								*(3) otherwise not willing to take either oral or injectable PrEP -> variables not updated;
-							end;
-						end;
-						*/
 
 						if (prep_oral_willing=1 or prep_cab_willing=1 or prep_len_willing=1) then do;
 							tested=1; tested_prep_any_start=1; 
@@ -5078,14 +5043,14 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 							np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 						end;
 
-						if pref_prep_oral > max(pref_prep_cab, pref_prep_len) and prep_oral_willing=1 then tested_prep_oral_start=1;		*Preference for oral PrEP;
+						if pref_prep_oral > max(pref_prep_cab, pref_prep_len) and prep_oral_willing=1 then tested_prep_oral_start=1;	*Preference for oral PrEP;
 						if pref_prep_cab > max(pref_prep_oral, pref_prep_len) and prep_cab_willing=1 then tested_prep_cab_start=1;		*Preference for cab PrEP;
 						if pref_prep_len > max(pref_prep_oral, pref_prep_cab) and prep_len_willing=1 then tested_prep_len_start=1;		*Preference for len PrEP; 
 						* otherwise not willing to take either oral or injectable PrEP -> variables not updated;
 
 					end;
 
-					* Oral and ami/MK-8527 PrEP available only;
+					* Daily oral and monthly oral ami PrEP available;
 					when ( caldate{t} ge date_prep_ami_intro > . and ( . < caldate{t} < min(date_prep_cab_intro, date_prep_len_intro) or min(date_prep_cab_intro, date_prep_len_intro) =. ))  do;	
 
 						if (prep_oral_willing=1 or prep_ami_willing=1) then do;
@@ -5094,17 +5059,21 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 							np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
 						end;
 
-						if pref_prep_oral > pref_prep_ami and prep_oral_willing=1 then tested_prep_oral_start=1;		*Preference for oral PrEP;
+						if pref_prep_oral > pref_prep_ami and prep_oral_willing=1 then tested_prep_oral_start=1;	*Preference for oral PrEP;
 						if pref_prep_ami > pref_prep_oral and prep_ami_willing=1 then tested_prep_ami_start=1;		*Preference for ami PrEP;
 						* otherwise not willing to take either oral or ami PrEP -> variables not updated;
 
 					end;
 
+					** QUERY add case where inj and ami are available (no daily oral)? ;
+
 					* All PrEP types available;
-/*					when (caldate{t} ge min(date_prep_cab_intro,date_prep_len_intro) and caldate{t} ge date_prep_ami_intro ) do;		*/
-					when (caldate{t} ge max(date_prep_oral_intro, date_prep_cab_intro, date_prep_len_intro, date_prep_ami_intro) and 
-						nmiss(date_prep_oral_intro, date_prep_cab_intro, date_prep_len_intro, date_prep_ami_intro) = 0 and 
-						prep_any_willing=1)  do;
+					when (caldate{t} ge min(date_prep_cab_intro,date_prep_len_intro) and caldate{t} ge date_prep_ami_intro  
+						and prep_any_willing=1) do;
+	
+/*					when (caldate{t} ge max(date_prep_oral_intro, date_prep_cab_intro, date_prep_len_intro, date_prep_ami_intro) and */
+/*						nmiss(date_prep_oral_intro, date_prep_cab_intro, date_prep_len_intro, date_prep_ami_intro) = 0 and */
+/*						prep_any_willing=1)  do;*/
 
 						tested=1; tested_prep_any_start=1;
 						if ever_tested ne 1 then date1test=caldate{t}; ever_tested=1; dt_last_test=caldate{t}; 
@@ -5245,105 +5214,105 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 	eff_sens_vct = sens_vct;  
 	* this lower sensitivity of 3rd generation testing below (sens_primary_testtype3) is extended to the first period after infection to allow
 	us to mimic the full number of people starting prep when they have hiv - realise that test sensitivity is not this low in 3-6 mths from infection ;  
-	if caldate{t}-infection = 0.25 and hivtest_type_1_init_prep_cab ne 1  and hivtest_type_1_init_prep_len ne 1 then eff_sens_vct = sens_primary_testtype3; 
+	if caldate{t}-infection = 0.25 and hivtest_type_1_init_prep_cab ne 1 and hivtest_type_1_init_prep_len ne 1 then eff_sens_vct = sens_primary_testtype3; 
 
 	*if prep_any_ever ne 1 and hiv=0 and tested=1 then do;
 	*it was tested_tm1=1 and hiv_tm1=0. Now changed to tested=1 and commented out hiv_tm1=0 because
 	we want people who are false negative to also start PrEP, this is the reason why hiv=0 is now commented out;
 	* eff_sens_vct changed from sens_vct for lapr37;
 
-	if prep_any_ever ne 1 and tested=1  and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
+	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
 	* starting PrEP for the first time ever;
 	 
-			if prep_any_willing=1 and hard_reach ne 1 then do; 
-				* person has tested explicitly to start PrEP;
-				if tested_prep_oral_start = 1  		then do;	
-					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-					prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
-				end; 
-				else if	tested_prep_cab_start = 1  	then do;	
-					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-					prep_cab=1;		prep_cab_ever=1; 	continuous_prep_cab_use=0.25;	prep_cab_first_start_date=caldate{t};	prep_cab_current_start_date=caldate{t};			
-				end; 
-				else if	tested_prep_len_start = 1  	then do;	
-					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-					prep_len=1;		prep_len_ever=1; 	continuous_prep_len_use=0.25;	prep_len_first_start_date=caldate{t};	prep_len_current_start_date=caldate{t};			
-				end; 
-				else if	tested_prep_ami_start = 1  	then do;	
-					prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-					prep_ami=1; 	prep_ami_ever=1;	continuous_prep_ami_use=0.25;	prep_ami_first_start_date=caldate{t};	prep_ami_current_start_date=caldate{t};
-				end; 
+		if prep_any_willing=1 and hard_reach ne 1 then do; 
+			* person has tested explicitly to start PrEP;
+			if tested_prep_oral_start = 1  		then do;	
+				prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+				prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
+			end; 
+			else if	tested_prep_cab_start = 1  	then do;	
+				prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+				prep_cab=1;		prep_cab_ever=1; 	continuous_prep_cab_use=0.25;	prep_cab_first_start_date=caldate{t};	prep_cab_current_start_date=caldate{t};			
+			end; 
+			else if	tested_prep_len_start = 1  	then do;	
+				prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+				prep_len=1;		prep_len_ever=1; 	continuous_prep_len_use=0.25;	prep_len_first_start_date=caldate{t};	prep_len_current_start_date=caldate{t};			
+			end; 
+			else if	tested_prep_ami_start = 1  	then do;	
+				prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+				prep_ami=1; 	prep_ami_ever=1;	continuous_prep_ami_use=0.25;	prep_ami_first_start_date=caldate{t};	prep_ami_current_start_date=caldate{t};
+			end; 
 
-				* person has not tested explicitly to start PrEP but is willing;
-				else if tested_prep_any_start ne 1 then do;
-					tested_prep_start_other=1;
-					r=rand('uniform'); 
-					select;
-						when (highest_prep_pref = 1)	if r < eff_prob_prep_oral_b then do; 	*Oral PrEP preferred and is available from start of PrEP rollout;
+			* person has not tested explicitly to start PrEP but is willing;
+			else if tested_prep_any_start ne 1 then do;
+				tested_prep_start_other=1;
+				r=rand('uniform'); 
+				select;
+					when (highest_prep_pref = 1)	if r < eff_prob_prep_oral_b then do; 	*Oral PrEP preferred and is available from start of PrEP rollout;
+						prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+						prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};		
+					end; 
+					when (highest_prep_pref = 2) 	
+						if cab_prep_available  =1 and r < eff_prob_prep_cab_b then do; *Inj PrEP preferred and is available;
 							prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};		
+							prep_cab=1;		prep_cab_ever=1; 	continuous_prep_cab_use=0.25;	prep_cab_first_start_date=caldate{t};	prep_cab_current_start_date=caldate{t};	
 						end; 
-						when (highest_prep_pref = 2) 	
-							if cab_prep_available  =1 and r < eff_prob_prep_cab_b then do; *Inj PrEP preferred and is available;
+						else if cab_prep_available  ne 1 and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
+							prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
+						end;
+
+					when (highest_prep_pref = 3) 	
+						if caldate{t} ge date_prep_len_intro > . and r < eff_prob_prep_len_b then do; *len PrEP preferred and is available;
+							prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+							prep_len=1;		prep_len_ever=1; 	continuous_prep_len_use=0.25;	prep_len_first_start_date=caldate{t};	prep_len_current_start_date=caldate{t};	
+						end; 
+						* if highest_prep_pref=3 then len available, which means cab prep not available ;
+						else if caldate{t} < date_prep_len_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
+							prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
+						end;
+					when (highest_prep_pref = 4) 	 
+						if caldate{t} ge date_prep_ami_intro > . and r < eff_prob_prep_ami_b then do;			*ami/MK-8527 PrEP preferred and is available;
+							prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+							prep_ami=1; 	prep_ami_ever=1;	continuous_prep_ami_use=0.25;	prep_ami_first_start_date=caldate{t};	prep_ami_current_start_date=caldate{t};
+						end; 
+						else if cab_prep_available = 1 and (. < caldate{t} < date_prep_ami_intro or date_prep_ami_intro=.) then do;					*ami/MK-8527 preferred but not available - choose between oral and inj PrEP if willing;
+							*(1) Prefer oral PrEP to inj and willing;
+							if pref_prep_oral > pref_prep_cab and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;
+								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
+							end; 
+							*(2) Prefer inj PrEP to oral and willing;
+							else if pref_prep_cab > pref_prep_oral and prep_cab_willing=1 and r < eff_prob_prep_cab_b then do;
 								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 								prep_cab=1;		prep_cab_ever=1; 	continuous_prep_cab_use=0.25;	prep_cab_first_start_date=caldate{t};	prep_cab_current_start_date=caldate{t};	
 							end; 
-							else if cab_prep_available  ne 1 and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
+							*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
+						end;
+						else if caldate{t} ge date_prep_len_intro > . and (. < caldate{t} < date_prep_ami_intro or date_prep_ami_intro=.) then do;	*ami/MK-8527 PrEP preferred but not available - choose between oral and inj PrEP if willing;
+							*(1) Prefer oral PrEP to len and willing;
+							if pref_prep_oral > pref_prep_len and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;
 								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
-							end;
-
-						when (highest_prep_pref = 3) 	
-							if caldate{t} ge date_prep_len_intro > . and r < eff_prob_prep_len_b then do; *len PrEP preferred and is available;
+							end; 
+							*(2) Prefer len PrEP to oral and willing;
+							else if pref_prep_len > pref_prep_oral and prep_len_willing=1 and r < eff_prob_prep_len_b then do;
 								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
 								prep_len=1;		prep_len_ever=1; 	continuous_prep_len_use=0.25;	prep_len_first_start_date=caldate{t};	prep_len_current_start_date=caldate{t};	
 							end; 
-							* if highest_prep_pref=3 then len available, which means cab prep not available ;
-							else if caldate{t} < date_prep_len_intro and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; 	*Inj PrEP preferred but not available - start oral PrEP instead if willing;
-								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
-							end;
-						when (highest_prep_pref = 4) 	 
-							if caldate{t} ge date_prep_ami_intro > . and r < eff_prob_prep_ami_b then do;			*ami/MK-8527 PrEP preferred and is available;
-								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-								prep_ami=1; 	prep_ami_ever=1;	continuous_prep_ami_use=0.25;	prep_ami_first_start_date=caldate{t};	prep_ami_current_start_date=caldate{t};
-							end; 
-							else if cab_prep_available = 1 and (. < caldate{t} < date_prep_ami_intro or date_prep_ami_intro=.) then do;					*ami/MK-8527 preferred but not available - choose between oral and inj PrEP if willing;
-								*(1) Prefer oral PrEP to inj and willing;
-								if pref_prep_oral > pref_prep_cab and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;
-									prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-									prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
-								end; 
-								*(2) Prefer inj PrEP to oral and willing;
-								else if pref_prep_cab > pref_prep_oral and prep_cab_willing=1 and r < eff_prob_prep_cab_b then do;
-									prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-									prep_cab=1;		prep_cab_ever=1; 	continuous_prep_cab_use=0.25;	prep_cab_first_start_date=caldate{t};	prep_cab_current_start_date=caldate{t};	
-								end; 
-								*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
-							end;
-							else if caldate{t} ge date_prep_len_intro > . and (. < caldate{t} < date_prep_ami_intro or date_prep_ami_intro=.) then do;	*ami/MK-8527 PrEP preferred but not available - choose between oral and inj PrEP if willing;
-								*(1) Prefer oral PrEP to len and willing;
-								if pref_prep_oral > pref_prep_len and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do;
-									prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-									prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};	
-								end; 
-								*(2) Prefer len PrEP to oral and willing;
-								else if pref_prep_len > pref_prep_oral and prep_len_willing=1 and r < eff_prob_prep_len_b then do;
-									prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-									prep_len=1;		prep_len_ever=1; 	continuous_prep_len_use=0.25;	prep_len_first_start_date=caldate{t};	prep_len_current_start_date=caldate{t};	
-								end; 
-								*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
-							end;
+							*(3) Otherwise not willing to take either oral or injectable PrEP -> variables not updated;
+						end;
 
-							else if . < caldate{t} < min(date_prep_cab_intro,date_prep_len_intro) and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; *ami / MK-8527 PrEP preferred but not available - start oral PrEP if willing;
-								prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
-								prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};		
-							end;
-						otherwise xxx=1;
-					end; 
-				end;
-				
+						else if . < caldate{t} < min(date_prep_cab_intro,date_prep_len_intro) and prep_oral_willing=1 and r < eff_prob_prep_oral_b then do; *ami / MK-8527 PrEP preferred but not available - start oral PrEP if willing;
+							prep_any=1;		prep_any_ever=1;	continuous_prep_any_use=0.25;	prep_any_first_start_date=caldate{t};	prep_any_current_start_date=caldate{t};
+							prep_oral=1;	prep_oral_ever=1;	continuous_prep_oral_use=0.25;	prep_oral_first_start_date=caldate{t};	prep_oral_current_start_date=caldate{t};		
+						end;
+					otherwise xxx=1;
+				end; 
 			end;
+			
+		end;
 
 
 	started_prep_hiv_test_sens=0;
@@ -5351,7 +5320,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 		started_prep_hiv_test_sens=1;	started_prep_hiv_test_sens_e=1;	end;
 	end;
 
-
+	if caldate{t}=prep_len_first_start_date then prep_len_last_inj=caldate{t};		**QUERY JAS Nov2026;
 
 
 ********* CONTINUING, SWITCHING OR RESTARTING PREP *************;
@@ -5371,14 +5340,13 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 		end;
 	end;
 
- 	if prep_any_ever=1 and max(prep_oral_current_start_date, prep_cab_current_start_date, prep_len_current_start_date, prep_ami_current_start_date) ne caldate{t} 
-	and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
-	* person has used PrEP before but has not started use this period, and is either not tested this period, or tested and uninfected or false positive;
+ 	if prep_any_ever=1 and prep_any_current_start_date ne caldate{t} and (tested ne 1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do; * may17;
+	* person has used PrEP before but has not started use this period, and has either not tested this period, or tested and is not infected or false negative;
 
 		* Continuing PrEP use;
 		r=rand('uniform'); 
 		if prep_oral_tm1 = 1 then do; 		* dependent_on_time_step_length;
-			*** QUERY - have people continuing on PrEP tested this period? ;
+			*** QUERY - check if people continuing on PrEP have tested this period? ;
 			if r < (1-eff_rate_choose_stop_prep_oral) then do; 			* continue to use PrEP;
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	 
 				if highest_prep_pref = 1 then do;						* continue with oral PrEP;
@@ -5459,7 +5427,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 						prep_oral_first_start_date=caldate{t};	prep_oral_ever=1;
 					end;
 				end; 
-				if highest_prep_pref = 2 then do; 					* switch to cab  PrEP; * this not possible as len will replace cab;
+				if highest_prep_pref = 2 then do; 						* switch to cab  PrEP; 	* QUERY this may not be possible if len replaces cab;
 					switch_prep_from_len=1;	 	switch_prep_to_cab =1;	continuous_prep_len_use=0;
 					prep_cab =1;	continuous_prep_cab_use =  0.25;	prep_cab_current_start_date=caldate{t};	prep_cab_switch_date=caldate{t};
 					if prep_cab_ever ne 1 then do;
