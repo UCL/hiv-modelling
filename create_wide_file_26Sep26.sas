@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\VLM_2026\";
 
 data a;
-set a.vlm_14oct26; 
+set a.vlm_03Nov26; 
 if run=. then delete; 
 
 proc sort;
@@ -205,9 +205,9 @@ s_alive = s_alive_m + s_alive_w ;
 
 * p_inf_vlsupp ;				if s_primary > 0 then p_inf_vlsupp = s_inf_vlsupp   / s_primary;
 
-* hivrel_death_rate;			if s_hiv1564 gt 0 then hivrel_death_rate = (4 * 100 * s_death_hivrel) / s_hiv1564 ;
+* hivrel_death_rate;			if s_hiv1564 gt 0 then hivrel_death_rate = ((4 * 100 * s_death_hivrel) / s_hiv1564)*10 ;
 
-* n_vm_this_per;				n_vm_this_per = s_vm_this_per * sf;
+* n_vm_this_yr;					n_vm_this_yr = s_vm_this_per * sf * 4;
 * p_fail_this_per;				if s_onart gt 0 then p_fail_this_per = s_fail_this_per/s_onart;
 
 keep run option cald 
@@ -215,8 +215,8 @@ n_alive_m			 n_alive_w			n_alive
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
-p_inf_vlsupp		 hivrel_death_rate  n_vm_this_per		p_fail_this_per;
-
+p_inf_vlsupp		 hivrel_death_rate  n_vm_this_yr		p_fail_this_per
+dcost				 ddaly;
 /*
 n_onprep_w			 n_onprep_m			n_onprep			p_1564m_onprep   	p_1564w_onprep		n_prep_any_start
 p_elig_onprep_w	 	 p_elig_onprep_m	p_elig_onprep		p_elig_onprep_mm	p_elig_onprep_nmm	p_elig_prep
@@ -244,18 +244,18 @@ proc means noprint data=y; var &v; output out=y_46 mean= &v._46; by run option; 
 
 
 ***OUTPUTS FOR CE ANALYSES OVER 50 years BY OPTION;
-/*proc means noprint data=y; var &v; output out=y_26_46 mean= &v._26_46; by run option ; where 2026.0 <= cald < 2046.0;*/
-/*proc means noprint data=y; var &v; output out=y_26_76 mean= &v._26_76; by run option ; where 2026.0 <= cald < 2076.0;*/
+proc means noprint data=y; var &v; output out=y_26_46 mean= &v._26_46; by run option ; where 2026.0 <= cald < 2046.0;
+proc means noprint data=y; var &v; output out=y_26_76 mean= &v._26_76; by run option ; where 2026.0 <= cald < 2076.0;
 
 ***SORT OUTPUT DATASETS BY RUN BEFORE MERGING;
 proc sort data=y_26; by run; proc transpose data=y_26 out=t_26 prefix=&v._26_; var &v._26; by run;
 proc sort data=y_46; by run; proc transpose data=y_46 out=t_46 prefix=&v._46_; var &v._46; by run;
-/*proc sort data=y_26_46; by run; proc transpose data=y_26_46 out=t_26_46 prefix=&v._26_46_; var &v._26_46; by run;*/
-/*proc sort data=y_26_76; by run; proc transpose data=y_26_76 out=t_26_76 prefix=&v._26_76_; var &v._26_76; by run;*/
+proc sort data=y_26_46; by run; proc transpose data=y_26_46 out=t_26_46 prefix=&v._26_46_; var &v._26_46; by run;
+proc sort data=y_26_76; by run; proc transpose data=y_26_76 out=t_26_76 prefix=&v._26_76_; var &v._26_76; by run;
 
 
 ***MERGE TOGETHER SO THE DATASET NOW CONTAINS MEANS OVER SPECIFIED PERIODS;
-data &v ; merge  y_26 t_46 /*t_26_46 t_26_46*/; 
+data &v ; merge  y_26 t_46 t_26_46 t_26_76; 
 
 
 ***THIS MACRO CALCULATES THE MEANS OVER PERIOD AT EACH OF THE SPECIFIED TIME PERIODS ABOVE ANS STORES THESE IN INDIVIDUAL DATASETS;
@@ -268,7 +268,9 @@ data &v ; merge  y_26 t_46 /*t_26_46 t_26_46*/;
 %var(v=p_onart_vl1000_w); %var(v=p_vg1000_);			%var(v=p_vl1000_); 			%var(v=prevalence_vg1000_);
 %var(v=p_inf_vlsupp);	  %var(v=hivrel_death_rate);
 
-%var(v=n_vm_this_per);	  %var(v=p_fail_this_per);
+%var(v=n_vm_this_yr);	  %var(v=p_fail_this_per);
+
+%var(v=dcost);			  %var(v=ddaly);
 run;
 		 
 
@@ -279,7 +281,8 @@ prevalence1549m 	prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence154
 incidence1549m		p_diag	 			p_diag_m	 	 	p_diag_w
 p_onart_diag  	  	p_onart_diag_m   	p_onart_diag_w  	p_onart_vl1000_ 	p_onart_vl1000_m 
 p_onart_vl1000_w 	p_vg1000_			p_vl1000_ 			prevalence_vg1000_	p_inf_vlsupp
-hivrel_death_rate	n_vm_this_per	  	p_fail_this_per;
+hivrel_death_rate	n_vm_this_yr	  	p_fail_this_per
+dcost				ddaly;
 run;
 
 proc sort; by run;run;
@@ -303,7 +306,7 @@ sex_age_mixing_matrix_w	inc_risk_newp_mm;
 ;proc sort; by run;run;
 */
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_vlm_14Oct26;;
+data a.wide_vlm_03Nov26;;
 merge   wide_outputs  /*wide_par*/ ;  
 by run;run;
 
