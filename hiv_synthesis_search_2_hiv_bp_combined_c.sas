@@ -1,22 +1,19 @@
 
 * NOTE: can search 'HYPERTENSION' (case sensitive) to find relevant hypertension sections;
 /*
-* run search_009;
+* run search_010;
 * Matt local machine input;
 libname a 'C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026';
 %let tmpfilename = out;
 */
 
 * Myriad input; 
-
-*libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
-
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
 
 
-* proc printto log="C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026\synthesis_log.log"; run;	
+* proc printto log="C:\Users\sf124046.CAMPUS\Box\1.sapphire_modelling\search2026\synthesis_log.log"; * run;	
 
 %let population = 100000 ; 
 %let year_interv = 2027.0 ;	
@@ -2593,8 +2590,8 @@ who may be dead and hence have caldate{t} missing;
 		%sample_uniform(prob_restart_htn_tx_s2, 0.95 0.975 1);
 
 		* probability of having a hypertension visit (telehealth or clinic) if eligible for telehealth);
-			addprob_visit_htn_v1 = 0.18 ;
-			addprob_visit_htn_v2 = 0.15 ;
+			addprob_visit_htn_v1 = 0.15 ;
+			addprob_visit_htn_v2 = 0.1 ;
 			addprob_visit_htn_v3 = 0.1 ;
 			addprob_visit_htn_v4 = 0.05 ;
 			addprob_visit_htn_v5 = 0.05 ;
@@ -2648,8 +2645,8 @@ who may be dead and hence have caldate{t} missing;
 		%sample_uniform(prob_restart_htn_tx_s2, 0.95 0.975 1);
 
 		* probability of having a hypertension visit (telehealth or clinic) if eligible for telehealth);
-			addprob_visit_htn_v1 = 0.18 ;
-			addprob_visit_htn_v2 = 0.15 ;
+			addprob_visit_htn_v1 = 0.15 ;
+			addprob_visit_htn_v2 = 0.1 ;
 			addprob_visit_htn_v3 = 0.1 ;
 			addprob_visit_htn_v4 = 0.05 ;
 			addprob_visit_htn_v5 = 0.05 ;
@@ -19113,7 +19110,7 @@ htn_true_ge18 = 0; htn_true_1524 = 0; htn_true_2534 = 0; htn_true_3544 = 0; htn_
 normotensive_ge18 = 0; normotensive_1524 = 0; normotensive_2534 = 0; normotensive_3544 = 0; normotensive_4554 = 0; normotensive_5564 = 0; normotensive_ge65 = 0;
 htn_true_dx_ge18 = 0; htn_true_dx_1524 = 0; htn_true_dx_2534 = 0; htn_true_dx_3544 = 0; htn_true_dx_4554 = 0; htn_true_dx_5564 = 0; htn_true_dx_ge65 = 0;
 htn_over_dx_ge18 = 0; htn_over_dx_1524 = 0; htn_over_dx_2534 = 0; htn_over_dx_3544 = 0; htn_over_dx_4554 = 0; htn_over_dx_5564 = 0; htn_over_dx_ge65 = 0;
-sbp_max_over_ge18 = 0; sbp_over_ge18 = 0;
+sbp_max_over_ge18 = 0; sbp_over_ge18 = 0; telehealth_eligible_ge40 = 0;
 																																				
 																																				
 																		
@@ -19425,6 +19422,11 @@ if 65 <= age 	 then do;
 	if normotensive = 1 then normotensive_ge65 = 1;
 	if ihd_this_per_modsev=1 then ihd_inc_all_modsev_ge65 = 1; 
 	if cva_this_per_modsev=1 then cva_inc_all_modsev_ge65 = 1;
+end;
+
+* telehealth;
+if 40 <= age then do;
+	if telehealth_eligible = 1 then telehealth_eligible_ge40 = 1;
 end;
 
 * CVD event and mortality incidence age groupings (added 6-feb-24 for lancet gh reviews);
@@ -20203,6 +20205,8 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
 	s_htn_true_dx_4554 + htn_true_dx_4554 ; s_htn_true_dx_5564 + htn_true_dx_5564 ; s_htn_true_dx_ge65 + htn_true_dx_ge65 ;
 	s_htn_over_dx_ge18 + htn_over_dx_ge18 ; s_htn_over_dx_2534 + htn_over_dx_2534 ; s_htn_over_dx_3544 + htn_over_dx_3544 ;
 	s_htn_over_dx_4554 + htn_over_dx_4554 ; s_htn_over_dx_5564 + htn_over_dx_5564 ; s_htn_over_dx_ge65 + htn_over_dx_ge65 ;
+
+	s_telehealth_eligible_ge40 + telehealth_eligible_ge40;
 
 	s_sbp_max_over_ge18 + sbp_max_over_ge18; 
 	s_sbp_over_ge18 + sbp_over_ge18 ;
@@ -22035,7 +22039,7 @@ s_htn_over_dx_ge18 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_ht
 
 s_sbp_max_over_ge18 s_sbp_over_ge18
 																				  
-																				  
+s_telehealth_eligible_ge40																				  
 																				  
 																				
 
@@ -23201,7 +23205,7 @@ s_htn_over_dx_ge18 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_ht
 
 s_sbp_max_over_ge18 s_sbp_over_ge18
 																				  
-																				  
+s_telehealth_eligible_ge40																				  
 																				  
 																				
 
@@ -24272,7 +24276,7 @@ s_htn_over_dx_ge18 s_htn_over_dx_2534 s_htn_over_dx_3544 s_htn_over_dx_4554 s_ht
 
 s_sbp_max_over_ge18 s_sbp_over_ge18
 																				  
-																				  
+s_telehealth_eligible_ge40																				  
 																				  
 																				
 
