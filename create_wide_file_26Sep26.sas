@@ -117,10 +117,12 @@ dcot_cost = s_dcot_cost * sf * 4 / 1000;
 dres_cost = s_dres_cost * sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * sf * 4 / 1000;  
 dcost_prep = s_dcost_prep * sf * 4 / 1000; 
-dcost_prep_inj = s_dcost_prep_cab * sf * 4 / 1000; 
+dcost_prep_cab = s_dcost_prep_cab * sf * 4 / 1000; 
+dcost_prep_len = s_dcost_prep_len * sf * 4 / 1000; 
 dcost_prep_oral = s_dcost_prep_oral * sf * 4 / 1000; 
 dcost_prep_visit  = s_dcost_prep_visit * sf * 4 / 1000; 	
-dcost_prep_visit_inj  = s_dcost_prep_visit_cab * sf * 4 / 1000; 	
+dcost_prep_visit_cab  = s_dcost_prep_visit_cab * sf * 4 / 1000; 	
+dcost_prep_visit_len  = s_dcost_prep_visit_len * sf * 4 / 1000; 	
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
 dcost_sw_program = s_dcost_sw_program  * sf * 4 / 1000; 
@@ -143,8 +145,9 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 ***Will need to add the cost of VG when included in HIV Synthesis;
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
-		dcost_sw_program;
+		+ /*dcost_avail_self_test + */ dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_cab + dcost_prep_cab + 
+		dcost_prep_visit_len + dcost_prep_len +	dcost_sw_program;
+
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
@@ -216,7 +219,7 @@ prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence15
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
 p_inf_vlsupp		 hivrel_death_rate  n_vm_this_yr		p_fail_this_per
-dcost				 ddaly;
+dcost				 dvl_cost			ddaly;
 /*
 n_onprep_w			 n_onprep_m			n_onprep			p_1564m_onprep   	p_1564w_onprep		n_prep_any_start
 p_elig_onprep_w	 	 p_elig_onprep_m	p_elig_onprep		p_elig_onprep_mm	p_elig_onprep_nmm	p_elig_prep
@@ -230,6 +233,7 @@ n_stop_prep_oral_elig					n_stop_prep_cab_elig 					n_stop_prep_len_elig
 
 proc sort data=y;by run option;run;
 
+proc freq;table dcost;run;
 
 ***Macro var used to calcuate cumulative means across specified periods and transpose to one line per run;
 * user to decide what years and year ranges to include ;
@@ -270,7 +274,7 @@ data &v ; merge  y_26 t_46 t_26_46 t_26_76;
 
 %var(v=n_vm_this_yr);	  %var(v=p_fail_this_per);
 
-%var(v=dcost);			  %var(v=ddaly);
+%var(v=dcost);			  %var(v=dvl_cost);			    %var(v=ddaly);
 run;
 		 
 
@@ -282,7 +286,7 @@ incidence1549m		p_diag	 			p_diag_m	 	 	p_diag_w
 p_onart_diag  	  	p_onart_diag_m   	p_onart_diag_w  	p_onart_vl1000_ 	p_onart_vl1000_m 
 p_onart_vl1000_w 	p_vg1000_			p_vl1000_ 			prevalence_vg1000_	p_inf_vlsupp
 hivrel_death_rate	n_vm_this_yr	  	p_fail_this_per
-dcost				ddaly;
+dcost				dvl_cost			ddaly;
 run;
 
 proc sort; by run;run;
