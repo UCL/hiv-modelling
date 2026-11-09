@@ -9,7 +9,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 10000 ; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -2190,6 +2190,11 @@ strong_pref_lencab = 0; if v < prob_strong_pref_lencab then strong_pref_lencab =
 
 * EFFECT OF VIRAL LOAD MEASURED HIGH, NO RESISTANCE ON RESISTANCE TEST AND LOW ADHERENCE ON ADHERENCE TEST ON SUBSEQUENT ADHERENCE;
 
+
+***LBM Sep26 This has been removed from here in order to allow for subsequent alerts which may impact on adh. 
+Search for v_alert_perm_incr_adh to see new code;
+
+/*
 * assume first measure of high vl leads to adh intervention with possible 6m or permanent increase in adherence - no additional effect after the 
 first measure of any type ;
 
@@ -2203,7 +2208,7 @@ if h <  adh_effect_of_meas_alert then do;
 	seems more plausible that a smaller proportion of people have an an effect but the effect is more likely to be permanent than for 6 months;
 	if prop_v_alert_perm <= a  then v_alert_6m_incr_adh = 1; 
 end;
-
+*/
 
 * effect of tox on adherence differs by individual;
 red_adh_tox = red_adh_tox_pop * exp(rand('normal')*0.3); red_adh_tox=round(red_adh_tox,.01); 
@@ -9370,8 +9375,14 @@ end;
 			if date_first_art_exp_initiation=. then date_first_art_exp_initiation=caldate{t};  
 			date_last_return_restart=caldate{t}; * oct16;
 		end;
-
+		
 	end;
+
+***LBM Sep26; 
+*Set the 6 monthly VL alert to zero so it can be re-initiated for a second alert
+(Assume for permanent alerts that they last forever);
+if v_alert_6m_incr_adh = 1 and  caldate{t}-date_v_alert >0.5 then v_alert_6m_incr_adh = 0;
+
 
 
 	if t ge 3 and interrupt_supply   =1 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0
@@ -10025,36 +10036,66 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 		adh=adhav + adhvar*rand('normal');
 
 * effect on adherence of alerts due to vl > 1000;
+x=rand('uniform');
 if num_vl_alert=1 then do;
-	if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
 
-	if v_alert_perm_incr_adh = 1 and caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
+	if x < 0.30 then do;
+		v_alert_6m_incr_adh = 1;
+		if . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
+	end;
+
+	if 0.30 <= x < 0.60 then do;
+		if v_alert_perm_incr_adh = 1;
+		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
+
 	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
 	if adhav_increase_due_to_alert=. and v_alert_perm_incr_adh=1 and caldate{t} >= date_v_alert > .  then do;
 		adhav=0.9;adhav_increase_due_to_alert=1;
 	end;
+	end;
+
 end;
 
-x=rand('uniform');
-if num_vl_alert=2 and x< 0.05 then do;
-	if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
 
-	if v_alert_perm_incr_adh= 1 and caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
+
+x=rand('uniform');
+if num_vl_alert=2 then do;
+
+	if x < 0.05 then do;
+		v_alert_6m_incr_adh = 1;
+		if . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
+	end;
+
+	if 0.05 <= x < 0.10 then do;
+		if v_alert_perm_incr_adh = 1;
+		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
+
 	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
 	if adhav_increase_due_to_alert=. and v_alert_perm_incr_adh=1 and caldate{t} >= date_v_alert > .  then do;
 		adhav=0.9;adhav_increase_due_to_alert=1;
 	end;
+	end;
+
 end;
 
-x=rand('uniform');
-if num_vl_alert=3 and x< 0.02 then do;
-	if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
 
-	if v_alert_perm_incr_adh = 1 and caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
+if num_vl_alert=3 then do;
+
+	if x < 0.02 then do;
+		v_alert_6m_incr_adh = 1;
+		if . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
+	end;
+
+	if 0.02 <= x < 0.04 then do;
+		if v_alert_perm_incr_adh = 1;
+		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
+
 	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
 	if adhav_increase_due_to_alert=. and v_alert_perm_incr_adh=1 and caldate{t} >= date_v_alert > .  then do;
 		adhav=0.9;adhav_increase_due_to_alert=1;
 	end;
+	end;
+
 end;
 
 * todo: Enhanced art support given this 3 month period (as in remstart trial) (such support already has an effect on ART adherence in our model);
@@ -11980,7 +12021,12 @@ anc=1) then do;
 		vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
-			if date_v_alert=. or anc_vl=1 then date_v_alert=caldate{t}; 
+		
+		if num_vl_alerts <3 or anc_vl=1 then do;
+			date_v_alert=caldate{t};
+			num_vl_alerts=num_vl_alerts+1;
+		end;
+
 		end;
 	end;
 	
@@ -12042,7 +12088,12 @@ anc=1) then do;
 		vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
-			if date_v_alert=. or anc_vl=1 then date_v_alert=caldate{t};
+
+			if num_vl_alerts <3 or anc_vl=1 then do;
+				date_v_alert=caldate{t};
+				num_vl_alerts=num_vl_alerts+1;
+			end;
+
 		end;
 	end;
 
@@ -12091,7 +12142,11 @@ or
 	vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t};  
-			if date_v_alert=. or anc_vl=1 then date_v_alert=caldate{t};
+	
+			if num_vl_alerts <3 or anc_vl=1 then do;
+				date_v_alert=caldate{t};
+				num_vl_alerts=num_vl_alerts+1;
+			end;
 		end;
 end;
 
@@ -12115,7 +12170,12 @@ if art_monitoring_strategy=155 and anc=1 and anc_vl ne 1 then do;
 	vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t}; 
-			if date_v_alert=. or anc_vl=1 then date_v_alert=caldate{t};
+				
+			if num_vl_alerts <3 or anc_vl=1 then do;
+				date_v_alert=caldate{t};
+				num_vl_alerts=num_vl_alerts+1;
+			end;
+
 		end;
 end;
 
@@ -13072,7 +13132,12 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 					end;  
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
-						if date_v_alert=. then date_v_alert=caldate{t};
+
+						if num_vl_alerts <3 or anc_vl=1 then do;
+							date_v_alert=caldate{t};
+							num_vl_alerts=num_vl_alerts+1;
+						end;
+			
 						date_last_vlm_g1000 = caldate{t}; date_who3_4_event_switch_eval=caldate{t};
 					end;
 				end;
@@ -13226,7 +13291,12 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 					end;  
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
-						if date_v_alert=. then date_v_alert=caldate{t};
+
+						if num_vl_alerts <3 or anc_vl=1 then do;
+							date_v_alert=caldate{t};
+							num_vl_alerts=num_vl_alerts+1;
+						end;
+
 						date_last_vlm_g1000 = caldate{t}; 
 						date_who3_4_event_switch_eval=caldate{t};
 					end;
@@ -20618,7 +20688,8 @@ run;
 
 */
 
-
+proc print;var caldate&j age num_vl_alert vl date_v_alert v_alert_6m_incr_adh v_alert_perm_incr_adh
+eff_rate_restart e_rate_restart;where num_vl_alert gt 0;run;
 
 
 

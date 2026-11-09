@@ -10,7 +10,7 @@ run;
 data b;
 set a;
 
-proc means n median mean p5 p95;var
+proc means n median mean p5 p95 lclm uclm;var
 
 n_vm_this_yr_26_46_1 p_onart_diag_26_46_1 p_onart_vl1000__26_46_1 p_vg1000__26_46_1 prevalence1549__26_46_1	incidence1549m_26_46_1  hivrel_death_rate_26_46_1
 n_vm_this_yr_26_46_2 p_onart_diag_26_46_2 p_onart_vl1000__26_46_2 p_vg1000__26_46_2 prevalence1549__26_46_2	incidence1549m_26_46_2  hivrel_death_rate_26_46_2
@@ -32,7 +32,6 @@ n_vm_this_yr_26_46_17 p_onart_diag_26_46_17 p_onart_vl1000__26_46_17 p_vg1000__2
 n_vm_this_yr_26_46_18 p_onart_diag_26_46_18 p_onart_vl1000__26_46_18 p_vg1000__26_46_18 prevalence1549__26_46_18	incidence1549m_26_46_18  hivrel_death_rate_26_46_18
 ;run;
 
-proc contents;run;
 
 data c;
 set b;
@@ -86,27 +85,27 @@ diff_dvl_cost_17 = dvl_cost_26_76_17 - dvl_cost_26_76_13;
 diff_dcost_18 = dcost_26_76_18 - dcost_26_76_13;
 diff_dvl_cost_18 = dvl_cost_26_76_18 - dvl_cost_26_76_13;
 
-*DALYs;
+*DALYs averted;
 *SQ treatment strategy;
-diff_ddaly_2 = ddaly_26_76_2 - ddaly_26_76_1;
-diff_ddaly_3 = ddaly_26_76_3 - ddaly_26_76_1;
-diff_ddaly_4 = ddaly_26_76_4 - ddaly_26_76_1;
-diff_ddaly_5 = ddaly_26_76_5 - ddaly_26_76_1;
-diff_ddaly_6 = ddaly_26_76_6 - ddaly_26_76_1;
+diff_ddaly_2 = ddaly_26_76_1 - ddaly_26_76_2;
+diff_ddaly_3 = ddaly_26_76_1 - ddaly_26_76_3;
+diff_ddaly_4 = ddaly_26_76_1 - ddaly_26_76_4;
+diff_ddaly_5 = ddaly_26_76_1 - ddaly_26_76_5;
+diff_ddaly_6 = ddaly_26_76_1 - ddaly_26_76_6;
 
 *3% decline in treatment coverage;
-diff_ddaly_8 = ddaly_26_76_8 - ddaly_26_76_7;
-diff_ddaly_9 = ddaly_26_76_9 - ddaly_26_76_7;
-diff_ddaly_10 = ddaly_26_76_10 - ddaly_26_76_7;
-diff_ddaly_11 = ddaly_26_76_11 - ddaly_26_76_7;
-diff_ddaly_12 = ddaly_26_76_12 - ddaly_26_76_7;
+diff_ddaly_8 = ddaly_26_76_7 - ddaly_26_76_8;
+diff_ddaly_9 = ddaly_26_76_7 - ddaly_26_76_9;
+diff_ddaly_10 = ddaly_26_76_7 - ddaly_26_76_10;
+diff_ddaly_11 = ddaly_26_76_7 - ddaly_26_76_11;
+diff_ddaly_12 = ddaly_26_76_7 - ddaly_26_76_12;
 
 *20% decline in treatment coverage;
-diff_ddaly_14 = ddaly_26_76_14 - ddaly_26_76_13;
-diff_ddaly_15 = ddaly_26_76_15 - ddaly_26_76_13;
-diff_ddaly_16 = ddaly_26_76_16 - ddaly_26_76_13;
-diff_ddaly_17 = ddaly_26_76_17 - ddaly_26_76_13;
-diff_ddaly_18 = ddaly_26_76_18 - ddaly_26_76_13;
+diff_ddaly_14 = ddaly_26_76_13 - ddaly_26_76_14;
+diff_ddaly_15 = ddaly_26_76_13 - ddaly_26_76_15;
+diff_ddaly_16 = ddaly_26_76_13 - ddaly_26_76_16;
+diff_ddaly_17 = ddaly_26_76_13 - ddaly_26_76_17;
+diff_ddaly_18 = ddaly_26_76_13 - ddaly_26_76_18;
 
 ICER2 = (diff_dcost_2/diff_ddaly_2)*1000000;
 ICER3 = (diff_dcost_3/diff_ddaly_3)*1000000;
@@ -144,7 +143,7 @@ netdalys_16 =  ddaly_26_76_16 + (dcost_26_76_16)/0.0001;
 netdalys_17 =  ddaly_26_76_17 + (dcost_26_76_17)/0.0001;
 netdalys_18 =  ddaly_26_76_18 + (dcost_26_76_18)/0.0001;
 
-proc means;var 
+proc means n p50 mean p5 p95;var 
 diff_dcost_2  		diff_dvl_cost_2		diff_ddaly_2	ICER2 	netdalys_2
 diff_dcost_3  		diff_dvl_cost_3		diff_ddaly_3	ICER3 	netdalys_3
 diff_dcost_4  		diff_dvl_cost_4		diff_ddaly_4	ICER4 	netdalys_4
@@ -167,8 +166,3 @@ netdalys_1			netdalys_7				netdalys_13
 
 ;run;
 
-
-
-proc print;var 
-
-diff_ddaly_2 ddaly_26_76_2 ddaly_26_76_1;run;

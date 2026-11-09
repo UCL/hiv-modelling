@@ -136,7 +136,7 @@ dswitchline_cost = s_dcost_switch_line * sf * 4 / 1000;
 if dswitchline_cost=. then dswitchline_cost=0;
 if s_dcost_drug_level_test=. then s_dcost_drug_level_test=0;
 dcost_drug_level_test = s_dcost_drug_level_test * sf * 4 / 1000;
-dcost_child_hiv  = s_dcost_child_hiv * sf * 4 / 1000; 
+dcost_child_hiv  = s_cost_child_hiv_at_child_inf * sf * 4 / 1000; 
 
 dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 
@@ -146,7 +146,7 @@ dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_c
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
 		+ /*dcost_avail_self_test + */ dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_cab + dcost_prep_cab + 
-		dcost_prep_visit_len + dcost_prep_len +	dcost_sw_program;
+		dcost_prep_visit_len + dcost_prep_len +	dcost_sw_program + dcost_child_hiv;
 
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
@@ -219,7 +219,7 @@ prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence15
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
 p_inf_vlsupp		 hivrel_death_rate  n_vm_this_yr		p_fail_this_per
-dcost				 dvl_cost			ddaly;
+dcost				 dvl_cost			ddaly				ddaly_ac_mtct;
 /*
 n_onprep_w			 n_onprep_m			n_onprep			p_1564m_onprep   	p_1564w_onprep		n_prep_any_start
 p_elig_onprep_w	 	 p_elig_onprep_m	p_elig_onprep		p_elig_onprep_mm	p_elig_onprep_nmm	p_elig_prep
@@ -228,7 +228,7 @@ dcost ddaly			 n_prep_oral_start	n_prep_cab_start	n_prep_len_start
 n_stop_prep_oral_elig					n_stop_prep_cab_elig 					n_stop_prep_len_elig
 
 */
-
+***Add pregnant women virally suppressed
 ;
 
 proc sort data=y;by run option;run;
