@@ -822,6 +822,7 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 3000);	* Introduction of injectable cab PrEP ;	* consider len as the only la prep option;
 * date_prep_len_intro;			%sample(date_prep_len_intro, 2026 3000, 0.3 0.7);	* Introduction of injectable len PrEP ;	* Note for BMGF analysis we will want to sample across (2026, 3000) to introduce ami with and without len;
+* date_prep_len_intro;			date_prep_len_intro=2019;	* QUERY;
 * prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
 * prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;						* Assume 5 years to scale up injectable cab prep;
@@ -2508,6 +2509,7 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 * INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
+option = 1;
 
 
 if caldate_never_dot >= &year_interv then do;
@@ -5320,7 +5322,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 		started_prep_hiv_test_sens=1;	started_prep_hiv_test_sens_e=1;	end;
 	end;
 
-	if caldate{t}=prep_len_first_start_date then prep_len_last_inj=caldate{t};		**QUERY JAS Nov2026;
+/*	if caldate{t}=prep_len_first_start_date then prep_len_last_inj=caldate{t};		**QUERY JAS Nov2026;*/
 
 
 ********* CONTINUING, SWITCHING OR RESTARTING PREP *************;
@@ -5400,7 +5402,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 						prep_len_first_start_date=caldate{t};	prep_len_ever=1;
 					end;
 				end; 
-				if highest_prep_pref = 4 then do;						* switch to ami/MK-8527 PrEP;
+				if highest_prep_pref = 4 then do;						* switch to ami PrEP;
 					switch_prep_from_cab=1;	 	switch_prep_to_ami=1;	continuous_prep_cab_use=0;
 					prep_ami=1;		continuous_prep_ami_use =  0.25;	prep_ami_current_start_date=caldate{t};		prep_ami_switch_date=caldate{t};
 					if prep_ami_ever ne 1 then do;
@@ -5415,9 +5417,16 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 		end;
 
 		else if prep_len_tm1 = 1 then do; 	* dependent_on_time_step_length;	** QUERY add code to prevent switching or stopping len during 6 months post-injection;
+
+			if not missing(prep_len_last_inj) and caldate{t}-prep_len_last_inj < 0.5-0.001 then do;
+				* lenacapavir injection given within the last 6 months: still protected, so cannot stop or switch until the next injection is due JAS Nov2026;	* QUERY;
+				prep_any=1;	continuous_prep_any_use = continuous_prep_any_use + 0.25;
+				prep_len=1;	continuous_prep_len_use = continuous_prep_len_use + 0.25;
+			end;
+
 			if r < (1-eff_rate_choose_stop_prep_len) then do; 			* continue to use PrEP; 
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
-				if highest_prep_pref = 3 then do;						* continue with cab PrEP;
+				if highest_prep_pref = 3 then do;						* continue with len PrEP;
 					prep_len=1;		continuous_prep_len_use = continuous_prep_len_use + 0.25; 					
 				end;	
 				if highest_prep_pref = 1 then do;						* switch to oral PrEP;
@@ -5627,6 +5636,24 @@ if tested=1 and (hivtest_type_1_prep_len=1 or hivtest_type_1_init_prep_len=1) an
 	cost_test = cost_test_g; cost_test_type1=cost_test; 
 end;		
 if tested=1 and hivtest_type_1_prep_len=1 and prep_len = 1 then do; cost_test = cost_test_g; cost_test_type1=cost_test; end;
+
+
+* LEN PREP: one injection every 6 months (= 2 time steps). prep_len_last_inj = date of most recent injection JAS Nov2026;	*QUERY - check;
+* injection given on any new start, restart or switch to len: repeat injection when 6 months have passed (or if the date is missing);
+prep_len_injection=0;
+if prep_len=1 then do;
+	if prep_len_tm1 ne 1 then do;				* Individual was not on LEN last period so injection is due ;
+		prep_len_injection=1;
+		prep_len_last_inj=caldate{t};
+	end;
+	else if missing(prep_len_last_inj) or caldate{t}-prep_len_last_inj >= 0.5-0.001 then do;
+		prep_len_injection=1;
+		prep_len_last_inj=caldate{t};			* Individual on LEN PrEP has missing prep_len_last_inj, or has been on LEN PrEP for >= 6 months, so injection is due ;
+	end;
+	* No action if individual is on LEN PrEP but had an injection < 6 months ago;	
+end;
+* No action if individual not on LEN PrEP;
+
 
 if prep_oral=0 then continuous_prep_oral_use=0;
 if prep_cab=0 then continuous_prep_cab_use=0;	
@@ -20435,12 +20462,16 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 * procs;
 
 proc print; 
-	var cald /*country gender*/ age death hiv /*option*/ highest_prep_pref /*pref_prep_oral pref_prep_cab pref_prep_len pref_prep_ami*/ 
+	var cald /*country*/ gender age death hiv /*option*/ prep_any_strategy highest_prep_pref 
+	prep_any_elig_tm1 prep_any_elig
+	tested self_tested prep_any prep_oral  prep_ami
+	prep_len  prep_len_tm1 prep_len_tm2 prep_len_last_inj prep_len_injection
+/*pref_prep_oral pref_prep_cab pref_prep_len pref_prep_ami*/ 
 /*	rate_test_onprep_any tested tested_prep_any_start tested_prep_monitoring tested_prep_restart tested_prep_start_other prep_any prep_oral prep_cab prep_len prep_ami adh prep_ami_adh_uplift;*/
 /*	rate_test_onprep_any tested tested_prep_any_start tested_prep_monitoring tested_prep_restart tested_prep_start_other tested_circ tested_symptoms_not_hiv tested_anc tested_labdel tested_pd */
 /*	tested_due_to_self_test tested_as_sw*/
-	prep_any prep_oral prep_cab prep_len prep_ami ;
-	where serial_no < 50;
+	;
+	where prep_any=1 or prep_len_tm1=1 or prep_len_tm2=1;
 /*	where (prep_oral=1 or prep_cab=1 or prep_len=1 or prep_ami=1);*/
 run;
 
