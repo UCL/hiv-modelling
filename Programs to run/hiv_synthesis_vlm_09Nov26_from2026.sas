@@ -1,15 +1,20 @@
 
 *libname a 'C:\Users\w3sth\Dropbox (UCL)\My SAS Files\outcome model\misc';   
 
+/*
 %let outputdir = %scan(&sysparm,1," ");
   libname a "&outputdir/";   
 %let tmpfilename = %scan(&sysparm,2," ");
+*/
+
+libname a "C:\Users\Loveleen\Documents\";
+%let tmpfilename=out_;
 
 
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 100000 ; 
+%let population = 10000; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -120,7 +125,7 @@ One  row of data defined, containing  parameter values that remain fixed for the
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
-
+/*
 
 data z;
 
@@ -138,9 +143,6 @@ caldate_never_dot=1989;
 * start of epidemic;
 startyr = 1989 + 0.25;  	* overwritten in country-specific include statements (SA, Zim, Malawi, Cote d Ivoire, Kenya) JAS Feb24;
 * ts1m;
-/*
-startyr = 1989 + 1/12;
-*/
 
 
 newp_seed = 7;  
@@ -1165,11 +1167,15 @@ non_hiv_tb_prob_diag_e = 0.5 ;
 * %include "/home/rmjlaph/SA_parameters.sas";
 * %include "/home/rmjlvca/Zim_parameters_08_f.sas";
  *%include "C:\Users\ValentinaCambiano\Projects\Modelling Consortium\MIHPSA\Zimbabwe\Phase 2 - Synthesis\PGM\Zim_parameters_08_f.sas";
+*/
 
 
-call symput('caldate1',caldate1);
+call symput('caldate1',1989);
 
+dataset_id=trim(left(run));
+call symput('dataset_id',dataset_id);
 
+/*
 * inc_cat is defined in the include statement so these lines have been moved downwards from the main parameter section JAS Nov23;
 if inc_cat = 1 then prob_pregnancy_base = prob_pregnancy_base * 1.75 ;
 if inc_cat = 3 then prob_pregnancy_base = prob_pregnancy_base / 1.75 ;
@@ -2328,7 +2334,7 @@ if rand('uniform')<prop_use_condom_int_newp then use_condom_intervention_newp = 
 _p1 = rand('uniform'); _p2 = rand('uniform'); _p3 = rand('uniform'); _p4 = rand('uniform'); _p5 = rand('uniform'); _p6 = rand('uniform'); 
 _p7 = rand('uniform'); _p8 = rand('uniform'); _p9 = rand('uniform'); _p10 = rand('uniform'); 
 
-
+*/
 
 
 
@@ -2500,94 +2506,128 @@ if caldate_never_dot >= &year_interv then do;
 * we need to use caldate_never_dot so that the parameter value is given to everyone in the data set - we use the value for serial_no = 100000
 who may be dead and hence have caldate{t} missing;
 
+***options 0 to 6 assume status quo treatment coverage;
+***options 7 to 11 assume 3% drop in treatment coverage;
+***options 12 to 17 assume 20% drop treatment coverage;
+
 	art_mon_set_in_options=1;
+	set_in_options=.;
 	* note that we can use set_in_options=1 when we want to ensure that parameter values specified in the options section are not overwritten.
 	The variable name can be updated to reflect specific parameters;
 
-***LBM Sep26 check;
-
- 	*Option 0: status quo - annual VL monitoring (VLM);
+***LBM Sep26;
+ 	*Option 0: No VLM;
 	if option = 0 then do;
+		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;				 
+	end;
+
+ 	*Option 1: status quo - annual VL monitoring (VLM);
+	if option = 1 then do;
 		art_monitoring_strategy = 150;
 	end;
  	*This will be the default 150 strategy;
 
- 	*Option 1: No VLM;
-	if option = 1 then do;
-		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;				 
-	end;
-
-	 *Option 2: Symptomatic VLM, with confirmatory VL within 6m-12m;
+ 	*Option 2: 3 yearly VLM;
 	if option = 2 then do;
-		art_monitoring_strategy=3;  
-	end;
-
-
-	*Option 3: 3 yearly VLM; *what about in symptomatics? This applies to art monitoring strategy 150 too - covered elsewhere in the code?;
-	if option = 3 then do;
 		art_monitoring_strategy=152;						 
 	end;
 
-
-***Options 4-7: 3% reduction in treatment availability;
-*rate_int_choice sampled at the outset from 0.001, 0.004, 0.008, 0.012;
-
- 	*Option 4: status quo - annual VL monitoring (VLM);
- 	if option = 4 then do;
-		art_monitoring_strategy = 150;
-		eff_rate_int_choice=0.01; *no idea what this should be really;
+	 *Option 3: Symptomatic VLM, with confirmatory VL within 6m-12m;
+	if option = 3 then do;
+		art_monitoring_strategy=3;  
 	end;
 
- 	*Option 5: No VLM;
+	*Option 4: VLM only at 6 months after ART initiation;
+	if option = 4 then do;
+		art_monitoring_strategy=154;						 
+	end;
+	
+	*Option 5: VLM in pregnant women only;
 	if option = 5 then do;
-		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;	
+		art_monitoring_strategy=155;						 
+	end;
+
+***Options 6-11: 3% reduction in treatment availability;
+*rate_int_choice sampled at the outset from 0.001, 0.004, 0.008, 0.012;
+
+ 	*Option 6: No VLM;
+	if option = 6 then do;
+		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;
 		eff_rate_int_choice=0.01; 
 	end;
 
-	 *Option 6: Symptomatic VLM, with confirmatory VL within 6m-12m;
-	if option = 6 then do;
-		art_monitoring_strategy=3;  
+ 	*Option 7: status quo - annual VL monitoring (VLM);
+	if option = 7 then do;
+		art_monitoring_strategy = 150;
 		eff_rate_int_choice=0.01;
 	end;
+ 	*This will be the default 150 strategy;
 
+ 	*Option 8: 3 yearly VLM;
+	if option = 8 then do;
+		art_monitoring_strategy=152;	
+		eff_rate_int_choice=0.01; 
+	end;
 
-	*Option 7: 3 yearly VLM; *what about in symptomatics? This applies to art monitoring strategy 150 too - covered elsewhere in the code?;
-	if option = 7 then do;
-		art_monitoring_strategy=152;
+	 *Option 9: Symptomatic VLM, with confirmatory VL within 6m-12m;
+	if option = 9 then do;
+		art_monitoring_strategy=3; 
+		eff_rate_int_choice=0.01; 
+	end;
+
+	*Option 10: VLM only at 6 months after ART initiation;
+	if option = 10 then do;
+		art_monitoring_strategy=154;	
+		eff_rate_int_choice=0.01; 
+	end;
+	
+	*Option 11: VLM in pregnant women only;
+	if option = 11 then do;
+		art_monitoring_strategy=155;
 		eff_rate_int_choice=0.01; 
 	end;
 
 
-***Options 8-11: 20% reduction in treatment availability;
+***Options 12-16: 20% reduction in treatment availability;
 *rate_int_choice sampled at the outset from 0.001, 0.004, 0.008, 0.012;
 
- 	*Option 8: status quo - annual VL monitoring (VLM);
- 	if option = 8 then do;
-		art_monitoring_strategy = 150;
-		eff_rate_int_choice=0.1; *no idea what this should be really;
-	end;
-
- 	*Option 9: No VLM;
-	if option = 9 then do;
-		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;	
+ 	*Option 12: No VLM;
+	if option = 12 then do;
+		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;
 		eff_rate_int_choice=0.1; 
 	end;
 
-	 *Option 10: Symptomatic VLM, with confirmatory VL within 6m-12m;
-	if option = 10 then do;
-		art_monitoring_strategy=3;  
+ 	*Option 13: status quo - annual VL monitoring (VLM);
+	if option = 13 then do;
+		art_monitoring_strategy = 150;
 		eff_rate_int_choice=0.1;
 	end;
+ 	*This will be the default 150 strategy;
 
-
-	*Option 11: 3 yearly VLM; *what about in symptomatics? This applies to art monitoring strategy 150 too - covered elsewhere in the code?;
-	if option = 11 then do;
-		art_monitoring_strategy=152;
+ 	*Option 14: 3 yearly VLM;
+	if option = 14 then do;
+		art_monitoring_strategy=152;	
 		eff_rate_int_choice=0.1; 
 	end;
 
+	 *Option 15: Symptomatic VLM, with confirmatory VL within 6m-12m;
+	if option = 15 then do;
+		art_monitoring_strategy=3; 
+		eff_rate_int_choice=0.1; 
+	end;
 
- 
+	*Option 16: VLM only at 6 months after ART initiation;
+	if option = 16 then do;
+		art_monitoring_strategy=154;	
+		eff_rate_int_choice=0.1; 
+	end;
+	
+	*Option 17: VLM in pregnant women only;
+	if option = 17 then do;
+		art_monitoring_strategy=155;
+		eff_rate_int_choice=0.1; 
+	end;
+
 end;
 
 
@@ -4731,7 +4771,7 @@ if gender=2 and t ge 4 and ((caldate{t}-dt_lastbirth gt 0.25) or dt_lastbirth=.)
 	prob_pregnancy_newp = prob_pregnancy*fold_tr_newp;
 	if (ep=1   and . lt u lt prob_pregnancy) or      
 	   (newp=1 and . lt u lt prob_pregnancy_newp) then do;
-		dt_start_pregn=caldate{t};pregnant=1;pregnant_ntd=0;pregnant_oth_dol_adv_birth_e=0;anc=0;		 
+		dt_start_pregn=caldate{t};pregnant=1;pregnant_ntd=0;pregnant_oth_dol_adv_birth_e=0;anc=0;anc_vl=0;		 
 	end;
 	if pregnant ne 1 and newp gt 1 then do; * dependent_on_time_step_length ;
 	* consider if pregnant will be 1 only for 1 period ;
@@ -8307,7 +8347,7 @@ if t ge 2 then do;
 	u=rand('uniform');
 
 	if primary=1 and tested=1 and u lt eff_sens_primary then do;
-		registd=1; date1pos=caldate{t}; diagprim=1; visit=1; lost=0; cd4diag=cd4;
+		registd=1; date1pos=caldate{t}; diagprim=1; visit=1; lost=0; cd4diag=cd4; num_vl_alerts=0;
 		if pop_wide_tld_prep ne 1 then onart=0;
 		z=rand('uniform');	if z < eff_prob_loss_at_diag then do; visit=0; lost=1;	end;
 		
@@ -8843,7 +8883,7 @@ if tested=1 and registd_tm1 ne 1 and prep_falseneg ne 1 then do;	*V*hiv(t)=1 is 
 
 
 	if t ge 3 and bb1 < eff_sens_vct then do; 
-			registd=1; date1pos=caldate{t}; 
+			registd=1; date1pos=caldate{t}; num_vl_alerts=0;
 			visit=1;   lost   =0; cd4diag=cd4_tm1;
 			if pop_wide_tld_prep ne 1 then onart   =0;
 			*costing of HIV-positive;
@@ -9342,6 +9382,10 @@ end;
 
 	end;
 
+***LBM Sep26; 
+*Set the 6 monthly VL alert to zero so it can be re-initiated for a second alert
+(Assume for permanent alerts that they last forever);
+if v_alert_6m_incr_adh = 1 and  caldate{t}-date_v_alert >0.5 then v_alert_6m_incr_adh = 0;
 
 	if t ge 3 and interrupt_supply   =1 and visit=1 and toffart_tm1  gt 0 and onart_tm1 =0
 	and tcur_tm1=. and interrupt=0 and d < prob_supply_resumed then do;
@@ -9994,14 +10038,69 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 		adh=adhav + adhvar*rand('normal');
 
 * effect on adherence of alerts due to vl > 1000;
+x=rand('uniform');
+if num_vl_alerts=1 then do;
 
-	if v_alert_6m_incr_adh = 1 and . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
+	if x < 0.30 then do;
+		v_alert_6m_incr_adh = 1;
+		if . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
+	end;
 
-	if v_alert_perm_incr_adh = 1 and caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
+	if 0.30 <= x < 0.60 then do;
+		if v_alert_perm_incr_adh = 1;
+		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
+
 	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
 	if adhav_increase_due_to_alert=. and v_alert_perm_incr_adh=1 and caldate{t} >= date_v_alert > .  then do;
 		adhav=0.9;adhav_increase_due_to_alert=1;
 	end;
+	end;
+
+end;
+
+
+
+x=rand('uniform');
+if num_vl_alerts=2 then do;
+
+	if x < 0.05 then do;
+		v_alert_6m_incr_adh = 1;
+		if . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
+	end;
+
+	if 0.05 <= x < 0.10 then do;
+		if v_alert_perm_incr_adh = 1;
+		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
+
+	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
+	if adhav_increase_due_to_alert=. and v_alert_perm_incr_adh=1 and caldate{t} >= date_v_alert > .  then do;
+		adhav=0.9;adhav_increase_due_to_alert=1;
+	end;
+	end;
+
+end;
+
+
+if num_vl_alerts=3 then do;
+
+	if x < 0.02 then do;
+		v_alert_6m_incr_adh = 1;
+		if . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
+	end;
+
+	if 0.02 <= x < 0.04 then do;
+		if v_alert_perm_incr_adh = 1;
+		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
+
+	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
+	if adhav_increase_due_to_alert=. and v_alert_perm_incr_adh=1 and caldate{t} >= date_v_alert > .  then do;
+		adhav=0.9;adhav_increase_due_to_alert=1;
+	end;
+	end;
+
+end;
+
+
 	
 * todo: Enhanced art support given this 3 month period (as in remstart trial) (such support already has an effect on ART adherence in our model);
 
@@ -11624,26 +11723,36 @@ o_dol_2nd_vlg1000 = 0; * see below for defn; * eee;
 * art_monitoring_strategy=3. Clinical monitoring with VL confirmation (modelling the confirmatory VL);
 * look also at who3 and who4 events where the switch evaluation happens;
 *VLM Global Fund paper;
-anc_vl=0;
 
 if  art_monitoring_strategy=3 
-and ((t ge 2 and visit=1 and 0.25 <= caldate{t}-date_last_vlm_g1000 <= 1.0) /*last VL>1000 was measured between 3-12 months ago*/
-and (onart=1 or int_clinic_not_aw=1) and (p_taz ne 1 or p_dar ne 1 or p_lpr ne 1) /*on ART or interrupted without clinic being aware and havent started a PI*/
-and (linefail_tm1 =0)/*this ensures a confirmatory VL is only done if they havent failed a regimen before the last period*/
-and (min_time_repeat_vm <= caldate{t}-date_who3_4_event_switch_eval <= 1.0)) /*they had a switch evaluation due to symptoms 3-12 months ago (and repeat VL needs to be done by 1 year)*/
-or (anc=1 and anc_vl ne 1) then do; *LBM check *VL measured exactly once whilst in ANC - irresepctive of when a previous VL was done  ;
 
-if anc=1 then anc_vl=1;/*LBM check*/
+and (
+(
+	(t ge 2 and visit=1 and 0.25 <= caldate{t}-date_last_vlm_g1000 <= 1.0) /*last VL>1000 was measured between 3-12 months ago*/
+	and (onart=1 or int_clinic_not_aw=1) and (p_taz ne 1 or p_dar ne 1 or p_lpr ne 1) /*on ART or interrupted without clinic being aware and havent started a PI*/
+	and (linefail_tm1 =0)/*this ensures a confirmatory VL is only done if they havent failed a regimen before the last period*/
+	and (min_time_repeat_vm <= caldate{t}-date_who3_4_event_switch_eval <= 1.0)
+) /*they had a switch evaluation due to symptoms 3-12 months ago (and repeat VL needs to be done by 1 year)*/
+
+or 
+
+(anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5 )) then do; * *VL measured exactly once whilst in ANC - irresepctive of when a previous VL was done  ;
+
 s=rand('uniform'); 
 	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm    = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
 		if vm_format=3 then do; vm    = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
 		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm    = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		if anc=1 and anc_vl=0 then anc_vl=1;
 	end;  
 	vl_cost_inc = 1;
 	if vm    gt log10(1000) then do;
-		if date_v_alert=. or anc_vl=1 /*LBM check*/ then date_v_alert=caldate{t};
+		if num_vl_alerts <3 or anc_vl=1 then do;
+			date_v_alert=caldate{t};
+			num_vl_alerts=num_vl_alerts+1;
+		end;
+
 		linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4 ; vl_fail1=vl;d1stlfail=caldate{t}; date_last_vlm_g1000 = caldate{t};fail_this_per=1;
 		if o_zdv=1 then f_zdv=1;
 		if o_3tc=1 then f_3tc=1;
@@ -11883,9 +11992,16 @@ end;
 
 ***LBM Sep26;
 *VLM Global Fund paper;
-anc_vl=0;
-if  art_monitoring_strategy=150  and (visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
-and restart    ne 1 and restart_tm1  ne 1  and t ge 2) or anc=1 then do;   /*LBM check*/
+if  art_monitoring_strategy=150  
+
+and 
+
+((visit=1  and onartvisit0 ne 1 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 
+and restart    ne 1 and restart_tm1  ne 1  and t ge 2) 
+
+or
+
+anc=1) then do;   
 
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) /* (a)if the first VL is >6m after starting ART*/
 	or (caldate{t}-yrart = 1.0) /* (b) it is a year after starting ART*/
@@ -11894,24 +12010,27 @@ and restart    ne 1 and restart_tm1  ne 1  and t ge 2) or anc=1 then do;   /*LBM
 	/* (d)  they have had a recent switch evaluation (i.e. VL>1000 within 3- 12 months (and so the proposed 
 			measurement will act as a confirmatory VL) AND if they had a previous confirmatory VL from previous switch evaluations,
 			it needs to be over a year ago*/
-	or anc=1 and anc_vl ne 1 /*LBM check*/
+	or (anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5 ) 
 
 	then do;
-	if anc=1 then anc_vl=1;/*LBM check*/
 		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
 		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
 		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
-/*LBM check*/
-*Confirmatory measure time condition not needed for PLW so accept this period as confirmatory measure so loop below using confirmatory measure works okay;
-
-		if (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0) or_anc_vl=1 then date_conf_vl_measure_done = caldate{t} ;
+		if anc=1 and anc_vl=0 then anc_vl=1;
+		*Confirmatory measure not needed for PLW so dont include them below;
+		if (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 1.0) then date_conf_vl_measure_done = caldate{t} ;
 		end;  
 		vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
-			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1 or anc_vl=1) /*LBM check*/then date_vl_switch_eval=caldate{t}; 
-			if date_v_alert=. or anc_vl=1 /*LBM check*/ then date_v_alert=caldate{t}; 
+			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
+		
+		if num_vl_alerts <3 or anc_vl=1 then do;
+			date_v_alert=caldate{t};
+			num_vl_alerts=num_vl_alerts+1;
+		end;
+
 		end;
 	end;
 	
@@ -11946,32 +12065,39 @@ end;
 *VLM Global Fund paper;
 
 *time_of_first_vm = 0.5, defined above i.e. first VL is 6m after ART start;
-anc_vl=0;
-if art_monitoring_strategy=152  and (visit=1 and (artline=1 or int_clinic_not_aw=1) 
-and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and t ge 2) or anc=1 then do;  *LBM check;
+if art_monitoring_strategy=152  
+and 
+((visit=1 and (artline=1 or int_clinic_not_aw=1) and restart ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and t ge 2)
+or 
+anc=1) then do;  
 	if (caldate{t}-yrart >= time_of_first_vm and time_since_last_vm=.) /*if the first VL is >6m after starting ART*/
 	or	(time_since_last_vm >= 2.75) /*or is >=3 years since last VL */
 	or  (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 and (caldate&j - date_conf_vl_measure_done >= 3 or date_conf_vl_measure_done=.)) 
 	/*	they have had a recent switch evaluation (i.e. VL>1000 within the last 6 months (arbitrary) (so the proposed 
 			measurement will act as a confirmatory VL) AND if they had a previous confirmatory VL from previous switch evaluations,
 			it needs to be over 3 years ago*/
-	or anc=1 and anc_vl ne 1 /*LBM check*/
+	or (anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5 ) 
 	then do; 
-	if anc=1 then anc_vl =1;/*LBM check*/
+	
 		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
 		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
 		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
+		if anc=1 and anc_vl=0 then anc_vl =1;
 
-		/*LBM check*/		
-		*Confirmatory measure time condition not needed for PLW so accept this period as confirmatory measure so loop below using confirmatory measure works okay;
-		if (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5) or anc_vl=1 then date_conf_vl_measure_done = caldate{t} ;
+		*Confirmatory measure not needed for PLW;
+		if (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5) then date_conf_vl_measure_done = caldate{t} ;
 		end;  
 		vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
-			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1 or anc_vl=1) /*LBM check*/ then date_vl_switch_eval=caldate{t}; 
-			if date_v_alert=. or anc_vl=1 /*LBM check*/ then date_v_alert=caldate{t};
+			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
+
+			if num_vl_alerts <3 or anc_vl=1 then do;
+				date_v_alert=caldate{t};
+				num_vl_alerts=num_vl_alerts+1;
+			end;
+
 		end;
 	end;
 
@@ -11996,91 +12122,72 @@ and restart    ne 1 and restart_tm1  ne 1 and linefail_tm1=0 and t ge 2) or anc=
 end;
 
 *LBM Sep26;
-*LBM check - new strategy;
-***art_monitoring_strategy = 154 - ONLY at 6 months after ART intiation only or PLW;
-anc_vl=0;
-if art_monitoring_strategy=154 and (visit=1 and caldate{t}-yrart=0.5 and (artline=1 or int_clinic_not_aw=1) 
-and restart ne 1) or (anc=1 and anc_vl ne 1) then do; 
-	if anc=1  then anc_vl =1;
-		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+***New strategy - art_monitoring_strategy = 154 - ONLY at 6 months after ART intiation or PLW. No option to switch;
+*VLM Global Fund paper;
+
+if art_monitoring_strategy=154 
+
+and 
+((visit=1 and caldate{t}-yrart=0.5 and (artline=1 or int_clinic_not_aw=1) 
+and restart ne 1)
+
+or 
+(anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5 )) then do;
+
+	s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
 		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
 		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
-		*Confirmatory measure time condition not needed for PLW so accept this period as confirmatory measure so loop below using confirmatory measure works okay;
-		if (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5) or anc_vl=1 then date_conf_vl_measure_done = caldate{t} ;
-		end;  
-		vl_cost_inc = 1;
+		if anc=1 and anc_vl=0 then anc_vl =1;
+		*Confirmatory measure not needed;
+		/*if (min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5) then date_conf_vl_measure_done = caldate{t} ;*/
+	end;  
+	vl_cost_inc = 1;
 		if vm gt log10(vl_threshold) then do; 
-			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1 or anc_vl=1) /*LBM check*/ then date_vl_switch_eval=caldate{t}; 
-			if date_v_alert=. or anc_vl=1 /*LBM check*/ then date_v_alert=caldate{t};
+			date_last_vlm_g1000=caldate{t};  
+	
+			if num_vl_alerts <3 or anc_vl=1 then do;
+				date_v_alert=caldate{t};
+				num_vl_alerts=num_vl_alerts+1;
+			end;
 		end;
-	end;
-
-	if (caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
-	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold))
-	then do;
-			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; fail_this_per=1;
-			if o_zdv=1 then f_zdv=1;
-			if o_3tc=1 then f_3tc=1;
-			if o_ten=1 then f_ten=1;
-			if o_nev=1 then f_nev=1;
-			if o_efa=1 then f_efa=1;
-			if o_lpr=1 then f_lpr=1;
-			if o_taz=1 then f_taz=1;
-			if o_dar=1 then f_dar=1;
-			if o_dol=1 then f_dol=1;
-			if o_cab=1 then f_cab=1;
-			if o_len=1 then f_len=1;
-			if o_ole=1 then f_ole=1;
-			if o_isl=1 then f_isl=1;
-	end; 
 end;
 
-*LBM check - new strategy;
-***art_monitoring_strategy = 155 - Only PLW;
-anc_vl=0;
-if art_monitoring_strategy=155 and anc=1 and anc_vl ne 1 then do; 
-		anc_vl =1;
-		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
+*LBM Sep26;
+***New strategy - art_monitoring_strategy = 155 - Only PLW;
+***This is a one off VL measure during ANC with the intention of improving adherence via date_v_alert. No option to switch;
+*VLM Global Fund paper;
+
+if art_monitoring_strategy=155 and anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5  then do; 
+		
+	s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
 		if vm_format=2 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=2;  end;
 		if vm_format=3 then do; vm = max(0,vl+(rand('normal')*0.22));  vm_type=3;  end;
 		if vm_format=4 then do; vm_plasma = max(0,vl+(rand('normal')*0.22)) ; vm = (0.5 * vl) + (0.5 * vm_plasma) + vl_whb_offset + (rand('normal')*(sd_vl_whb + (decr_sd_vl_whb*(4-vl))))  ; vm_type=4;  end;
-		*Confirmatory measure time condition not needed for PLW so accept this period as confirmatory measure so loop below using confirmatory measure works okay;
-		/*if min_time_repeat_vm <= caldate{t}-date_vl_switch_eval <= 0.5 then*/ date_conf_vl_measure_done = caldate{t} ;
-		end;  
-		vl_cost_inc = 1;
-		if vm gt log10(vl_threshold) then do; 
-			/* LBM Check - it doesnt matter if they have had a switch before so Ive commented out that condition below */ 
-			date_last_vlm_g1000=caldate{t}; /*if (date_vl_switch_eval=. or time_since_last_vm >= 1)*/ then date_vl_switch_eval=caldate{t}; 
-			if date_v_alert=. or anc_vl=1 /*LBM check*/ then date_v_alert=caldate{t};
-		end;
-	end;
-
-	if (caldate{t}=date_conf_vl_measure_done and vm_format in (3,4) and vm gt log10(vl_threshold)) or
-	(caldate{t} - date_conf_vl_measure_done = 0.25 and . < vm_format <= 2 and value_last_vm gt log10(vl_threshold))
-	then do;
-			linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl; d1stlfail=caldate{t}; fail_this_per=1;
-			if o_zdv=1 then f_zdv=1;
-			if o_3tc=1 then f_3tc=1;
-			if o_ten=1 then f_ten=1;
-			if o_nev=1 then f_nev=1;
-			if o_efa=1 then f_efa=1;
-			if o_lpr=1 then f_lpr=1;
-			if o_taz=1 then f_taz=1;
-			if o_dar=1 then f_dar=1;
-			if o_dol=1 then f_dol=1;
-			if o_cab=1 then f_cab=1;
-			if o_len=1 then f_len=1;
-			if o_ole=1 then f_ole=1;
-			if o_isl=1 then f_isl=1;
+		anc_vl =1;
+		*Confirmatory measure not needed for PLW;
+		/*date_conf_vl_measure_done = caldate{t} ;*/
 	end; 
+ 
+	vl_cost_inc = 1;
+		if vm gt log10(vl_threshold) then do; 
+			date_last_vlm_g1000=caldate{t}; 
+				
+			if num_vl_alerts <3 or anc_vl=1 then do;
+				date_v_alert=caldate{t};
+				num_vl_alerts=num_vl_alerts+1;
+			end;
+
+		end;
 end;
 
 
 ***LBM check;
-**I'm not sure what this section is doing...do we need to add in the new art monitoring strategies here?;
+**Im not sure what this section is doing...do we need to add in the new art monitoring strategies here?;
+
+* AP: I think we can delete this block but lets discuss;
 
 * this was originally included for the tld_switch comparison - while the art_monitoring strategies other than 150 are not currently turned on they may be in future;
 
@@ -20560,7 +20667,7 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 
-
+proc print;var caldate&j caldate_never_dot ab option art_monitoring_strategy art_mon_set_in_options;where age gt 15 and dead ne 1; run;
 * procs;
 
 /*
@@ -23189,9 +23296,6 @@ Inputs are:
 */
 *dependent_on_time_step_length;
 
-
-  
-
 %macro run_update_r1(r1_start_year,r1_end_year,intervention_option);
 
 	%do ii = %sysevalf((1 + 4*(&r1_start_year-&caldate1))) %to %sysevalf((1 + 4*(&r1_end_year-&caldate1)));
@@ -23215,53 +23319,61 @@ Inputs are:
 
 
 *** RUN PROGRAM; 
-
+/*
 *   Run from caldate1 to intervention year;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
+
 *    Save dataset at this point;
 data a ;  set r1 ;
+data a.end2026_&dataset_id ;  set r1 ;
+*/
+
+
 
 *    Option 0;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,0);
+
+
+data r1; set a.end2026_675795641;
+%run_update_r1(&year_interv, %sysevalf(&year_interv+1), 0);
+
 *    Option 1;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,1);
+data r1 ; set a.end2026_675795641;
+%run_update_r1(&year_interv, %sysevalf(&year_interv+1), 1);
 *    Option 2;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,2);
+data r1 ; set a.end2026_675795641 ;
+%run_update_r1(&year_interv,%sysevalf(&year_interv+1),2);
 *    Option 3;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,3);
+data r1 ; set a.end2026_675795641 ;
+%run_update_r1(&year_interv,%sysevalf(&year_interv+1),3);
 *    Option 4;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,4);
+data r1 ; set a.end2026_675795641 ;
+%run_update_r1(&year_interv,%sysevalf(&year_interv+1),4);
 *    Option 5;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,5);
+data r1 ; set a.end2026_675795641 ;
+%run_update_r1(&year_interv,%sysevalf(&year_interv+1),5);
 *    Option 6;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,6);
+data r1 ; set a.end2026_675795641 ;
+%run_update_r1(&year_interv,%sysevalf(&year_interv+1),6);
 *    Option 7;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,7);
+data r1 ; set a.end2026_675795641 ;
+%run_update_r1(&year_interv,%sysevalf(&year_interv+1),7);
 *    Option 8;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,8);
+data r1 ; set a.end2026_675795641 ;
+%run_update_r1(&year_interv,%sysevalf(&year_interv+1),8);
 *    Option 9;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,9);
-*    Option 10;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,10);
+data r1 ; set a.end2026_675795641 ;
+%run_update_r1(&year_interv,%sysevalf(&year_interv+1),9);
+*    Option 4;
+data r1 ; set a.end2026_675795641 ;
+%run_update_r1(&year_interv,%sysevalf(&year_interv+1),4);
 *    Option 11;
-data r1 ; set a ;
-%run_update_r1(&year_interv,&year_interv+50,11);
+data r1 ; set a.end2026_675795641 ;
+%run_update_r1(&year_interv,%sysevalf(&year_interv+1),11);
 
 
-
-
+*/
+*/
 
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
@@ -23295,7 +23407,6 @@ put
 
 
 data a.&tmpfilename&dataset_id(compress=binary); set cum_l1;
-
 
 keep
 

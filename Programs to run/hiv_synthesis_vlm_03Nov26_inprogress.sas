@@ -9,7 +9,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 10000 ; 
+%let population = 3000; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -143,7 +143,7 @@ startyr = 1989 + 1/12;
 */
 
 
-newp_seed = 7;  
+newp_seed = 1;  
 
 
 * ======================
@@ -2510,6 +2510,7 @@ who may be dead and hence have caldate{t} missing;
 ***options 12 to 17 assume 20% drop treatment coverage;
 
 	art_mon_set_in_options=1;
+	set_in_options=.;
 	* note that we can use set_in_options=1 when we want to ensure that parameter values specified in the options section are not overwritten.
 	The variable name can be updated to reflect specific parameters;
 
@@ -8343,7 +8344,7 @@ if t ge 2 then do;
 	u=rand('uniform');
 
 	if primary=1 and tested=1 and u lt eff_sens_primary then do;
-		registd=1; date1pos=caldate{t}; diagprim=1; visit=1; lost=0; cd4diag=cd4; num_vl_alerts=0;
+		registd=1; date1pos=caldate{t}; diagprim=1; visit=1; lost=0; cd4diag=cd4;num_vl_alerts=0;
 		if pop_wide_tld_prep ne 1 then onart=0;
 		z=rand('uniform');	if z < eff_prob_loss_at_diag then do; visit=0; lost=1;	end;
 		
@@ -10036,15 +10037,15 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 		adh=adhav + adhvar*rand('normal');
 
 * effect on adherence of alerts due to vl > 1000;
-x=rand('uniform');
-if num_vl_alert=1 then do;
+vx=rand('uniform');
+if num_vl_alerts=1 then do;
 
-	if x < 0.30 then do;
+	if vx < 0.30 then do;
 		v_alert_6m_incr_adh = 1;
 		if . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
 	end;
 
-	if 0.30 <= x < 0.60 then do;
+	if 0.30 <= vx < 0.60 then do;
 		if v_alert_perm_incr_adh = 1;
 		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
 
@@ -10058,15 +10059,15 @@ end;
 
 
 
-x=rand('uniform');
-if num_vl_alert=2 then do;
+vy=rand('uniform');
+if num_vl_alerts=2 then do;
 
-	if x < 0.05 then do;
+	if vy < 0.05 then do;
 		v_alert_6m_incr_adh = 1;
 		if . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
 	end;
 
-	if 0.05 <= x < 0.10 then do;
+	if 0.05 <= vy < 0.10 then do;
 		if v_alert_perm_incr_adh = 1;
 		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
 
@@ -10078,15 +10079,15 @@ if num_vl_alert=2 then do;
 
 end;
 
+vz=rand('uniform');
+if num_vl_alerts=3 then do;
 
-if num_vl_alert=3 then do;
-
-	if x < 0.02 then do;
+	if vz < 0.02 then do;
 		v_alert_6m_incr_adh = 1;
 		if . < caldate{t}-date_v_alert <= 0.5  then adh = 0.9 + (0.05*rand('normal'));
 	end;
 
-	if 0.02 <= x < 0.04 then do;
+	if 0.02 <= vz < 0.04 then do;
 		if v_alert_perm_incr_adh = 1;
 		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
 
@@ -11732,7 +11733,7 @@ and (
 
 or 
 
-(anc=1 and anc_vl ne 1)) then do; * *VL measured exactly once whilst in ANC - irresepctive of when a previous VL was done  ;
+(anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5 )) then do; * *VL measured exactly once whilst in ANC - irresepctive of when a previous VL was done  ;
 
 s=rand('uniform'); 
 	if s < eff_prob_vl_meas_done then do; 
@@ -12006,7 +12007,7 @@ anc=1) then do;
 	/* (d)  they have had a recent switch evaluation (i.e. VL>1000 within 3- 12 months (and so the proposed 
 			measurement will act as a confirmatory VL) AND if they had a previous confirmatory VL from previous switch evaluations,
 			it needs to be over a year ago*/
-	or (anc=1 and anc_vl ne 1) 
+	or (anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5 ) 
 
 	then do;
 		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
@@ -12072,7 +12073,7 @@ anc=1) then do;
 	/*	they have had a recent switch evaluation (i.e. VL>1000 within the last 6 months (arbitrary) (so the proposed 
 			measurement will act as a confirmatory VL) AND if they had a previous confirmatory VL from previous switch evaluations,
 			it needs to be over 3 years ago*/
-	or (anc=1 and anc_vl ne 1) 
+	or (anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5 ) 
 	then do; 
 	
 		s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
@@ -12128,7 +12129,7 @@ and
 and restart ne 1)
 
 or 
-(anc=1 and anc_vl ne 1)) then do;
+(anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5 )) then do;
 
 	s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
@@ -12155,7 +12156,7 @@ end;
 ***This is a one off VL measure during ANC with the intention of improving adherence via date_v_alert. No option to switch;
 *VLM Global Fund paper;
 
-if art_monitoring_strategy=155 and anc=1 and anc_vl ne 1 then do; 
+if art_monitoring_strategy=155 and anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5  then do; 
 		
 	s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
 		if vm_format=1 then do; vm = max(0,vl+(rand('normal')*0.22)); vm_type=1; end;
@@ -13133,7 +13134,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
 
-						if num_vl_alerts <3 or anc_vl=1 then do;
+						if num_vl_alerts <3 then do;
 							date_v_alert=caldate{t};
 							num_vl_alerts=num_vl_alerts+1;
 						end;
@@ -20688,8 +20689,8 @@ run;
 
 */
 
-proc print;var caldate&j age num_vl_alert vl date_v_alert v_alert_6m_incr_adh v_alert_perm_incr_adh
-eff_rate_restart e_rate_restart;where num_vl_alert gt 0;run;
+proc print;var serial_no caldate&j age hiv date1pos primary num_vl_alerts vl vx vy vz date_v_alert v_alert_6m_incr_adh v_alert_perm_incr_adh
+anc_vl art_monitoring_strategy death;where age ge 15 and hiv=1;run;
 
 
 
