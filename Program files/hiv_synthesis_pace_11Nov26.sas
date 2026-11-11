@@ -701,12 +701,12 @@ newp_seed = 7;
 
 * fold_esw_higher_int;				%sample_uniform(fold_esw_higher_int, 0.10 0.30) *disadvantages lower than SW, 2nd 90 very high, 99%;
 * fold_esw_higher_loss_at_diag;		%sample_uniform(fold_esw_higher_loss_at_diag, 0.30 0.50); 
-* fold_rel_sw_lower_adh;			%sample_uniform(fold_esw_lower_adh, 1.2 1.4);
+* fold_rel_sw_lower_adh;			%sample_uniform(fold_esw_lower_adh, 1.2 1.4 2);
 
 if esw_art_disadv=1  then do;
 * esw_higher_int;				esw_higher_int = sw_higher_int * fold_esw_higher_int;
 * esw_higher_prob_loss_at_diag;	esw_higher_prob_loss_at_diag = sw_higher_prob_loss_at_diag * fold_esw_higher_loss_at_diag;
-* rel_esw_lower_adh;			rel_esw_lower_adh = rel_sw_lower_adh * fold_esw_lower_adh;rel_esw_lower_adh = max(rel_esw_lower_adh, 1); 
+* rel_esw_lower_adh;			rel_esw_lower_adh = rel_sw_lower_adh * fold_esw_lower_adh;rel_esw_lower_adh = min (rel_esw_lower_adh, 1); 
 * esw_lower_testing;			%sample_uniform(esw_lower_testing, 0.3 0.5 0.7);
 end;
 
@@ -727,7 +727,7 @@ end;
 
 
 * effect_sw_prog_newp;      %sample_uniform(effect_sw_prog_newp,  0.05 0.10 0.15);
-* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.02 0.05 0.10);
+* effect_sw_prog_6mtest;    %sample_uniform(effect_sw_prog_6mtest, 0.05 0.07 0.10);
 * effect_sw_prog_int;       %sample_uniform(effect_sw_prog_int, 0.20 0.30 0.40);*lower number means less interruption;
 * effect_sw_prog_adh;       %sample_uniform(effect_sw_prog_adh, 0.30 0.40 0.50);
 * effect_sw_prog_lossdiag;  %sample_uniform(effect_sw_prog_lossdiag, 0.30 0.50 0.70);
@@ -21059,7 +21059,7 @@ run;
 
 */
 
-
+proc print;var caldate&j sw_art_disadv sw esw rel_sw_lower_adh  esw_art_disadv rel_esw_lower_adh fold_esw_higher_int;where age ge 15 and (sw=1 or esw=1);run;
 
 
 

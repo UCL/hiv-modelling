@@ -57,6 +57,8 @@ proc means n p50 mean p5 p95;var p_onart_diag_sw_25;where effect_sw_prog_int=0.3
 proc means n p50 mean p5 p95;var p_onart_diag_sw_25;where effect_sw_prog_int=0.5;run;
 proc means n p50 mean p5 p95;var p_onart_diag_sw_25;where effect_sw_prog_int=0.7;run;
 
+
+proc freq;table rel_esw_lower_adh;run;
 proc means n p50 mean p5 p95;var p_onart_vl1000_esw_25;where rel_sw_lower_adh=0.5;run;
 
 proc means n p50 mean p5 p95;var p_onart_vl1000_esw_25;where rel_sw_lower_adh=0.6;run;
@@ -69,7 +71,7 @@ proc means n p50 mean p5 p95;var prop_sw_onprep_25;where effect_sw_prog_prep_any
 proc means n p50 mean p5 p95;var prop_sw_onprep_25;where effect_sw_prog_prep_any=0.3;run;
 proc means n p50 mean p5 p95;var prop_sw_onprep_25;where effect_sw_prog_prep_any=0.4;run;
 
-proc freq;table rel_sw_lower_adh;run;
+proc freq;table rel_esw_lower_adh esw_art_disadv esw_higher_int;run;
 proc freq;table effect_sw_prog_prep_any;run;
 
 ***Table A0 - use either 2020 or 2023 estimates - whichever is closest to observed data;

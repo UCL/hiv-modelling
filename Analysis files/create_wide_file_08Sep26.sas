@@ -687,10 +687,10 @@ data &p ; set  y_ ; drop _TYPE_ _FREQ_;run;
 %par(p=effect_sw_prog_pers_sti);%par(p=sw_trans_matrix);
 %par(p=sw_higher_int); 			%par(p=sw_higher_prob_loss_at_diag);	%par(p=rel_sw_lower_adh);
 %par(p=rate_engage_sw_program);	%par(p=rate_disengage_sw_program);		%par(p=esw_trans_matrix);	%par(p=esw_lower_testing);
-/*
+
 %par(p=esw_art_disadv);				%par(p=esw_higher_int); %par(p=esw_higher_prob_loss_at_diag);
-%par(p=rel_esw_lower_adh);		%par(p=rate_engage_esw_program);		%par(p=erate_disengage_esw_program);
-*/
+%par(p=rel_esw_lower_adh);		%par(p=rate_engage_esw_program);		%par(p=rate_disengage_esw_program);
+
 data wide_par; merge 
 sw_art_disadv			sw_program			effect_sw_prog_newp			effect_sw_prog_6mtest	
 effect_sw_prog_int		effect_sw_prog_adh	effect_sw_prog_lossdiag		effect_sw_prog_prep_any
@@ -699,9 +699,8 @@ sw_higher_int 			sw_higher_prob_loss_at_diag	rel_sw_lower_adh
 rate_engage_sw_program	rate_disengage_sw_program	
 
 esw_trans_matrix		esw_lower_testing
-/*esw_art_disadv
-		esw_higher_int 				esw_higher_prob_loss_at_diag
-rel_esw_lower_adh		rate_engage_esw_program		erate_disengage_esw_program*/
+esw_art_disadv			esw_higher_int 				esw_higher_prob_loss_at_diag
+rel_esw_lower_adh		rate_engage_esw_program		erate_disengage_esw_program
 
 ;proc sort; by run;run;
 
