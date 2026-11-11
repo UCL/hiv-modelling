@@ -21,7 +21,7 @@ keep run sf sf_2025;
 proc sort; by run;run;
 
 *NEED OUTPUTS FOR BALANCE ;
-data y; 
+data y1; 
 merge a sf;
 by run ;
 
@@ -335,9 +335,36 @@ logw15r	logw25r	logw35r	logw45r	logw55r logm15r	logm25r	logm35r	logm45r	logm55r
 newp_factor  ych_risk_beh_newp	p_rred_p	p_hsb_p; 
 run;
 
-;
+proc sort data=y1;by run option;run;
 
-proc sort data=y;by run option;run;
+****Prevalence is too high, remove highest 20% of runs;
+data y;
+set y1;
+/*
+proc freq;table prevalence1549_;where option=0 and cald=2026;run;
+*/
+if prevalence1549_ > 0.27 then  high_prev=1;
+/*
+proc freq;table run;where high_prev=1 and option=0 and cald=2026;run;
+*/
+if run in (
+46798916
+126225409
+219625716
+255991949
+272673378
+322724914
+439304753
+496444329
+568523399
+751338404
+773662887
+924512028
+996593236
+)
+
+then delete;
+run;
 
 
 ***SCROLL DOWN TO PAST THE GRAPHS TO GENERATE WIDE DATASET;
