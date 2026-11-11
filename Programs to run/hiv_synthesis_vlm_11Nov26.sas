@@ -9,7 +9,7 @@
 * proc printto log="C:\Loveleen\Synthesis model\unified_log";
   proc printto ; *   log="C:\Users\Toshiba\Documents\My SAS Files\outcome model\unified program\log";
 
-%let population = 3000; 
+%let population = 100000; 
 %let year_interv = 2026.0 ;	
 
 options ps=1000 ls=220 cpucount=4 spool fullstimer ;
@@ -143,7 +143,7 @@ startyr = 1989 + 1/12;
 */
 
 
-newp_seed = 1;  
+newp_seed = 7;  
 
 
 * ======================
@@ -2516,12 +2516,12 @@ who may be dead and hence have caldate{t} missing;
 
 ***LBM Sep26;
  	*Option 0: No VLM;
-	/*if option = 0 then do;
+	if option = 0 then do;
 		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;				 
-	end;*/
+	end;
 
  	*Option 1: status quo - annual VL monitoring (VLM);
-	if option = 0 then do;
+	if option = 1 then do;
 		art_monitoring_strategy = 150;
 	end;
  	*This will be the default 150 strategy;
@@ -10036,6 +10036,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 * note: adh is set to . at start of each period - this line is only for people	onart because adh already defined for those on prep;
 		adh=adhav + adhvar*rand('normal');
 
+***LBM Sep26;
 * effect on adherence of alerts due to vl > 1000;
 vx=rand('uniform');
 if num_vl_alerts=1 then do;
@@ -10046,13 +10047,14 @@ if num_vl_alerts=1 then do;
 	end;
 
 	if 0.30 <= vx < 0.60 then do;
-		if v_alert_perm_incr_adh = 1;
+		v_alert_perm_incr_adh = 1;
 		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
 
 	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
 	if adhav_increase_due_to_alert=. and v_alert_perm_incr_adh=1 and caldate{t} >= date_v_alert > .  then do;
 		adhav=0.9;adhav_increase_due_to_alert=1;
 	end;
+
 	end;
 
 end;
@@ -10068,7 +10070,7 @@ if num_vl_alerts=2 then do;
 	end;
 
 	if 0.05 <= vy < 0.10 then do;
-		if v_alert_perm_incr_adh = 1;
+		v_alert_perm_incr_adh = 1;
 		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
 
 	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
@@ -10088,7 +10090,7 @@ if num_vl_alerts=3 then do;
 	end;
 
 	if 0.02 <= vz < 0.04 then do;
-		if v_alert_perm_incr_adh = 1;
+		v_alert_perm_incr_adh = 1;
 		if caldate{t} >= date_v_alert > .   then  adh = 0.9  + (0.05*rand('normal'));
 
 	* this below means that the adhav effect on reduced risk of interruption is seen also in those who had permanent increased adh due to alert;
@@ -11720,7 +11722,7 @@ o_dol_2nd_vlg1000 = 0; * see below for defn; * eee;
 * art_monitoring_strategy=3. Clinical monitoring with VL confirmation (modelling the confirmatory VL);
 * look also at who3 and who4 events where the switch evaluation happens;
 *VLM Global Fund paper;
-aa=0;
+
 if  art_monitoring_strategy=3 
 
 and (
@@ -11745,10 +11747,9 @@ s=rand('uniform');
 	end;  
 	vl_cost_inc = 1;
 	if vm    gt log10(1000) then do;
-		if num_vl_alerts <3 or anc_vl=1 then do;
+		if (num_vl_alerts <3 or anc_vl=1)  and (date_v_alert=. or (date_v_alert ne . and caldate{t}-date_v_alert > 1)) then do;
 			date_v_alert=caldate{t};
 			num_vl_alerts=num_vl_alerts+1;
-			aa=1;
 		end;
 
 		linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4 ; vl_fail1=vl;d1stlfail=caldate{t}; date_last_vlm_g1000 = caldate{t};fail_this_per=1;
@@ -11833,7 +11834,7 @@ end;
 * art_monitoring_strategy = 9. CD4 count monitoring (6 mthly) with single VL confirmation;
 * takes account of time delay for DBS or plasma measurement of vl, compared with POC ;
 
-ab=0;ac=0;
+
 if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 then do;
 	
 		if (  
@@ -11856,7 +11857,7 @@ if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clini
 			end; 
 			vl_cost_inc = 1; 
 			if 		(		(vm_format in (3,4) and vm    gt log10(1000)) 		or		(. < vm_format <= 2 and value_last_vm gt log10(vl_threshold))		) 		then do;
-				if date_v_alert=. then do;date_v_alert=caldate{t};ab=1;end;
+				if date_v_alert=. then date_v_alert=caldate{t};
 				linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl;d1stlfail=caldate{t};fail_this_per=1; 
 				if o_zdv=1 then f_zdv=1;
 				if o_3tc=1 then f_3tc=1;
@@ -11891,7 +11892,7 @@ if t ge 2  and visit=1 and art_monitoring_strategy=9 and (artline=1 or int_clini
 				end;
 			vl_cost_inc = 1;
 			if 		(		(vm_format in (3,4) and vm gt log10(1000)) 		or		(. < vm_format <= 2 and value_last_vm gt log10(vl_threshold))		)  		then do;
-				if date_v_alert=. then do;date_v_alert=caldate{t};ac=1;
+				if date_v_alert=. then date_v_alert=caldate{t};
 				linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl;d1stlfail=caldate{t}; fail_this_per=1;
 				if o_zdv=1 then f_zdv=1;
 				if o_3tc=1 then f_3tc=1;
@@ -11915,7 +11916,7 @@ end;
 
 * art_monitoring_strategy = 10. CD4 count monitoring (6 mthly) with VL confirmation;
 
-ad=0;ae=0;af=0;
+
 if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clinic_not_aw=1) and linefail_tm1=0 then do;
 
 		if (
@@ -11933,7 +11934,7 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 			end;
 			vl_cost_inc = 1; 
 			if vm gt log10(1000) then do;
-				date_cd4_switch_eval=caldate{t}; date_last_vlm_g1000 = caldate{t};if date_v_alert=. then do;date_v_alert=caldate{t};ad=1;end;
+				date_cd4_switch_eval=caldate{t}; date_last_vlm_g1000 = caldate{t};if date_v_alert=. then date_v_alert=caldate{t};
 			end;
 			conf_measured_c=.;
 		end;
@@ -11951,7 +11952,7 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 		end;
 		vl_cost_inc = 1; 
 			if vm gt log10(1000) then do;
-				date_cd4_switch_eval=caldate{t};date_last_vlm_g1000 = caldate{t};if date_v_alert=. then do;date_v_alert=caldate{t};ae=1;end;
+				date_cd4_switch_eval=caldate{t};date_last_vlm_g1000 = caldate{t};if date_v_alert=. then date_v_alert=caldate{t};
 			end;
 			conf_measured_c=.;
 		end;
@@ -11965,7 +11966,7 @@ if t ge 2 and visit=1 and art_monitoring_strategy=10 and (artline=1 or int_clini
 			end;  
 			vl_cost_inc = 1;
 			if vm gt log10(1000) then do;
-				if date_v_alert=. then do;date_v_alert=caldate{t};af=1;end;
+				if date_v_alert=. then date_v_alert=caldate{t};
 				linefail=1;r_fail=c_totmut   ; cd4_fail1=cd4; vl_fail1=vl;d1stlfail=caldate{t}; date_last_vlm_g1000 = caldate{t};fail_this_per=1;
 				if o_zdv=1 then f_zdv=1;
 				if o_3tc=1 then f_3tc=1;
@@ -11990,7 +11991,7 @@ end;
 
 ***LBM Sep26;
 *VLM Global Fund paper;
-ag=0;
+ab=0;
 if  art_monitoring_strategy=150  
 
 and 
@@ -12025,10 +12026,10 @@ anc=1) then do;
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
 		
-		if num_vl_alerts <3 or anc_vl=1 then do;
+		if (num_vl_alerts <3 or anc_vl=1) and (date_v_alert=. or (date_v_alert ne . and caldate{t}-date_v_alert > 1)) then do;
 			date_v_alert=caldate{t};
 			num_vl_alerts=num_vl_alerts+1;
-			ag=1;
+			ab=1;
 		end;
 
 		end;
@@ -12063,7 +12064,7 @@ end;
 
 * art_monitoring_strategy = 152. as 150 with 3 yearly viral load monitoring;
 *VLM Global Fund paper;
-ah=0;
+
 *time_of_first_vm = 0.5, defined above i.e. first VL is 6m after ART start;
 if art_monitoring_strategy=152  
 and 
@@ -12093,10 +12094,9 @@ anc=1) then do;
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
 
-			if num_vl_alerts <3 or anc_vl=1 then do;
+			if (num_vl_alerts <3 or anc_vl=1) and (date_v_alert=. or (date_v_alert ne . and caldate{t}-date_v_alert > 1))  then do;
 				date_v_alert=caldate{t};
 				num_vl_alerts=num_vl_alerts+1;
-				ah=1;
 			end;
 
 		end;
@@ -12125,7 +12125,7 @@ end;
 *LBM Sep26;
 ***New strategy - art_monitoring_strategy = 154 - ONLY at 6 months after ART intiation or PLW. No option to switch;
 *VLM Global Fund paper;
-ai=0;
+
 if art_monitoring_strategy=154 
 
 and 
@@ -12148,10 +12148,9 @@ or
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t};  
 	
-			if num_vl_alerts <3 or anc_vl=1 then do;
+			if (num_vl_alerts <3 or anc_vl=1)  and (date_v_alert=. or (date_v_alert ne . and caldate{t}-date_v_alert > 1))  then do;
 				date_v_alert=caldate{t};
 				num_vl_alerts=num_vl_alerts+1;
-				ai=1;
 			end;
 		end;
 end;
@@ -12160,7 +12159,7 @@ end;
 ***New strategy - art_monitoring_strategy = 155 - Only PLW;
 ***This is a one off VL measure during ANC with the intention of improving adherence via date_v_alert. No option to switch;
 *VLM Global Fund paper;
-aj=0;
+
 if art_monitoring_strategy=155 and anc=1 and anc_vl ne 1 and caldate{t}-yrart >= 0.5  then do; 
 		
 	s=rand('uniform');  date_last_vm_attempt=caldate&j;	if s < eff_prob_vl_meas_done then do; 
@@ -12177,10 +12176,9 @@ if art_monitoring_strategy=155 and anc=1 and anc_vl ne 1 and caldate{t}-yrart >=
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t}; 
 				
-			if num_vl_alerts <3 or anc_vl=1 then do;
+			if (num_vl_alerts <3 or anc_vl=1) and (date_v_alert=. or caldate{t}-date_v_alert > 1)  then do;
 				date_v_alert=caldate{t};
 				num_vl_alerts=num_vl_alerts+1;
-				aj=1;
 			end;
 
 		end;
@@ -12193,9 +12191,9 @@ end;
 * AP: I think we can delete this block but lets discuss;
 
 * this was originally included for the tld_switch comparison - while the art_monitoring strategies other than 150 are not currently turned on they may be in future;
-
+/*
 drug_level_test=0; res_test_dol=0; second_vlg1000_first=0; second_vlg1000_first_dol_r=0;
-ak=0;
+
 if caldate{t} > 2025 and art_monitoring_strategy in (150, 160, 1500, 1600) and visit=1 and (o_dol=1 or (mr_dol_tm1 = 1 and int_clinic_not_aw=1)) and
 o_len ne 1 and f_dol ne 1 and (f_taz ne 1 and f_lpr ne 1 and f_dar ne 1)
 and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnrti >= 0.5 or date_transition_from_nnrti =.) and t ge 2 then do;  
@@ -12218,7 +12216,7 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 			* if viral load > 1000.....;
 			if vm gt log10(vl_threshold) then do; 
 				date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
-				if date_v_alert=. then do;ak=1; date_v_alert=caldate{t};  end;
+				if date_v_alert=. then date_v_alert=caldate{t};  
 			end;
 
 			* if this is a second viral load test after a previous viral load > 1000...........;
@@ -12259,7 +12257,7 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 	end;
 
 end;
-
+*/
 
 
 * for monitoring people on len/cab - currently do nothing regardless of viral load ;
@@ -13140,7 +13138,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
 
-						if num_vl_alerts <3 then do;
+						if (num_vl_alerts <3 or anc_vl=1) and (date_v_alert=. or (date_v_alert ne . and caldate{t}-date_v_alert > 1))  then do;
 							date_v_alert=caldate{t};
 							num_vl_alerts=num_vl_alerts+1;
 						end;
@@ -13299,7 +13297,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
 
-						if num_vl_alerts <3 or anc_vl=1 then do;
+						if (num_vl_alerts <3 or anc_vl=1) and (date_v_alert=. or (date_v_alert ne . and caldate{t}-date_v_alert > 1))  then do;
 							date_v_alert=caldate{t};
 							num_vl_alerts=num_vl_alerts+1;
 						end;
@@ -20694,10 +20692,10 @@ proc print;
 run;
 
 */
-
-proc print;var serial_no caldate&j age ab date1pos primary num_vl_alerts vl vm vx vy vz date_v_alert v_alert_6m_incr_adh v_alert_perm_incr_adh
-anc_vl art_monitoring_strategy death;where age ge 15 and hiv=1;run;
-
+/*
+proc print;var serial_no caldate&j age hiv date1pos primary ab num_vl_alerts vl vm vx vy vz date_v_alert v_alert_6m_incr_adh v_alert_perm_incr_adh
+anc_vl art_monitoring_strategy death;where age ge 15 and infection ne .;run;
+*/
 
 
 
