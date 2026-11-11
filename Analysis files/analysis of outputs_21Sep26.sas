@@ -7,7 +7,7 @@ OUTPUTS;
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\PACE2\";
 
 data a; 
-set a.wide_pace_19_10_26; 
+set a.wide_pace_30_10_26; 
 run;
 
 ***LOOK AT STRATFYING BY SW_MATRIX to see IF THAT LOWERS PREVALENCE;
@@ -15,7 +15,7 @@ run;
 ***HAVE CHANGED SW MATRICES, AND LOWERED NUMBERS IN CATEGORIES, MAX 5 PARTNERS NOW;
 ***HAVE CHANGED FOLD ART DISADV FOR ESW AND ADHERENCE - CHECK TO SEE IF THESE ALIGN BETTER WITH POWERPOINT;
 
-PROC FREQ;TABLE effect_sw_prog_6mtest;RUN;
+PROC FREQ;TABLE esw_trans_matrix;RUN;
 
 
 proc means n p50 mean p5 p95;var p_diag_esw_25;where esw_lower_testing=0.3;run;
@@ -49,8 +49,8 @@ p_diag_esw_25			p_onart_diag_esw_25		p_onart_vl1000_esw_25 	p_esw_prog_vis_25
 
 
 proc means n p50 mean p5 p95;var p_esw_newp0__25;where esw_trans_matrix=2;run;
+proc means n p50 mean p5 p95;var prevalence_esw_25;where esw_trans_matrix=1;run;
 proc means n p50 mean p5 p95;var prevalence_esw_25;where esw_trans_matrix=2;run;
-proc means n p50 mean p5 p95;var prevalence_esw_25;where esw_trans_matrix=3;run;
 
 
 proc means n p50 mean p5 p95;var p_onart_diag_sw_25;where effect_sw_prog_int=0.3;run;
