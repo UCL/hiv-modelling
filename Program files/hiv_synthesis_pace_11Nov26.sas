@@ -6918,8 +6918,10 @@ if risk_nippnp*newp > 0 then do;
 end;
 
 *ESW;
-a=rand('uniform');
-if esw=1 and nip ge 1 then nip = 1;
+a=rand('uniform');b=rand('uniform');
+if esw=1 and nip = 1 and a <0.30 then nip=0;
+if esw=1 and nip gt 1 and b <0.30 then nip=1;
+
 
 
 * probability of infection from infected new partner;
