@@ -11746,7 +11746,7 @@ s=rand('uniform');
 	end;  
 	vl_cost_inc = 1;
 	if vm    gt log10(1000) then do;
-		if num_vl_alerts <3 or anc_vl=1 then do;
+		if (num_vl_alerts <3 or anc_vl=1)  and (date_v_alert=. or caldate{t}-date_v_alert > 1) then do;
 			date_v_alert=caldate{t};
 			num_vl_alerts=num_vl_alerts+1;
 		end;
@@ -12025,7 +12025,7 @@ anc=1) then do;
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
 		
-		if num_vl_alerts <3 or anc_vl=1 then do;
+		if (num_vl_alerts <3 or anc_vl=1) and (date_v_alert=. or caldate{t}-date_v_alert > 1) then do;
 			date_v_alert=caldate{t};
 			num_vl_alerts=num_vl_alerts+1;
 			ab=1;
@@ -12093,7 +12093,7 @@ anc=1) then do;
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t}; if (date_vl_switch_eval=. or time_since_last_vm >= 1) then date_vl_switch_eval=caldate{t}; 
 
-			if num_vl_alerts <3 or anc_vl=1 then do;
+			if (num_vl_alerts <3 or anc_vl=1)  and (date_v_alert=. or caldate{t}-date_v_alert > 1)  then do;
 				date_v_alert=caldate{t};
 				num_vl_alerts=num_vl_alerts+1;
 			end;
@@ -12147,7 +12147,7 @@ or
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t};  
 	
-			if num_vl_alerts <3 or anc_vl=1 then do;
+			if (num_vl_alerts <3 or anc_vl=1) and (date_v_alert=. or caldate{t}-date_v_alert > 1)  then do;
 				date_v_alert=caldate{t};
 				num_vl_alerts=num_vl_alerts+1;
 			end;
@@ -12175,7 +12175,7 @@ if art_monitoring_strategy=155 and anc=1 and anc_vl ne 1 and caldate{t}-yrart >=
 		if vm gt log10(vl_threshold) then do; 
 			date_last_vlm_g1000=caldate{t}; 
 				
-			if num_vl_alerts <3 or anc_vl=1 then do;
+			if (num_vl_alerts <3 or anc_vl=1) and (date_v_alert=. or caldate{t}-date_v_alert > 1)  then do;
 				date_v_alert=caldate{t};
 				num_vl_alerts=num_vl_alerts+1;
 			end;
@@ -13137,7 +13137,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
 
-						if num_vl_alerts <3 then do;
+						if (num_vl_alerts <3 or anc_vl=1) and (date_v_alert=. or caldate{t}-date_v_alert > 1) then do;
 							date_v_alert=caldate{t};
 							num_vl_alerts=num_vl_alerts+1;
 						end;
@@ -13296,7 +13296,7 @@ cur_in_prep_len_tail_no_r=0; if cur_in_prep_len_tail_hiv=1 and (r_len=0 or emerg
 					vl_cost_inc = 1;
 					if vm gt log10(1000) then do; 
 
-						if num_vl_alerts <3 or anc_vl=1 then do;
+						if (num_vl_alerts <3 or anc_vl=1) and (date_v_alert=. or caldate{t}-date_v_alert > 1)  then do;
 							date_v_alert=caldate{t};
 							num_vl_alerts=num_vl_alerts+1;
 						end;
