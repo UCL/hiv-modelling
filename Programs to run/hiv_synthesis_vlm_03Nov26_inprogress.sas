@@ -2516,12 +2516,12 @@ who may be dead and hence have caldate{t} missing;
 
 ***LBM Sep26;
  	*Option 0: No VLM;
-	if option = 0 then do;
+	/*if option = 0 then do;
 		art_monitoring_strategy=1800; *This doesnt do anything in the code but implicity nothing happens;				 
-	end;
+	end;*/
 
  	*Option 1: status quo - annual VL monitoring (VLM);
-	if option = 1 then do;
+	if option = 0 then do;
 		art_monitoring_strategy = 150;
 	end;
  	*This will be the default 150 strategy;
@@ -10036,6 +10036,7 @@ if o_nev=1 and p_nev_tm1 ne 1 then date_start_nev = caldate{t};
 * note: adh is set to . at start of each period - this line is only for people	onart because adh already defined for those on prep;
 		adh=adhav + adhvar*rand('normal');
 
+***LBM Sep26;
 * effect on adherence of alerts due to vl > 1000;
 vx=rand('uniform');
 if num_vl_alerts=1 then do;
@@ -11989,6 +11990,7 @@ end;
 
 ***LBM Sep26;
 *VLM Global Fund paper;
+ab=0;
 if  art_monitoring_strategy=150  
 
 and 
@@ -12026,6 +12028,7 @@ anc=1) then do;
 		if num_vl_alerts <3 or anc_vl=1 then do;
 			date_v_alert=caldate{t};
 			num_vl_alerts=num_vl_alerts+1;
+			ab=1;
 		end;
 
 		end;
@@ -12187,7 +12190,7 @@ end;
 * AP: I think we can delete this block but lets discuss;
 
 * this was originally included for the tld_switch comparison - while the art_monitoring strategies other than 150 are not currently turned on they may be in future;
-
+/*
 drug_level_test=0; res_test_dol=0; second_vlg1000_first=0; second_vlg1000_first_dol_r=0;
 
 if caldate{t} > 2025 and art_monitoring_strategy in (150, 160, 1500, 1600) and visit=1 and (o_dol=1 or (mr_dol_tm1 = 1 and int_clinic_not_aw=1)) and
@@ -12253,7 +12256,7 @@ and restart ne 1 and restart_tm1 ne 1 and (caldate{t} - date_transition_from_nnr
 	end;
 
 end;
-
+*/
 
 
 * for monitoring people on len/cab - currently do nothing regardless of viral load ;
@@ -20689,7 +20692,7 @@ run;
 
 */
 
-proc print;var serial_no caldate&j age hiv date1pos primary num_vl_alerts vl vx vy vz date_v_alert v_alert_6m_incr_adh v_alert_perm_incr_adh
+proc print;var serial_no caldate&j age hiv date1pos primary ab num_vl_alerts vl vm vx vy vz date_v_alert v_alert_6m_incr_adh v_alert_perm_incr_adh
 anc_vl art_monitoring_strategy death;where age ge 15 and hiv=1;run;
 
 
