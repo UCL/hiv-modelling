@@ -1994,35 +1994,26 @@ cva_severity = 0; ihd_severity = 0;
 *T2D;
 
 ***In 1989, assign a diet and phys act value to each person but the BMI itself is not influenced by it for simplicity;
+***Not assigned for under 15s as diet/phys act is depedendent on urban and urban is depdendent on time so need to do this later;
+if age ge 15 then do;
 
 ***Diet: 1=low risk, 2=moderate risk, 3=high risk - conditional on urban/rural;
 * Source: Westbury 2021;
 %sample(diet_urban, 1 2 3, 0.25 0.45 0.30);
 %sample(diet_rural, 1 2 3, 0.45 0.40 0.15);
-/*
-*Multiplicative fold factor of diet on BMI;
-%sample_uniform(low_risk_diet_fold_bmi, 0.95 0.98);
-%sample_uniform(med_risk_diet_fold_bmi, 1.00 1.02);
-%sample_uniform(hig_risk_diet_fold_bmi, 1.03 1.05);
-*/
 
 ***Physical activity: 1=low, 2=moderate, 3=high - conditional on urban/rural;
 *Source: Assah 2011, Ojiambo 2012;
 %sample(phys_act_urban, 1 2 3, 0.50 0.35 0.15);
-%sample(phys_act_rural, 1 2 3, 0.15 0.33 0.45);
-/*
-*Multiplicative fold factor of phys act on BMI;
-%sample_uniform(low_phys_act_fold_bmi, 1.03 1.05);
-%sample_uniform(med_phys_act_fold_bmi, 0.98 1.00);
-%sample_uniform(hig_phys_act_fold_bmi, 0.94 0.96);
-*/
+%sample(phys_act_rural, 1 2 3, 0.15 0.35 0.50);
+
 
 ***For those with age >= 15, set their urban status in 1989;
 ***Probability of being urban changes over time and so for >1989, there will be a time effect on prob_urban (next section);
 
-if age ge 15 then do;
 a=rand('uniform');
 urban=0; if a < prob_urban then urban=1;
+
 end;
 
 ***In 1989, set BMIs for everyone (leave out diet and physical activity here for simplicity);
@@ -2604,7 +2595,6 @@ severity_cva_this_per = 0;
 severity_ihd_this_per = 0;
 cvd_death_risk = 0;
 
-urban_tm1=urban;
 bmi_tm1 = bmi;
 urban_tm1 =	urban;
 diet_tm1 = diet;
@@ -3625,8 +3615,6 @@ if on_tx_htn = 3 then htn_cost_drug = cost_htn_drug1 + cost_htn_drug2 + cost_htn
 
 *T2D;
 
-
-
 ***Diet: 1=low risk, 2=moderate risk, 3=high risk - conditional on urban/rural;
 * Source: Westbury 2021;
 %sample(diet_urban, 1 2 3, 0.25 0.45 0.30);
@@ -3638,44 +3626,16 @@ if on_tx_htn = 3 then htn_cost_drug = cost_htn_drug1 + cost_htn_drug2 + cost_htn
 %sample_uniform(mod_diet_fold_bmi_15, 1.00 1.02);
 %sample_uniform(hig_diet_fold_bmi_15, 1.03 1.05);
 
-/*
-*Multiplicative fold factor of diet on BMI;
-%sample_uniform(low_risk_diet_fold_bmi, 0.95 0.98);
-
-*Moderate and high risk diet should be fold factor of low risk;
-%sample_uniform(fold_low_mod_risk_diet, 1.03 1.05);
-fold_low_hig_risk_diet = fold_low_mod_risk_diet;
-
-mod_risk_diet_fold_bmi = low_risk_diet_fold_bmi * fold_low_mod_risk_diet;
-hig_risk_diet_fold_bmi = mod_risk_diet_fold_bmi * fold_low_hig_risk_diet;
-*/
-
 ***Physical activity: 1=low, 2=moderate, 3=high - conditional on urban/rural;
 *Source: Assah 2011, Ojiambo 2012;
 %sample(phys_act_urban, 1 2 3, 0.50 0.35 0.15);
-%sample(phys_act_rural, 1 2 3, 0.15 0.33 0.45);
+%sample(phys_act_rural, 1 2 3, 0.15 0.35 0.50);
 
 
 *Multiplicative fold factor of phys act on BMI at age 15;
 %sample_uniform(low_phys_act_fold_bmi_15, 1.03 1.05);
 %sample_uniform(mod_phys_act_fold_bmi_15, 0.98 1.00);
 %sample_uniform(hig_phys_act_fold_bmi_15, 0.94 0.96);
-
-
-/*
-
-*Multiplicative fold factor of phys act on BMI;
-%sample_uniform(low_phys_act_fold_bmi, 1.03 1.05);
-
-*Moderate and high phys activity should be fold factor of low phys act;
-%sample_uniform(fold_low_mod_phys_act, 0.96 0.98);
-fold_low_hig_phys_act = low_phys_act_fold_bmi * 0.95;
-
-mod_phys_act_fold_bmi = low_phys_act_fold_bmi * fold_low_mod_phys_act;
-hig_phys_act_fold_bmi = low_phys_act_fold_bmi * fold_low_hig_phys_act;
-
-*/
-
 
 *BMI characteristics at age 15, when entering the model;
 
@@ -3707,10 +3667,10 @@ if age=15.00 then do;
 	urban = 0; if a < prob_urban_time then urban = 1;
 
 	*urban_fold (conditional on gender);
-	*urban bmi in boys is ~ 0.03 times higher than rural and 0.05 in women;
+	*urban bmi in boys is ~ 0.02 times higher than rural and 0.03 in women;
 
-	if gender = 1 then urban_fold= 1 + (0.03 * urban); *this will be a factor of 1 if urban=0 and 1.03 if urban=1;
-	if gender = 2 then urban_fold= 1 + (0.05 * urban); *this will be a factor of 1 if urban=0 and 1.05 if urban=1;
+	if gender = 1 then urban_fold_bmi= 1 + (0.02 * urban); *this will be a factor of 1 if urban=0 and 1.03 if urban=1;
+	if gender = 2 then urban_fold_bmi= 1 + (0.03 * urban); *this will be a factor of 1 if urban=0 and 1.05 if urban=1;
 
 	*diet_fold and phys_act_fold (conditional on urban);
 	if urban = 1 then do;
@@ -3733,28 +3693,28 @@ if age=15.00 then do;
 
 	***BMI at age 15 when people enter the model;
 	***Everyone is given a diet and physical activity score. After this point onwards, the BMI is multiplied by a fold_change factor;
-	if gender=1 then bmi = bmi_15_m * urban_fold * diet_fold_bmi_15 * phys_act_fold_bmi_15;
-	if gender=2 then bmi = bmi_15_w * urban_fold * diet_fold_bmi_15 * phys_act_fold_bmi_15;
+	if gender=1 then bmi = bmi_15_m * urban_fold_bmi * diet_fold_bmi_15 * phys_act_fold_bmi_15;
+	if gender=2 then bmi = bmi_15_w * urban_fold_bmi * diet_fold_bmi_15 * phys_act_fold_bmi_15;
 end;
 
 
-if age gt 15 then do;
-*Changes to urban/rural, diet and physical activitiy over time;
-***Account for urban/rural, diet and exercise changing over time;
+if age gt 15 and t ge 2 then do;
+*Changes to urban/rural, diet and physical activity over time;
 
 *Setting --> allow movement from rural to urban;
-a=rand('uniform');
-if urban_tm1 = 0 and a < 0.0001 then urban=1;
-
-if gender = 1 then urban_fold= 1 + (0.03 * urban); *this will be a factor of 1 if urban=0 and 1.03 if urban=1;
-if gender = 2 then urban_fold= 1 + (0.05 * urban); *this will be a factor of 1 if urban=0 and 1.03 if urban=1;
+a=rand('uniform');urban_ch_fold_bmi=1;
+if  urban_tm1 = 0 and a < 0.0001 then do;
+	urban=1;
+	if gender = 1 then urban_ch_fold_bmi = 1.02;
+	if gender = 2 then urban_ch_fold_bmi = 1.03;
+end;
 
 *Diet --> a person may change dietary behaviour;
 *Restrict to those who havent changed diet in the last period;
 a=rand('uniform');b=rand('uniform');c=rand('uniform');
 
 diet_ch=0;
-if 	(date_last_diet_ch ne . and (caldate{t}-date_last_diet_ch > 1)) or date_last_diet_ch=. then do;
+if 	(date_last_diet_ch ne . and (caldate{t}-date_last_diet_ch > 1)) or (date_last_diet_ch=.) then do;
 	if diet_tm1=1 then do;
 		if a < 0.95 then diet=1; 
 		if 0.95 <= a < 0.99 then diet =2;
@@ -3769,8 +3729,8 @@ if 	(date_last_diet_ch ne . and (caldate{t}-date_last_diet_ch > 1)) or date_last
 
 	if diet_tm1=3 then do;
 		if c < 0.01 then diet=1; 
-		if 0.01 <= c < 0.05 then diet =2;
-		if 0.05 <= c then diet =3;
+		if 0.01 <= c < 0.10 then diet =2;
+		if 0.10 <= c then diet =3;
 	end;
 
 	if diet_tm1 ne diet then do;
@@ -3797,7 +3757,7 @@ end;
 
 
 *Physical exercise --> a person may change levels of exercise;
-*Only if they havent last period;
+*Only if they havent in last year;
 a=rand('uniform');b=rand('uniform');c=rand('uniform');
 phys_act_ch=0;
 if (date_last_phys_act_ch ne . and (caldate{t}-date_last_phys_act_ch > 1)) or date_last_phys_act_ch=. then do;
@@ -3849,9 +3809,11 @@ if age ge 60 then age_fold_bmi = 0.9995;
 
 
 bmi = bmi_tm1 * age_fold_bmi;
-if urban_tm1=0 and urban=1 then bmi = bmi * urban_fold;
+if urban_tm1=0 and urban=1 then bmi = bmi * urban_ch_fold_bmi;
 if diet_ch=1 then bmi = bmi * fold_ch_diet;
 if phys_act_ch=1 then bmi = bmi * fold_ch_phys_act;
+
+bmi_check = bmi_tm1 * age_fold_bmi * urban_ch_fold_bmi * fold_ch_diet * fold_ch_phys_act;
 end;
 
 * SEXUAL BEHAVIOUR;
@@ -20732,8 +20694,8 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 * procs;
-proc print;var caldate&j gender age urban urban_fold diet diet_ch fold_ch_diet date_last_diet_ch diet_tm1 phys_act  phys_act_ch
- fold_ch_phys_act date_last_phys_act_ch bmi death
+proc print;var caldate&j gender age urban urban_fold_bmi urban_ch_fold_bmi diet diet_ch fold_ch_diet date_last_diet_ch diet_tm1 phys_act  phys_act_ch
+ fold_ch_phys_act date_last_phys_act_ch bmi bmi_check death
 ;where age ge 15;run;
 
 /*
