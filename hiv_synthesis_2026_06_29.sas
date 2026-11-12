@@ -773,9 +773,6 @@ end;
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.05 0.10 0.15);
 								* probability of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
-* rate_test_restartprep_any;   * removed;
-* prob_prep_any_restart_choice; %sample_uniform(prob_prep_any_restart_choice, 0.05 0.10 0.20);	** QUERY - make prep-type specific;
-								* dependent_on_time_step_length ;
 * add_prep_any_uptake_sw;		add_prep_any_uptake_sw=0; 		***this may be sampled at a later date; 
 
 
@@ -793,6 +790,8 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
 * prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1); 		* 11dec17; *Probability of starting oral PrEP in people (who are eligible and willing to take oral prep) tested for HIV according to the base rate of testing;
 																* prob_prep_cab_b, prob_prep_len_b and prob_prep_ami_b may be different to prob_prep_oral_b;
+* prob_prep_oral_restart_choice; 
+								%sample_uniform(prob_prep_oral_restart_choice, 0.05 0.10 0.20);
 * annual_testing_prep_oral;		annual_testing_prep_oral=0.25;	* frequency of HIV testing for people on oral PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 																* currently defined separately for each PrEP type although all are set to 3-monthly by default;
 * rate_choose_stop_prep_oral; 	%sample_uniform(rate_choose_stop_prep_oral, 0.05 0.15 0.30);
@@ -832,6 +831,8 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * prob_prep_len_b;				%sample_uniform(prob_prep_len_b, 0.01 0.05 0.1 0.3);  
 								* probability of starting cab or len PrEP in people (who are eligible and willing to take the specific prep) 
 								tested for HIV according to the base rate of testing;	
+* prob_prep_cab_restart_choice; %sample_uniform(prob_prep_cab_restart_choice, 0.05 0.10 0.20);
+* prob_prep_len_restart_choice; %sample_uniform(prob_prep_len_restart_choice, 0.05 0.10 0.20);
 
 * annual_testing_prep_cab;		annual_testing_prep_cab=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 * annual_testing_prep_len;		annual_testing_prep_len=0.25;	* frequency of HIV testing for people on injectable PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
@@ -928,14 +929,16 @@ end;
 
 * prob_prep_ami_b;				%sample_uniform(prob_prep_ami_b, 0.01 0.05 0.1 0.3);  		* sampled from same distribution as CAB & LEN PrEP initially;
 								* probability of starting ami PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
+* prob_prep_ami_restart_choice; %sample_uniform(prob_prep_ami_restart_choice, 0.05 0.10 0.20);
 
 * annual_testing_prep_ami;		annual_testing_prep_ami=0.25;	* frequency of HIV testing for people on MK-8527 PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 
 * rate_choose_stop_prep_ami; 	%sample_uniform(rate_choose_stop_prep_ami, 0.01  0.03  0.05  0.1 0.15);		* sampled from same distribution as CAB PrEP initially;
 								* dependent_on_time_step_length ;                                          
 
-* add_pref_prep_ami;			%sample_uniform(add_pref_prep_ami, 0.1 0.2 0.3);	* QUERY code this as for cab and len above? ;
+* add_pref_prep_ami;			%sample_uniform(add_pref_prep_ami, 0.1 0.2 0.3);
 * pref_prep_ami_beta_s1;		pref_prep_ami_beta_s1 = pref_prep_oral_beta_s1 + add_pref_prep_ami ; 		* assume ami is more preferable than daily oral pill;
+
 * prep_ami_effect_res_partner;	prep_ami_effect_res_partner=1;												* Relative effect, 1 = no effect. Initially no impact of resistant virus in partner on ami PrEP efficacy;	
 																											* Note could sample this (cab and len use rel effect 0, 0.25, 0.5);
 * prep_ami_adh_uplift;			%sample_uniform(prep_ami_adh_uplift, 0.6 0.8 1);							* Additional adherence of ami compared to oral PrEP (relative increase between adh and 1);
@@ -2049,8 +2052,11 @@ eff_rate_choose_stop_prep_cab = rate_choose_stop_prep_cab;
 eff_rate_choose_stop_prep_len = rate_choose_stop_prep_len;
 eff_rate_choose_stop_prep_ami = rate_choose_stop_prep_ami;
 
-* define effective prob_prep_any_restart_choice;
-eff_prob_prep_any_restart_choice = prob_prep_any_restart_choice;	
+* define effective prob_prep_xxx_restart_choice;
+eff_prob_prep_ora_restart_choice = prob_prep_oral_restart_choice;		* var name is too long with oral;
+eff_prob_prep_cab_restart_choice = prob_prep_cab_restart_choice;	
+eff_prob_prep_len_restart_choice = prob_prep_len_restart_choice;	
+eff_prob_prep_ami_restart_choice = prob_prep_ami_restart_choice;	
 
 * define effective prob_lossdiag_non_tb_who3e;
 eff_prob_lossdiag_non_tb_who3e = prob_lossdiag_non_tb_who3e ;
@@ -2877,7 +2883,10 @@ if eff_sw_program=1 and sw=1 then do;
 			eff_rate_choose_stop_prep_cab=0.05;
 			eff_rate_choose_stop_prep_len=0.05;
 			eff_rate_choose_stop_prep_ami=0.05;
-			eff_prob_prep_any_restart_choice=0.7;
+			eff_prob_prep_ora_restart_choice=0.7;
+			eff_prob_prep_cab_restart_choice=0.7;
+			eff_prob_prep_len_restart_choice=0.7;
+			eff_prob_prep_ami_restart_choice=0.7;
 
 		end;
 	end;
@@ -2901,7 +2910,10 @@ else if sw_program_visit=1 then do;
 		eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;
 		eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;
 		eff_rate_choose_stop_prep_ami =rate_choose_stop_prep_ami ;	
-		eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+		eff_prob_prep_ora_restart_choice=prob_prep_oral_restart_choice;
+		eff_prob_prep_cab_restart_choice=prob_prep_cab_restart_choice;
+		eff_prob_prep_len_restart_choice=prob_prep_len_restart_choice;
+		eff_prob_prep_ami_restart_choice=prob_prep_ami_restart_choice;
 
 	end; 
 end;
@@ -4188,7 +4200,10 @@ if t ge 2 then do;
 				eff_rate_choose_stop_prep_cab=rate_choose_stop_prep_cab;	*due to availability of cab prep;	
 				eff_rate_choose_stop_prep_len=rate_choose_stop_prep_len;	*due to availability of len prep;	
 				eff_rate_choose_stop_prep_ami=rate_choose_stop_prep_ami ;	*due to availability of ami prep;	
-				eff_prob_prep_any_restart_choice=prob_prep_any_restart_choice;
+				eff_prob_prep_ora_restart_choice=prob_prep_oral_restart_choice;
+				eff_prob_prep_cab_restart_choice=prob_prep_cab_restart_choice;
+				eff_prob_prep_len_restart_choice=prob_prep_len_restart_choice;
+				eff_prob_prep_ami_restart_choice=prob_prep_ami_restart_choice;
 
 			end;
 
@@ -5194,13 +5209,13 @@ switch_prep_from_ami =0; switch_prep_to_ami=0;
 if prep_oral_disrup_covid = 1 and covid_disrup_affected = 1 and ever_prep_oral_covid_disrup ne 1 then do; 
 		ever_prep_oral_covid_disrup=1;
 		pre_cov_r_choose_stop_prep_oral = eff_rate_choose_stop_prep_oral;
-		pre_cov_pr_prep_any_restart_choi = eff_prob_prep_any_restart_choice;
+		pre_cov_pr_prep_ora_restart_choi = eff_prob_prep_ora_restart_choice;
 		eff_rate_choose_stop_prep_oral = 1;
-		eff_prob_prep_any_restart_choice = 0 ;
+		eff_prob_prep_ora_restart_choice = 0 ;
 end;
 if prep_oral_disrup_covid ne 1 and ever_prep_oral_covid_disrup=1 then do; 
 		eff_rate_choose_stop_prep_oral = pre_cov_r_choose_stop_prep_oral ;
-		eff_prob_prep_any_restart_choice = pre_cov_pr_prep_any_restart_choi ;
+		eff_prob_prep_ora_restart_choice = pre_cov_pr_prep_ora_restart_choi ;
 end;
 
 
@@ -5322,7 +5337,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 		started_prep_hiv_test_sens=1;	started_prep_hiv_test_sens_e=1;	end;
 	end;
 
-/*	if caldate{t}=prep_len_first_start_date then prep_len_last_inj=caldate{t};		**QUERY JAS Nov2026;*/
+	/* if caldate{t}=prep_len_first_start_date then prep_len_last_inj=caldate{t}; */		**QUERY JAS Nov2026;
 
 
 ********* CONTINUING, SWITCHING OR RESTARTING PREP *************;
@@ -5402,7 +5417,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 						prep_len_first_start_date=caldate{t};	prep_len_ever=1;
 					end;
 				end; 
-				if highest_prep_pref = 4 then do;						* switch to ami PrEP;
+				if highest_prep_pref = 4 then do;						* switch to ami/MK-8527 PrEP;
 					switch_prep_from_cab=1;	 	switch_prep_to_ami=1;	continuous_prep_cab_use=0;
 					prep_ami=1;		continuous_prep_ami_use =  0.25;	prep_ami_current_start_date=caldate{t};		prep_ami_switch_date=caldate{t};
 					if prep_ami_ever ne 1 then do;
@@ -5424,7 +5439,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 				prep_len=1;	continuous_prep_len_use = continuous_prep_len_use + 0.25;
 			end;
 
-			if r < (1-eff_rate_choose_stop_prep_len) then do; 			* continue to use PrEP; 
+			else if (r < (1-eff_rate_choose_stop_prep_len)) then do; 	* continue to use PrEP ; 	* QUERY else if added ;
 				prep_any=1;		continuous_prep_any_use = continuous_prep_any_use + 0.25;	
 				if highest_prep_pref = 3 then do;						* continue with len PrEP;
 					prep_len=1;		continuous_prep_len_use = continuous_prep_len_use + 0.25; 					
@@ -5492,7 +5507,7 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 		end;
 
 		else if prep_any_tm1 ne 1 then do;
-			* if people chose to discontinue even if they had newp>1 previously (stop_prep_oral_choice=1), then the probability of restart is given by eff_prob_prep_any_restart_choice; 
+			* if people chose to discontinue even if they had newp>1 previously (stop_prep_oral_choice=1), then the probability of restart is given by eff_prob_prep_xxx_restart_choice; 
 			* if they discontinued because they were no longer eligible (no partners in a period and also stop_prep_oral_choice ne 1) then the probability of restart is given by prob_prep_any_restart (which is now set to 1);
 			* prep_xxx_restart_date				date of PrEP restart following stopping or pausing PrEP for any reason (to count number of prep re-initiations);
 			* prep_xxx_restart_date_choice		date of PrEP restart following decision to stop PrEP (previously dt_prep_xxx_rs);
@@ -5501,60 +5516,65 @@ if t ge 4 and caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_e
 			if tested=1 then do; * dependent_on_time_step_length;
 				if stop_prep_any_choice=1 then do;				* person previously chose to discontinue PrEP;
 					r=rand('uniform'); 
-					if r < eff_prob_prep_any_restart_choice then do;
-						select;			
-							when (highest_prep_pref=1)	do; 
+					select;			
+						when (highest_prep_pref=1)	do; 
+							if r < eff_prob_prep_ora_restart_choice then do;
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_oral=1;	continuous_prep_oral_use=0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_choice=caldate{t};	stop_prep_oral_choice=0;	
 								if prep_oral_ever ne 1 then prep_oral_first_start_date=caldate{t};
-							end; 					
-							when (highest_prep_pref=2)	do; 
+							end;
+						end; 					
+						when (highest_prep_pref=2)	do; 
+							if r < eff_prob_prep_cab_restart_choice then do;
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_cab=1; 	continuous_prep_cab_use=0.25; 	prep_cab_current_start_date=caldate{t};		prep_cab_restart_date=caldate{t};	prep_cab_restart_date_choice=caldate{t};	stop_prep_cab_choice=0; 	
 								if prep_cab_ever ne 1 then prep_cab_first_start_date=caldate{t};
-							end; 					
-							when (highest_prep_pref=3)	do; 
+							end;
+						end; 					
+						when (highest_prep_pref=3)	do; 
+							if r < eff_prob_prep_len_restart_choice then do;
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_len=1; 	continuous_prep_len_use=0.25; 	prep_len_current_start_date=caldate{t};		prep_len_restart_date=caldate{t};	prep_len_restart_date_choice=caldate{t};	stop_prep_len_choice=0; 	
 								if prep_len_ever ne 1 then prep_len_first_start_date=caldate{t};
-							end; 					
-							when (highest_prep_pref=4)	do; 
+							end;
+						end; 					
+						when (highest_prep_pref=4)	do; 
+							if r < eff_prob_prep_ami_restart_choice then do;
 								prep_any=1;		continuous_prep_any_use=0.25;	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_choice=caldate{t};	stop_prep_any_choice=0; 
 								prep_ami=1; 	continuous_prep_ami_use=0.25;	prep_ami_current_start_date=caldate{t};		prep_ami_restart_date=caldate{t};	prep_ami_restart_date_choice=caldate{t}; 	stop_prep_ami_choice=0; 		
 								if prep_ami_ever ne 1 then prep_ami_first_start_date=caldate{t};
-							end; 	
-							otherwise xxx=1;	
-						end;
-
+							end;
+						end; 	
+						otherwise xxx=1;	
 					end;
 				end;
 
-				else if stop_prep_any_choice ne 1  then do;		* person discontinued PrEP because they were ineligible;
+				else if stop_prep_any_choice ne 1  then do;		* people who discontinued PrEP because they were ineligible always restart once eligible again;
 																* remember that this is all in a loop with prep_any_elig=1;
-					r=rand('uniform'); 
-						select;
-							when (highest_prep_pref=1) do;
-								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
-								prep_oral=1;	continuous_prep_oral_use = 0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_eligible=caldate{t};
-								if prep_oral_ever ne 1 then prep_oral_first_start_date=caldate{t};
-							end;
-							when (highest_prep_pref=2) do; 
-								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
-								prep_cab=1;		continuous_prep_cab_use = 0.25;		prep_cab_current_start_date=caldate{t};		prep_cab_restart_date=caldate{t};	prep_cab_restart_date_eligible=caldate{t};
-								if prep_cab_ever ne 1 then prep_cab_first_start_date=caldate{t};
-							end;
-							when (highest_prep_pref=3) do; 
-								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
-								prep_len=1;		continuous_prep_len_use = 0.25;		prep_len_current_start_date=caldate{t};		prep_len_restart_date=caldate{t};	prep_len_restart_date_eligible=caldate{t};
-								if prep_len_ever ne 1 then prep_len_first_start_date=caldate{t};
-							end;
-							when (highest_prep_pref=4)	do; 
-								prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
-								prep_ami=1;		continuous_prep_ami_use = 0.25;		prep_ami_current_start_date=caldate{t};		prep_ami_restart_date=caldate{t};	prep_ami_restart_date_eligible=caldate{t};
-								if prep_ami_ever ne 1 then prep_ami_first_start_date=caldate{t};
-							end;
-							otherwise xxx=1;	
+					select;
+						when (highest_prep_pref=1) do;
+							prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+							prep_oral=1;	continuous_prep_oral_use = 0.25;	prep_oral_current_start_date=caldate{t};	prep_oral_restart_date=caldate{t};	prep_oral_restart_date_eligible=caldate{t};
+							if prep_oral_ever ne 1 then prep_oral_first_start_date=caldate{t};
 						end;
+						when (highest_prep_pref=2) do; 
+							prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+							prep_cab=1;		continuous_prep_cab_use = 0.25;		prep_cab_current_start_date=caldate{t};		prep_cab_restart_date=caldate{t};	prep_cab_restart_date_eligible=caldate{t};
+							if prep_cab_ever ne 1 then prep_cab_first_start_date=caldate{t};
+						end;
+						when (highest_prep_pref=3) do; 
+							prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+							prep_len=1;		continuous_prep_len_use = 0.25;		prep_len_current_start_date=caldate{t};		prep_len_restart_date=caldate{t};	prep_len_restart_date_eligible=caldate{t};
+							if prep_len_ever ne 1 then prep_len_first_start_date=caldate{t};
+						end;
+						when (highest_prep_pref=4)	do; 
+							prep_any=1;		continuous_prep_any_use = 0.25;		prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t};	prep_any_restart_date_eligible=caldate{t};
+							prep_ami=1;		continuous_prep_ami_use = 0.25;		prep_ami_current_start_date=caldate{t};		prep_ami_restart_date=caldate{t};	prep_ami_restart_date_eligible=caldate{t};
+							if prep_ami_ever ne 1 then prep_ami_first_start_date=caldate{t};
+						end;
+						otherwise xxx=1;	
+					end;
+
 				end;
 			end;
 
@@ -5606,7 +5626,7 @@ if pop_wide_tld = 1 and registd ne 1 and ( prep_any_elig = 1 or (ever_newp = 1) 
 
 			if stop_prep_oral_choice=1 then do;
 				r=rand('uniform'); 
-				if r < eff_prob_prep_any_restart_choice and prep_any_elig =1 then do;  * dependent_on_time_step_length; 
+				if r < eff_prob_prep_ora_restart_choice and prep_any_elig =1 then do;  * dependent_on_time_step_length; 
 					pop_wide_tld_prep=1; 
 					prep_any=1;		continuous_prep_any_use=0.25; 	prep_any_current_start_date=caldate{t};		prep_any_restart_date=caldate{t}; 	prep_any_restart_date_choice=caldate{t}; 	stop_prep_any_choice=0;
 					prep_oral=1; 	continuous_prep_oral_use=0.25;	prep_oral_current_start_date=caldate{t}; 	prep_oral_restart_date=caldate{t}; 	prep_oral_restart_date_choice=caldate{t}; 	stop_prep_oral_choice=0;
@@ -5702,7 +5722,7 @@ if hiv=1 and tested=1 and prep_any=1 then prep_falseneg=1;
 
 *PrEP clinic visits - modified Jan2017 f_prep;
 * assume 3-monthly visits for this section;
-if caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_elig=1 and (pop_wide_tld ne 1 or tested=1) then do;		* QUERY - double check (pop_wide_tld ne 1 or tested=1) clause ;
+if caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_elig=1 and (pop_wide_tld ne 1 or tested=1) then do;
 	if prep_any=0 then do;
 		if prep_any_ever ne 1 then do; visit_prep_any=.; visit_prep_oral=.; visit_prep_cab=.; visit_prep_len=.; visit_prep_ami=.; end;
 		else if prep_any_ever=1 then do;
@@ -5736,6 +5756,7 @@ if caldate{t} ge date_prep_oral_intro and registd ne 1 and prep_any_elig=1 and (
 				end;
 			end;
 			when (prep_ami=1) do;
+				if tested ne 1 then visit_prep_ami=1; 		*drug pick-up only;
 				if tested=1 then do;
 					visit_prep_ami=2; 	
 					if r < prob_prep_any_visit_counsel then do;  visit_prep_ami=3; end; *drug pick-up and counselling;
@@ -7517,7 +7538,7 @@ if hiv=1 then do;
 		if prep_oral ne 1 then do;
 			if tam ge 1 then do; u=rand('uniform'); if u < 0.5  then tam = 0 ; end; * may17;
 			if k65m = 1 then do; u=rand('uniform'); if u < 0.8  then k65m =0; end; 
-			if prep_ami ne 1 then do;			* QUERY - added prep_ami here;
+			if prep_ami ne 1 then do;
 				if m184m= 1 then do; u=rand('uniform'); if u < 0.8  then m184m=0; end;
 			end;
 		end;
@@ -7540,7 +7561,7 @@ if hiv=1 then do;
 		if p88m = 1 then do; u=rand('uniform'); if u < 0.5 then p88m=0; end;
 		if p90m = 1 then do; u=rand('uniform'); if u < 0.5 then p90m=0; end;
 
-		if prep_cab ne 1 then do;			* QUERY - added prep_cab here;
+		if prep_cab ne 1 then do;
 			if in118m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in118m=0; end; 
 			if in140m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in140m=0; end; 
 			if in148m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in148m=0; end; 
@@ -7548,7 +7569,7 @@ if hiv=1 then do;
 			if in263m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ii then in263m=0; end; 
 		end;
 
-		if prep_len ne 1 then do;			* QUERY - added prep_len here;
+		if prep_len ne 1 then do;
 			if ca66m = 1 then do; u=rand('uniform'); if u < res_trans_factor_ca then ca66m=0;  end;	
 		end;
 
@@ -7865,7 +7886,6 @@ if prep_len=1 or caldate{t} = prep_len_last_stop_date then do;
 end;
 
 
-* QUERY - this section below not yet added for ami. Perhaps not necessary;
 if caldate{t} = prep_cab_first_start_date then prep_cab_init_prim = 1;
 if caldate{t} = prep_cab_restart_date then prep_cab_reinit_prim = 1;
 if prep_cab_init_prim=1 and em_inm_res_o_cab_off_3m=1 then prep_cab_init_prim_res=1;
@@ -8883,13 +8903,13 @@ if registd=1 and registd_tm1=0 and onart=1 and pop_wide_tld_prep=1 then do; pop_
 		prep_oral = 0; o_3tc=0; o_ten=0; tss_ten   =0;tss_3tc   =0; mr_3tc=1; mr_ten=1; toffart=0;
 	end;
 
-	if  prep_cab = 1 and registd=1 and registd_tm1=0  then do; 			** QUERY do we need the infected_prep_oral=1 bit for cab, len and ami? ;
+	if  (infected_prep_cab=1 or prep_cab = 1) and registd=1 and registd_tm1=0  then do;
 		prep_cab = 0; o_cab=0; tss_cab   =0; toffart = 0;mr_cab=1;
 	end;
-	if  prep_len = 1 and registd=1 and registd_tm1=0  then do; 
+	if  (infected_prep_len=1 or prep_len = 1) and registd=1 and registd_tm1=0  then do; 
 		prep_len = 0; o_len=0; tss_len   =0; toffart = 0;mr_len=1;
 	end;
-	if  prep_ami = 1 and registd=1 and registd_tm1=0  then do; 
+	if  (infected_prep_ami=1 or prep_ami = 1) and registd=1 and registd_tm1=0  then do; 
 		prep_ami = 0; o_ami=0; tss_ami   =0; toffart = 0;mr_ami=1;
 	end;
 
@@ -19518,7 +19538,7 @@ if 15 <= age      and (death = . or caldate&j = death ) then do;
   	s_newp_this_per_age1524w + newp_this_per_age1524w ; s_prep_any_ever_w_1524 + prep_any_ever_w_1524 ; s_prep_any_ever_w + prep_any_ever_w ;
     s_test_gt_per1_on_prep_oral + test_gt_per1_on_prep_oral ; s_test_gt_per1_on_prep_oral_pos + test_gt_per1_on_prep_oral_pos ;
     s_test_per1_on_prep_oral + test_per1_on_prep_oral ; s_test_per1_on_prep_oral_pos + test_per1_on_prep_oral_pos ; 
-	s_prob_prep_any_restart_choice + prob_prep_any_restart_choice ; s_prep_oral_past_year + prep_oral_past_year ;
+	s_prep_oral_past_year + prep_oral_past_year ;
     s_tot_yrs_prep_oral_gt_5 + tot_yrs_prep_oral_gt_5 ; s_tot_yrs_prep_oral_gt_10 + tot_yrs_prep_oral_gt_10 ; s_tot_yrs_prep_oral_gt_20 + tot_yrs_prep_oral_gt_20 ;
     s_tot_yrs_prep_cab_gt_5 + tot_yrs_prep_cab_gt_5 ; s_tot_yrs_prep_cab_gt_10 + tot_yrs_prep_cab_gt_10 ; s_tot_yrs_prep_cab_gt_20 + tot_yrs_prep_cab_gt_20 ;
 	s_tot_yrs_prep_len_gt_5 + tot_yrs_prep_len_gt_5 ; s_tot_yrs_prep_len_gt_10 + tot_yrs_prep_len_gt_10 ; s_tot_yrs_prep_len_gt_20 + tot_yrs_prep_len_gt_20 ;
@@ -20471,7 +20491,7 @@ proc print;
 /*	rate_test_onprep_any tested tested_prep_any_start tested_prep_monitoring tested_prep_restart tested_prep_start_other tested_circ tested_symptoms_not_hiv tested_anc tested_labdel tested_pd */
 /*	tested_due_to_self_test tested_as_sw*/
 	;
-	where prep_any=1 or prep_len_tm1=1 or prep_len_tm2=1;
+	where serial_no <10 or prep_any=1 or prep_len_tm1=1 or prep_len_tm2=1;
 /*	where (prep_oral=1 or prep_cab=1 or prep_len=1 or prep_ami=1);*/
 run;
 
@@ -21247,7 +21267,7 @@ s_hiv_prep_reason_1  			s_hiv_prep_reason_2  		s_hiv_prep_reason_3  		s_hiv_prep
 s_prep_newp 	s_prep_newpg0  	s_prep_newpg1  	s_prep_newpg2  	s_prep_newpg3  	s_prep_newpg4  
 s_newp_this_per_age1524w_onprep s_newp_this_per_age1524w  	s_prep_any_ever_w_1524  s_prep_any_ever_w
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
-s_prob_prep_any_restart_choice
+
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
 s_tot_yrs_prep_cab_gt_5  	s_tot_yrs_prep_cab_gt_10   		s_tot_yrs_prep_cab_gt_20
 s_tot_yrs_prep_len_gt_5  	s_tot_yrs_prep_len_gt_10   		s_tot_yrs_prep_len_gt_20
@@ -21857,7 +21877,8 @@ prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fo
 msm_tr_factor switch_for_tox 
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat
 rate_test_startprep_any     circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
-prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
+prob_prep_ami_restart_choice prob_prep_cab_restart_choice prob_prep_len_restart_choice prob_prep_oral_restart_choice
+add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 nnrti_res_no_effect
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency ami_higher_potency isl_higher_potency  isl_ole_adh_improve
@@ -22454,7 +22475,7 @@ s_hiv_prep_reason_1  			s_hiv_prep_reason_2  		s_hiv_prep_reason_3  		s_hiv_prep
 s_prep_newp 	s_prep_newpg0  	s_prep_newpg1  	s_prep_newpg2  	s_prep_newpg3  	s_prep_newpg4  
 s_newp_this_per_age1524w_onprep s_newp_this_per_age1524w  	s_prep_any_ever_w_1524  s_prep_any_ever_w
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
-s_prob_prep_any_restart_choice
+
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
 s_tot_yrs_prep_cab_gt_5  	s_tot_yrs_prep_cab_gt_10   		s_tot_yrs_prep_cab_gt_20
 s_tot_yrs_prep_len_gt_5  	s_tot_yrs_prep_len_gt_10   		s_tot_yrs_prep_len_gt_20
@@ -23490,7 +23511,7 @@ s_hiv_prep_reason_1  			s_hiv_prep_reason_2  		s_hiv_prep_reason_3  		s_hiv_prep
 s_prep_newp 	s_prep_newpg0  	s_prep_newpg1  	s_prep_newpg2  	s_prep_newpg3  	s_prep_newpg4  
 s_newp_this_per_age1524w_onprep s_newp_this_per_age1524w  	s_prep_any_ever_w_1524  s_prep_any_ever_w
 s_test_gt_per1_on_prep_oral  s_test_gt_per1_on_prep_oral_pos  s_test_per1_on_prep_oral  s_test_per1_on_prep_oral_pos  
-s_prob_prep_any_restart_choice
+
 s_prep_oral_past_year s_tot_yrs_prep_oral_gt_5  s_tot_yrs_prep_oral_gt_10   s_tot_yrs_prep_oral_gt_20
 s_tot_yrs_prep_cab_gt_5  	s_tot_yrs_prep_cab_gt_10   		s_tot_yrs_prep_cab_gt_20
 s_tot_yrs_prep_len_gt_5  	s_tot_yrs_prep_len_gt_10   		s_tot_yrs_prep_len_gt_20
@@ -24100,7 +24121,8 @@ prob_lossdiag_adctb  prob_lossdiag_non_tb_who3e  higher_newp_less_engagement  fo
 msm_tr_factor switch_for_tox 
 p_hard_reach_w  hard_reach_higher_in_men  p_hard_reach_m  inc_cat
 rate_test_startprep_any     circ_inc_rate circ_red_10_14 circ_inc_15_19 circ_red_20_30  circ_red_30_50
-prob_prep_any_restart_choice  add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
+prob_prep_ami_restart_choice prob_prep_cab_restart_choice prob_prep_len_restart_choice prob_prep_oral_restart_choice  
+add_prep_any_uptake_sw  cd4_monitoring   base_rate_stop_sexwork    rred_a_p  higher_newp_with_lower_adhav
 rr_int_tox   rate_birth_with_infected_child  rate_trans_breastfeeding incr_mort_risk_dol_weightg 
 nnrti_res_no_effect
 greater_disability_tox 	  greater_tox_zdv 	 rel_dol_tox  cab_higher_potency len_higher_potency ami_higher_potency isl_higher_potency  isl_ole_adh_improve
