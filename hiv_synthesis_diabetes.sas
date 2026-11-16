@@ -1165,6 +1165,10 @@ rr_mort_cva_tx = 0.6;
 *urban_fold_bmi_m;			urban_fold_bmi_m = 1.03;
 *urban_fold_bmi_w;			urban_fold_bmi_w = 1.05;
 
+*Waist hip ratio;
+
+*whr_urban;					%sample_uniform(whr_urban, 0.01 0.02);
+
 
 * NON-HIV TB ;  * update_24_4_21;
 non_hiv_tb_risk = 0.0005;  
@@ -2123,8 +2127,66 @@ phys_act = phys_act_rural;
 	    if       85 le age   then do; bmi = rand('Normal', 19.245, 2.50); end;
 	end;
  end;
+
 end;
 
+
+* Waist-hip ratio based on BMI, Gender, and Age;
+
+age_sec2=0;
+if age ge 15 then do;
+
+if bmi < 25 then do;
+    if gender = 1 then do;
+        if age < 40 then base_whr = rand('Normal', 0.82, 0.06);
+        else if age < 60 then base_whr = rand('Normal', 0.85, 0.06);
+        else base_whr = rand('Normal', 0.89, 0.06);
+    end;
+    else if gender = 2 then do;
+        if age < 40 then base_whr = rand('Normal', 0.74, 0.06);
+        else if age < 60 then base_whr = rand('Normal', 0.77, 0.06);
+        else base_whr = rand('Normal', 0.82, 0.06);
+    end;
+end;
+
+else if 25 <= bmi < 30 then do;
+    if gender = 1 then do;
+        if age < 40 then base_whr = rand('Normal', 0.88, 0.06);
+        else if age < 60 then base_whr = rand('Normal', 0.91, 0.06);
+        else base_whr = rand('Normal', 0.94, 0.06);
+    end;
+    else if gender = 2 then do;
+        if age < 40 then base_whr = rand('Normal', 0.79, 0.06);
+        else if age < 60 then base_whr = rand('Normal', 0.82, 0.06);
+        else base_whr = rand('Normal', 0.86, 0.06);
+    end;
+end;
+
+else if bmi >= 30 then do;
+    if gender = 1 then do;
+        if age < 40 then base_whr = rand('Normal', 0.93, 0.05);
+        else if age < 60 then base_whr = rand('Normal', 0.96, 0.05);
+        else base_whr = rand('Normal', 0.98, 0.05);
+    end;
+    else if gender = 2 then do;
+        if age < 40 then base_whr = rand('Normal', 0.83, 0.07);
+        else if age < 60 then base_whr = rand('Normal', 0.86, 0.07);
+        else base_whr = rand('Normal', 0.89, 0.07);
+    end;
+end;
+
+if whr < 0.60 then whr = 0.60;
+if whr > 1 then whr = 1;
+
+
+***Additional indepdendent effect of living in an urban area;
+if urban=1 then whr= whr + whr_urban;
+
+***need this later when calculating change in whr;
+***Why does base_age=age +0.25?;
+base_age = age;
+base_bmi=bmi;
+end;
 
 
 
@@ -3695,6 +3757,28 @@ if age=15.00 then do;
 	***Everyone is given a diet and physical activity score. After this point onwards, the BMI is multiplied by a fold_change factor;
 	if gender=1 then bmi = bmi_15_m * urban_fold_bmi * diet_fold_bmi_15 * phys_act_fold_bmi_15;
 	if gender=2 then bmi = bmi_15_w * urban_fold_bmi * diet_fold_bmi_15 * phys_act_fold_bmi_15;
+
+
+	if bmi < 25 then do;
+        if gender = 1 then base_whr = rand('Normal', 0.82, 0.06);
+        else if gender = 2 then base_whr = rand('Normal', 0.74, 0.06);
+    end;
+
+    else if 25 <= bmi < 30 then do;
+        if gender = 1 then base_whr = rand('Normal', 0.88, 0.06);
+        else if gender = 2 then base_whr = rand('Normal', 0.79, 0.06);
+    end;
+
+    else if bmi >= 30 then do;
+        if gender = 1 then base_whr = rand('Normal', 0.93, 0.05);
+        else if gender = 2 then base_whr = rand('Normal', 0.83, 0.07);
+    end;
+
+	whr=base_whr;
+
+	base_age=15;
+	base_bmi=bmi;
+	age_sec3=1;
 end;
 
 
@@ -3807,14 +3891,29 @@ if 20 le age lt 40 then age_fold_bmi = 1.0012;
 if 40 le age lt 60 then age_fold_bmi = 1.0005;
 if age ge 60 then age_fold_bmi = 0.9995;
 
+bmi = bmi_tm1 * age_fold_bmi * urban_ch_fold_bmi * fold_ch_diet * fold_ch_phys_act;
 
-bmi = bmi_tm1 * age_fold_bmi;
-if urban_tm1=0 and urban=1 then bmi = bmi * urban_ch_fold_bmi;
-if diet_ch=1 then bmi = bmi * fold_ch_diet;
-if phys_act_ch=1 then bmi = bmi * fold_ch_phys_act;
 
-bmi_check = bmi_tm1 * age_fold_bmi * urban_ch_fold_bmi * fold_ch_diet * fold_ch_phys_act;
+* Waist-hip ratio based on BMI, Gender, and Age;
+
+change_bmi=bmi-base_bmi;
+change_age=age - base_age;
+
+whr = base_whr + (0.012 * change_bmi) + (0.001 * change_age) + rand('Normal', 0, 0.01);
+*To get to 0.012, take the difference between the mean whr for different bmi categories (0.82 and 0.88 = 0.06) and divide
+by the approx difference in BMI between the 2 categories i.e. about 6 units); 
+
+***Additional indepdendent effect of living in an urban area;
+if urban=1 then whr= whr + whr_urban;
+
+if whr < 0.60 then whr = 0.60;
+if whr > 1 then whr = 1;
+
 end;
+
+
+
+
 
 * SEXUAL BEHAVIOUR;
 
@@ -20694,26 +20793,13 @@ hiv_len = hiv_len_3m + hiv_len_6m + hiv_len_9m + hiv_len_ge12m ;
 
 
 * procs;
-proc print;var caldate&j gender age urban urban_fold_bmi urban_ch_fold_bmi diet diet_ch fold_ch_diet date_last_diet_ch diet_tm1 phys_act  phys_act_ch
- fold_ch_phys_act date_last_phys_act_ch bmi bmi_check death
+/*proc print;var caldate&j gender age urban urban_fold_bmi urban_ch_fold_bmi diet diet_ch fold_ch_diet date_last_diet_ch diet_tm1 phys_act  phys_act_ch
+ fold_ch_phys_act date_last_phys_act_ch bmi death
 ;where age ge 15;run;
-
-/*
-										
-proc freq; tables cald hiv ; where death=.; run;
-
-
-proc print; 
-	var cald country gender age hiv option;
-	where serial_no < 50;
-run;
 
 */
 
-
-
-
-
+proc print;var caldate&j age_sec2 age_sec3 gender age base_age base_bmi change_age change_bmi urban diet phys_act bmi whr death;where age ge 15;run;
 
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
 * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~;
