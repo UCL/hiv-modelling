@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_06nov26; 
+set a.mm_11nov26; 
 if run=. then delete; 
 
 proc sort;
@@ -347,21 +347,11 @@ if prevalence1549_ > 0.27 then  high_prev=1;
 /*
 proc freq;table run;where high_prev=1 and option=0 and cald=2026;run;
 */
+
 if run in (
-46798916
-126225409
-219625716
-255991949
-272673378
-322724914
-439304753
-496444329
-568523399
-751338404
-773662887
-924512028
-996593236
-)
+272837640
+431421706
+787717742)
 
 then delete;
 run;
@@ -383,7 +373,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 232;
+%let nfit = 128;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -1040,7 +1030,7 @@ p_rred_p				p_hsb_p;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_MM06Nov26;;
+data a.wide_MM11Nov26;;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
