@@ -9,6 +9,7 @@ run;
 data b;
 set a;
 
+PROC CONTENTS;RUN;
 
 *Table 1 - setting scenarios characteristics;
 
@@ -40,23 +41,28 @@ p_mm_prog_visit_36_8
 
 proc means n median mean p5 p95 lclm uclm;var
 /* SQ CAB */
-p_elig_onprep_mm_36_1	p_elig_onprep_oral_mm_36_1	p_elig_onprep_cab_mm_36_1  p_elig_onprep_len_mm_36_1	
+p_elig_onprep_mm_36_1	p_1564mm_onoral_36_1		p_1564mm_oncab_36_1 	p_1564mm_onlen_36_1
 incidence1564_mm_36_1	prevalence1564_mm_36_1
 incidence1549__36_1		prevalence1549__36_1		p_elig_onprep_36_1
 
 /* Scale up of CAB and oral PrEP in MM; */
-p_elig_onprep_mm_36_5	p_elig_onprep_oral_mm_36_5	p_elig_onprep_cab_mm_36_5  p_elig_onprep_len_mm_36_5	
+p_elig_onprep_mm_36_5	p_1564mm_onoral_36_5		p_1564mm_oncab_36_5	 	p_1564mm_onlen_36_5
 incidence1564_mm_36_5	prevalence1564_mm_36_5
 incidence1549__36_5		prevalence1549__36_5		p_elig_onprep_36_5
 
 /* SQ Len */
-p_elig_onprep_mm_36_2	p_elig_onprep_oral_mm_36_2	p_elig_onprep_cab_mm_36_2  p_elig_onprep_len_mm_36_2	
+p_elig_onprep_mm_36_2	p_1564mm_onoral_36_2		p_1564mm_oncab_36_2 	p_1564mm_onlen_36_2	
 incidence1564_mm_36_2	prevalence1564_mm_36_2
 incidence1549__36_2		prevalence1549__36_2		p_elig_onprep_36_2
 
 /* Scale up of Len and oral PrEP in MM; */
-p_elig_onprep_mm_36_7	p_elig_onprep_oral_mm_36_7	p_elig_onprep_cab_mm_36_7  p_elig_onprep_len_mm_36_7	
+p_elig_onprep_mm_36_7	p_1564mm_onoral_36_7		p_1564mm_oncab_36_7		 p_1564mm_onlen_36_7
 incidence1564_mm_36_7	prevalence1564_mm_36_7
 incidence1549__36_7		prevalence1549__36_7		p_elig_onprep_36_7
 
 ;run;
+
+data c;
+set b;
+
+***cost-effectiveness analyses;
