@@ -272,8 +272,12 @@ s_alive = s_alive_m + s_alive_w ;
 * p_1564mm_onprep;				if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep =   max(s_prep_any_mm_1564, 0) / (s_alive1564mm - s_hiv1564mm) ;
 * p_1564mm_onprep_cab;			if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_cab =   max(s_prep_cab_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
 * p_1564mm_onprep_len;			if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_len =   max(s_prep_len_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
-
 * p_1564mm_onprep_oral;			if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_oral =   max(s_prep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
+
+* p_1564mm_oncab;				if s_prep_any_mm_1564 > 0 then p_1564mm_onprep_cab =   max(s_prep_cab_mm, 0) / s_prep_any_mm_1564;
+* p_1564mm_onlen;				if s_prep_any_mm_1564 > 0 then p_1564mm_onprep_len =   max(s_prep_len_mm, 0) / s_prep_any_mm_1564 ;
+* p_1564mm_onoral;				if s_prep_any_mm_1564 > 0 then p_1564mm_onprep_oral =   max(s_prep_oral_mm, 0) / s_prep_any_mm_1564 ;
+
 
 * p_elig_onprep_mm;				if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_mm = s_prep_any_mm_1564 / s_elig_prep_any_mm_1564_ ;
 * p_elig_onprep_oral_mm;		if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_oral_mm = s_prep_oral_mm / s_elig_prep_any_mm_1564_ ;
@@ -322,14 +326,15 @@ dcost ddaly			 n_prep_oral_start	n_prep_cab_start	n_prep_len_start
 n_stop_prep_oral_elig					n_stop_prep_cab_elig 					n_stop_prep_len_elig
 
 
-p_diag_mm			p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm			prevalence1549_mm	
-prevalence1564_mm	incidence1549_mm	incidence1564_mm		n_tested_mm			p_1564mm_onprep		p_hiv_mm
-p_1564mm_onprep_cab	p_1564mm_onprep_len	p_1564mm_onprep_oral	
-n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_prep_any_ever_mm
-p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm			p_elig_onprep_cab 	p_elig_onprep_len	p_elig_onprep_oral
-p_elig_onprep_oral_mm	p_elig_onprep_cab_mm		p_elig_onprep_len_mm		p_elig_onprep_genmen
-inc_risk_mobile			sex_beh_trans_matrix_m		sex_beh_trans_matrix_w		sex_age_mixing_matrix_m			sex_age_mixing_matrix_w
-inc_risk_newp_mm	p_mm_prog_visit		rate_engage_mm_program	rate_disengage_mm_program				av_mm_newp
+p_diag_mm				p_onart_diag_mm		p_onart_vl1000_mm		p_vg1000_mm			p_vl1000_mm			prevalence1549_mm	
+prevalence1564_mm		incidence1549_mm	incidence1564_mm		n_tested_mm			p_1564mm_onprep		p_hiv_mm
+p_1564mm_onprep_cab		p_1564mm_onprep_len	p_1564mm_onprep_oral	
+n_prep_any_mm			n_prep_oral_mm		n_prep_cab_mm			n_prep_len_mm		n_prep_ever_mm		p_prep_any_ever_mm
+p_newp_ge1_mm			p_prep_any_willing	n_prep_oral_mm			p_elig_onprep_cab 	p_elig_onprep_len	p_elig_onprep_oral
+p_elig_onprep_oral_mm	p_elig_onprep_cab_mm						p_elig_onprep_len_mm					p_elig_onprep_genmen
+p_1564mm_oncab			p_1564mm_onlen		p_1564mm_onoral
+inc_risk_mobile			sex_beh_trans_matrix_m						sex_beh_trans_matrix_w					sex_age_mixing_matrix_m			
+sex_age_mixing_matrix_w inc_risk_newp_mm	p_mm_prog_visit			rate_engage_mm_program					rate_disengage_mm_program				av_mm_newp
 
 logw15r	logw25r	logw35r	logw45r	logw55r logm15r	logm25r	logm35r	logm45r	logm55r
 newp_factor  ych_risk_beh_newp	p_rred_p	p_hsb_p; 
@@ -349,9 +354,18 @@ proc freq;table run;where high_prev=1 and option=0 and cald=2026;run;
 */
 
 if run in (
+86925066
+160891551
 272837640
+388246958
 431421706
-787717742)
+544021663
+574412986
+591492762
+787717742
+)
+
+
 
 then delete;
 run;
@@ -373,7 +387,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 128;
+%let nfit = 320;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -974,6 +988,8 @@ data &v ; merge  y_26 t_36 t_26_46 /*t_26_46*/;
 %var(v=n_prep_ever_mm);	  	%var(v=p_prep_any_ever_mm); %var(v=p_newp_ge1_mm);		%var(v=p_prep_any_willing);	%var(v=n_prep_oral_mm);
 %var(v=p_elig_onprep_cab);	%var(v=p_elig_onprep_len);	%var(v=p_elig_onprep_oral);%var(v=p_elig_onprep_oral_mm);	
 %var(v=p_elig_onprep_cab_mm);							%var(v=p_elig_onprep_len_mm);							%var(v=p_elig_onprep_genmen);
+%var(v=p_1564mm_oncab);		%var(v=p_1564mm_onlen);		%var(v=p_1564mm_onoral);
+
 %var(v=p_mm_prog_visit);	%var(v=av_mm_newp);	
 %var(v=dcost);	 			%var(v=ddaly);				
 
@@ -1001,6 +1017,8 @@ p_elig_onprep_mm	n_prep_any_mm		n_prep_oral_mm		n_prep_cab_mm	 	n_prep_len_mm
 n_prep_ever_mm	  	p_prep_any_ever_mm 	p_newp_ge1_mm		p_prep_any_willing	n_prep_oral_mm
 p_elig_onprep_cab	p_elig_onprep_len	p_elig_onprep_oral	p_elig_onprep_oral_mm	
 p_elig_onprep_cab_mm	p_elig_onprep_len_mm				p_elig_onprep_genmen
+p_1564mm_oncab		p_1564mm_onlen		p_1564mm_onoral
+
 p_mm_prog_visit		av_mm_newp
 dcost	 			ddaly				;
 run;
