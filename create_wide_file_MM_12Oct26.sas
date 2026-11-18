@@ -20,7 +20,6 @@ sf=sf_2025;
 keep run sf sf_2025;
 proc sort; by run;run;
 
-*NEED OUTPUTS FOR BALANCE ;
 data y1; 
 merge a sf;
 by run ;
@@ -39,7 +38,8 @@ by run ;
 
 * note discounting is from start of intervention - no adjustment needed;
 *check year_start_disc is the same as year_interv+1 in core; 
-%let year_start_disc=2025;
+%let year_start_disc=2026;
+discount_3py = 1/(1.03**(cald-&year_start_disc));
 discount_5py = 1/(1.05**(cald-&year_start_disc));
 discount_10py = 1/(1.10**(cald-&year_start_disc));
 
@@ -115,15 +115,43 @@ dcot_cost = s_dcot_cost * sf * 4 / 1000;
 dres_cost = s_dres_cost * sf * 4 / 1000;
 d_t_adh_int_cost = s_d_t_adh_int_cost * sf * 4 / 1000;  
 dcost_prep = s_dcost_prep * sf * 4 / 1000; 
-dcost_prep_inj = s_dcost_prep_cab * sf * 4 / 1000; 
+dcost_prep_cab = s_dcost_prep_cab * sf * 4 / 1000; 
+dcost_prep_len = s_dcost_prep_len * sf * 4 / 1000; 
 dcost_prep_oral = s_dcost_prep_oral * sf * 4 / 1000; 
 dcost_prep_visit  = s_dcost_prep_visit * sf * 4 / 1000; 	
-dcost_prep_visit_inj  = s_dcost_prep_visit_cab * sf * 4 / 1000; 	
+dcost_prep_visit_cab  = s_dcost_prep_visit_cab * sf * 4 / 1000; 	
+dcost_prep_visit_len  = s_dcost_prep_visit_len * sf * 4 / 1000; 	
 dcost_prep_visit_oral  = s_dcost_prep_visit_oral * sf * 4 / 1000; 	 
 dcost_prep_ac_adh = s_dcost_prep_ac_adh * sf * 4 / 1000; ***PrEP cost taking into account adherence to PrEP;
 dcost_sw_program = s_dcost_sw_program  * sf * 4 / 1000; 
 dcost_avail_self_test = dcost_avail_self_test * sf * 4/1000;
 
+***Using results from the trial;
+*half testing costs for len;
+
+***Need to overwrite costs just for mobile men, is that possible?;
+
+***PrEP staff costs excluded for now as appear to be costed twice;
+
+cost_prep_oral=0;dcost_prep_oral=0;cost_prep_cab=0;dcost_prep_cab=0;cost_prep_len=0;dcost_prep_len=0;dvis_cost=0;
+
+cost_prep_oral = ((178 + 6.7 + 9.8) * sf * 4)/1000; *for all options fixed + consum + drugs;
+dcost_prep_oral = cost_prep_oral * discount_3py;
+dcost_prep_oral_per_vis= s_prep_oral * dcost_prep_oral;
+
+cost_prep_cab =  ((178+ 6.7 + 29.5 + 6.5) * sf * 4)/1000;
+dcost_prep_cab = cost_prep_cab * discount_3py;
+dcost_prep_cab_per_vis= s_prep_cab * dcost_prep_cab;
+
+cost_prep_len =  (((178+ 8.6 + 53.6 + 0)/2) * sf * 4)/1000;* divide by 2 to account for 6 monthly visits. why 0 lab costs?;
+dcost_prep_len = cost_prep_len * discount_3py;
+dcost_prep_len_per_vis= s_prep_len * dcost_prep_len;
+
+***To take into account visits are every 6 months;
+if s_prep_len_mm > 0 then dvis_cost = dvis_cost * 0.5;
+
+proc means;var s_prep_oral dcost_prep_oral_per_vis s_prep_cab dcost_prep_cab_per_vis;where option=0 and cald=2025;run;
+proc means;var dcost_prep_oral_per_vis dcost_prep_cab_per_vis;where option=5;run;
 
 dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
 dcost_circ = s_dcost_circ * sf * 4 / 1000; 
@@ -274,15 +302,15 @@ s_alive = s_alive_m + s_alive_w ;
 * p_1564mm_onprep_len;			if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_len =   max(s_prep_len_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
 * p_1564mm_onprep_oral;			if (s_alive1564mm - s_hiv1564mm) > 0 then p_1564mm_onprep_oral =   max(s_prep_oral_mm, 0) / (s_alive1564mm - s_hiv1564mm) ;
 
-* p_1564mm_oncab;				if s_prep_any_mm_1564 > 0 then p_1564mm_onprep_cab =   max(s_prep_cab_mm, 0) / s_prep_any_mm_1564;
-* p_1564mm_onlen;				if s_prep_any_mm_1564 > 0 then p_1564mm_onprep_len =   max(s_prep_len_mm, 0) / s_prep_any_mm_1564 ;
-* p_1564mm_onoral;				if s_prep_any_mm_1564 > 0 then p_1564mm_onprep_oral =   max(s_prep_oral_mm, 0) / s_prep_any_mm_1564 ;
-
-
 * p_elig_onprep_mm;				if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_mm = s_prep_any_mm_1564 / s_elig_prep_any_mm_1564_ ;
 * p_elig_onprep_oral_mm;		if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_oral_mm = s_prep_oral_mm / s_elig_prep_any_mm_1564_ ;
 * p_elig_onprep_cab_mm;			if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_cab_mm = s_prep_cab_mm / s_elig_prep_any_mm_1564_ ;
 * p_elig_onprep_len_mm;			if s_elig_prep_any_mm_1564_ > 0 then p_elig_onprep_len_mm = s_prep_len_mm / s_elig_prep_any_mm_1564_ ;
+
+* p_1564mm_oncab;				p_1564mm_oncab=0; if s_prep_any_mm_1564 > 0 then p_1564mm_oncab =   max(s_prep_cab_mm, 0) / s_prep_any_mm_1564;
+* p_1564mm_onlen;				p_1564mm_onlen=0; if s_prep_any_mm_1564 > 0 then p_1564mm_onlen =   max(s_prep_len_mm, 0) / s_prep_any_mm_1564 ;
+* p_1564mm_onoral;				p_1564mm_onoral=0; if s_prep_any_mm_1564 > 0 then p_1564mm_onoral =   max(s_prep_oral_mm, 0) / s_prep_any_mm_1564 ;
+
 
 * n_prep_any_mm;				n_prep_any_mm = s_prep_any_mm_1564 * sf;
 * n_prep_oral_mm;				n_prep_oral_mm = s_prep_oral_mm * sf;
