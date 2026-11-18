@@ -197,6 +197,7 @@ s_alive = s_alive_m + s_alive_w ;
 * p_onart_vl1000_w;				if s_onart_gt6m_iicu_w   > 0 then p_onart_vl1000_w = s_vl1000_art_gt6m_iicu_w / s_onart_gt6m_iicu_w ; 
 * p_vg1000_, p_vl1000_;			if s_hiv1564  > 0 then p_vg1000_ = s_vg1000 / s_hiv1564 ;  p_vl1000_ = 1- p_vg1000_ ;
 * prevalence_vg1000_;			if (s_alive1549_w + s_alive1549_m) > 0 then prevalence_vg1000_ = s_vg1000 / (s_alive1549_w + s_alive1549_m);
+* p_diag_vl1000_;				if s_diag   > 0 then p_diag_vl1000_ = s_diag_vl1000/ s_diag; 
 
 * prevalence1549m;				prevalence1549m = s_hiv1549m  / s_alive1549_m ;
 * prevalence1549w;				prevalence1549w = s_hiv1549w  / s_alive1549_w ;
@@ -213,12 +214,15 @@ s_alive = s_alive_m + s_alive_w ;
 * n_vm_this_yr;					n_vm_this_yr = s_vm_this_per * sf * 4;
 * p_fail_this_per;				if s_onart gt 0 then p_fail_this_per = s_fail_this_per/s_onart;
 
+* rate_child_hiv;				rate_child_hiv = (s_birth_with_inf_child + s_child_infected_breastfeeding)/(s_give_birth_with_hiv + s_hiv_breastfeeding);
+
+
 keep run option cald 
 n_alive_m			 n_alive_w			n_alive						
 prevalence1549m 	 prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w 		incidence1549m
 p_diag	 			 p_diag_m	 		p_diag_w  			p_onart_diag   		p_onart_diag_m   	p_onart_diag_w  
 p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			prevalence_vg1000_
-p_inf_vlsupp		 hivrel_death_rate  n_vm_this_yr		p_fail_this_per
+p_inf_vlsupp		 hivrel_death_rate  n_vm_this_yr		p_fail_this_per		p_diag_vl1000_		rate_child_hiv
 dcost				 dvl_cost			ddaly				ddaly_ac_mtct;
 /*
 n_onprep_w			 n_onprep_m			n_onprep			p_1564m_onprep   	p_1564w_onprep		n_prep_any_start
@@ -269,7 +273,7 @@ data &v ; merge  y_26 t_46 t_26_46 t_26_76;
 %var(v=prevalence1549m);  %var(v=prevalence1549w); 		%var(v=prevalence1549_); 	%var(v=incidence1549_); 	%var(v=incidence1549w);  
 %var(v=incidence1549m);	  %var(v=p_diag);	 			%var(v=p_diag_m);	 	 	%var(v=p_diag_w);
 %var(v=p_onart_diag);  	  %var(v=p_onart_diag_m);   	%var(v=p_onart_diag_w);  	%var(v=p_onart_vl1000_); 	%var(v=p_onart_vl1000_m); 
-%var(v=p_onart_vl1000_w); %var(v=p_vg1000_);			%var(v=p_vl1000_); 			%var(v=prevalence_vg1000_);
+%var(v=p_onart_vl1000_w); %var(v=p_vg1000_);			%var(v=p_vl1000_); 			%var(v=prevalence_vg1000_); %var(v=p_diag_vl1000_);
 %var(v=p_inf_vlsupp);	  %var(v=hivrel_death_rate);
 
 %var(v=n_vm_this_yr);	  %var(v=p_fail_this_per);
@@ -285,7 +289,7 @@ prevalence1549m 	prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence154
 incidence1549m		p_diag	 			p_diag_m	 	 	p_diag_w
 p_onart_diag  	  	p_onart_diag_m   	p_onart_diag_w  	p_onart_vl1000_ 	p_onart_vl1000_m 
 p_onart_vl1000_w 	p_vg1000_			p_vl1000_ 			prevalence_vg1000_	p_inf_vlsupp
-hivrel_death_rate	n_vm_this_yr	  	p_fail_this_per
+hivrel_death_rate	n_vm_this_yr	  	p_fail_this_per		p_diag_vl1000_
 dcost				dvl_cost			ddaly;
 run;
 
@@ -309,8 +313,8 @@ sex_age_mixing_matrix_w	inc_risk_newp_mm;
 
 ;proc sort; by run;run;
 */
-***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_vlm_11Nov26;;
+***SAVE DATASET READY FOR ANALYSIS;data a.wide_vlm_11Nov26;;
 merge   wide_outputs  /*wide_par*/ ;  
 by run;run;
+
 
