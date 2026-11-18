@@ -22473,37 +22473,37 @@ data a ;  set r1 ;
 data r1 ; set a ;
 
 * 	Option 0 ;
-%run_update_r1(&year_interv,&year_interv+20,0);
+%run_update_r1(&year_interv,&year_interv+50,0);
 
 
 * 	Option 1;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,1);
+%run_update_r1(&year_interv,&year_interv+50,1);
 
 
 * 	Option 2;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,2);
+%run_update_r1(&year_interv,&year_interv+50,2);
 
 * 	Option 3;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,3);
+%run_update_r1(&year_interv,&year_interv+50,3);
 
 * 	Option 4;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,4);
+%run_update_r1(&year_interv,&year_interv+50,4);
 
 * 	Option 5;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,5);
+%run_update_r1(&year_interv,&year_interv+50,5);
 
 * 	Option 6;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,6);
+%run_update_r1(&year_interv,&year_interv+50,6);
 
 * 	Option 7;
 data r1; set a;
-%run_update_r1(&year_interv,&year_interv+20,7);
+%run_update_r1(&year_interv,&year_interv+50,7);
 
 			
 														 

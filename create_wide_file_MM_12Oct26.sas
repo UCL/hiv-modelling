@@ -127,31 +127,28 @@ dcost_sw_program = s_dcost_sw_program  * sf * 4 / 1000;
 dcost_avail_self_test = dcost_avail_self_test * sf * 4/1000;
 
 ***Using results from the trial;
-*half testing costs for len;
+***For now, using the $178 SA fixed costs but expect these to be much lower across settings and hence multiplying this
+by various numbers as per below;
 
-***Need to overwrite costs just for mobile men, is that possible?;
+n_mm_prog_visit =  s_mm_prog_visit * sf;
+n_prep_any = s_prep_any * sf;
 
-***PrEP staff costs excluded for now as appear to be costed twice;
+***Annual cost;
+cost_mobile_clin_1 = 178/1000000 * sf * s_mm_prog_visit * 0.25;
+cost_mobile_clin_2 = 178/1000000 * sf * s_mm_prog_visit * 0.50;
+cost_mobile_clin_3 = 178/1000000 * sf * s_mm_prog_visit * 0.75;
+cost_mobile_clin_4 = 178/1000000 * sf * s_mm_prog_visit * 1.00;
 
-cost_prep_oral=0;dcost_prep_oral=0;cost_prep_cab=0;dcost_prep_cab=0;cost_prep_len=0;dcost_prep_len=0;dvis_cost=0;
+dcost_mobile_clin_1 = cost_mobile_clin_1 * discount_3py;
+dcost_mobile_clin_2 = cost_mobile_clin_2 * discount_3py;
+dcost_mobile_clin_3 = cost_mobile_clin_3 * discount_3py;
+dcost_mobile_clin_4 = cost_mobile_clin_4 * discount_3py;
 
-cost_prep_oral = ((178 + 6.7 + 9.8) * sf * 4)/1000; *for all options fixed + consum + drugs;
-dcost_prep_oral = cost_prep_oral * discount_3py;
-dcost_prep_oral_per_vis= s_prep_oral * dcost_prep_oral;
-
-cost_prep_cab =  ((178+ 6.7 + 29.5 + 6.5) * sf * 4)/1000;
-dcost_prep_cab = cost_prep_cab * discount_3py;
-dcost_prep_cab_per_vis= s_prep_cab * dcost_prep_cab;
-
-cost_prep_len =  (((178+ 8.6 + 53.6 + 0)/2) * sf * 4)/1000;* divide by 2 to account for 6 monthly visits. why 0 lab costs?;
-dcost_prep_len = cost_prep_len * discount_3py;
-dcost_prep_len_per_vis= s_prep_len * dcost_prep_len;
-
-***To take into account visits are every 6 months;
-if s_prep_len_mm > 0 then dvis_cost = dvis_cost * 0.5;
-
-proc means;var s_prep_oral dcost_prep_oral_per_vis s_prep_cab dcost_prep_cab_per_vis;where option=0 and cald=2025;run;
-proc means;var dcost_prep_oral_per_vis dcost_prep_cab_per_vis;where option=5;run;
+dcost_total_prep= dcost_prep + dcost_prep_visit;
+dcost_total_prep_1= dcost_prep + dcost_prep_visit + dcost_mobile_clin_1;
+dcost_total_prep_2= dcost_prep + dcost_prep_visit + dcost_mobile_clin_2;
+dcost_total_prep_3= dcost_prep + dcost_prep_visit + dcost_mobile_clin_3;
+dcost_total_prep_4= dcost_prep + dcost_prep_visit + dcost_mobile_clin_4;
 
 dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
 dcost_circ = s_dcost_circ * sf * 4 / 1000; 
@@ -166,11 +163,41 @@ dclin_cost = dadc_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost;
 
 dart_cost_y = dzdv_cost + dten_cost + d3tc_cost + dnev_cost + dlpr_cost + ddar_cost + dtaz_cost +  defa_cost + ddol_cost ;
 
-***Will need to add the cost of VG when included in HIV Synthesis;
+
+***EXCLUDING SELF TESTING;
 dcost = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
 		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
-		+ dcost_avail_self_test + dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_inj + dcost_prep_inj + 
-		dcost_sw_program;
+		dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_cab + dcost_prep_cab + 
+		dcost_prep_visit_len + dcost_prep_len + dcost_sw_program;
+
+dcost_1 = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_cab + dcost_prep_cab + 
+		dcost_prep_visit_len + dcost_prep_len + dcost_sw_program + dcost_mobile_clin_1;
+
+dcost_2 = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_cab + dcost_prep_cab + 
+		dcost_prep_visit_len + dcost_prep_len +	dcost_sw_program + dcost_mobile_clin_2;
+
+
+dcost_3 = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_cab + dcost_prep_cab + 
+		dcost_prep_visit_len + dcost_prep_len +	dcost_sw_program + dcost_mobile_clin_3;
+
+dcost_4 = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost + dres_cost +
+		dtest_cost + d_t_adh_int_cost + dswitchline_cost + dcost_drug_level_test + dcost_circ + dcost_condom_dn +
+		dcost_prep_visit_oral + dcost_prep_oral + dcost_prep_visit_cab + dcost_prep_cab + 
+		dcost_prep_visit_len + dcost_prep_len +	dcost_sw_program + dcost_mobile_clin_4;
+
+/*
+proc means;var n_mm_prog_visit n_prep_any dcost dcost_1 dcost_2 dcost_3 dcost_4 dcost_prep dcost_prep_visit dcost_prep_oral
+dcost_prep_visit_oral dcost_prep_cab dcost_prep_visit_cab dcost_mobile_clin_1 dcost_mobile_clin_2 dcost_mobile_clin_3
+dcost_mobile_clin_4 cost_mobile_clin_1 cost_mobile_clin_2 cost_mobile_clin_3
+cost_mobile_clin_4 dcost_total_prep dcost_total_prep_1 dcost_total_prep_2 dcost_total_prep_3 dcost_total_prep_4;run;
+*/
+
 
 dcost_clin_care = dart_cost_y + dadc_cost + dcd4_cost + dvl_cost + dvis_cost + dnon_tb_who3_cost + dcot_cost + dtb_cost +
 				  dres_cost + d_t_adh_int_cost + dswitchline_cost; 
@@ -350,7 +377,7 @@ p_onart_vl1000_		 p_onart_vl1000_m   p_onart_vl1000_w	p_vg1000_ 			p_vl1000_ 			
 n_onprep_w			 n_onprep_m			n_onprep			p_1564m_onprep   	p_1564w_onprep		n_prep_any_start
 p_elig_onprep_w	 	 p_elig_onprep_m	p_elig_onprep		p_elig_onprep_mm	p_elig_onprep_nmm	p_elig_prep
 p_1564m_onprep_nmm	 p_hiv_nmm			p_prep_any_ever_nmm p_elig_onprep_genmen
-dcost ddaly			 n_prep_oral_start	n_prep_cab_start	n_prep_len_start	
+n_prep_oral_start	n_prep_cab_start	n_prep_len_start	
 n_stop_prep_oral_elig					n_stop_prep_cab_elig 					n_stop_prep_len_elig
 
 
@@ -365,7 +392,11 @@ inc_risk_mobile			sex_beh_trans_matrix_m						sex_beh_trans_matrix_w					sex_age
 sex_age_mixing_matrix_w inc_risk_newp_mm	p_mm_prog_visit			rate_engage_mm_program					rate_disengage_mm_program				av_mm_newp
 
 logw15r	logw25r	logw35r	logw45r	logw55r logm15r	logm25r	logm35r	logm45r	logm55r
-newp_factor  ych_risk_beh_newp	p_rred_p	p_hsb_p; 
+newp_factor  ych_risk_beh_newp	p_rred_p	p_hsb_p
+ddaly				 
+dcost	dcost_1		dcost_2		dcost_3		dcost_4		dcost_total_prep
+dcost_total_prep_1	dcost_total_prep_2		dcost_total_prep_3		dcost_total_prep_4				 
+; 
 run;
 
 proc sort data=y1;by run option;run;
@@ -981,17 +1012,17 @@ proc means noprint data=y; var &v; output out=y_36 mean= &v._36; by run option; 
 
 ***OUTPUTS FOR CE ANALYSES OVER 50 years BY OPTION;
 proc means noprint data=y; var &v; output out=y_26_46 mean= &v._26_46; by run option ; where 2026.0 <= cald < 2046.0;
-/*proc means noprint data=y; var &v; output out=y_26_76 mean= &v._26_76; by run option ; where 2026.0 <= cald < 2076.0;*/
+proc means noprint data=y; var &v; output out=y_26_76 mean= &v._26_76; by run option ; where 2026.0 <= cald < 2076.0;
 
 ***SORT OUTPUT DATASETS BY RUN BEFORE MERGING;
 proc sort data=y_26; by run; proc transpose data=y_26 out=t_26 prefix=&v._26_; var &v._26; by run;
 proc sort data=y_36; by run; proc transpose data=y_36 out=t_36 prefix=&v._36_; var &v._36; by run;
 proc sort data=y_26_46; by run; proc transpose data=y_26_46 out=t_26_46 prefix=&v._26_46_; var &v._26_46; by run;
-/*proc sort data=y_26_76; by run; proc transpose data=y_26_76 out=t_26_76 prefix=&v._26_76_; var &v._26_76; by run;*/
+proc sort data=y_26_76; by run; proc transpose data=y_26_76 out=t_26_76 prefix=&v._26_76_; var &v._26_76; by run;
 
 
 ***MERGE TOGETHER SO THE DATASET NOW CONTAINS MEANS OVER SPECIFIED PERIODS;
-data &v ; merge  y_26 t_36 t_26_46 /*t_26_46*/; 
+data &v ; merge  y_26 t_36 t_26_46 t_26_76; 
 
 
 ***THIS MACRO CALCULATES THE MEANS OVER PERIOD AT EACH OF THE SPECIFIED TIME PERIODS ABOVE ANS STORES THESE IN INDIVIDUAL DATASETS;
@@ -1019,7 +1050,9 @@ data &v ; merge  y_26 t_36 t_26_46 /*t_26_46*/;
 %var(v=p_1564mm_oncab);		%var(v=p_1564mm_onlen);		%var(v=p_1564mm_onoral);
 
 %var(v=p_mm_prog_visit);	%var(v=av_mm_newp);	
-%var(v=dcost);	 			%var(v=ddaly);				
+%var(v=dcost);	 			%var(v=ddaly);				%var(v=dcost_total_prep);
+%var(v=dcost_1);			%var(v=dcost_2);			%var(v=dcost_3);				%var(v=dcost_4);
+%var(v=dcost_total_prep_1);	%var(v=dcost_total_prep_2);	%var(v=dcost_total_prep_3);		%var(v=dcost_total_prep_4);				 
 
 run;
 
@@ -1048,7 +1081,10 @@ p_elig_onprep_cab_mm	p_elig_onprep_len_mm				p_elig_onprep_genmen
 p_1564mm_oncab		p_1564mm_onlen		p_1564mm_onoral
 
 p_mm_prog_visit		av_mm_newp
-dcost	 			ddaly				;
+dcost	 			ddaly				dcost_total_prep
+dcost_1				dcost_2				dcost_3				dcost_4
+dcost_total_prep_1	dcost_total_prep_2	dcost_total_prep_3	dcost_total_prep_4				 
+;
 run;
 ;
 
