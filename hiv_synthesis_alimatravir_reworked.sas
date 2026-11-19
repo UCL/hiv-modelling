@@ -3862,7 +3862,6 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 * INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
-option = 1;
 
 
 if caldate_never_dot >= &year_interv then do;
