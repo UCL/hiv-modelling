@@ -214,7 +214,8 @@ s_alive = s_alive_m + s_alive_w ;
 * n_vm_this_yr;					n_vm_this_yr = s_vm_this_per * sf * 4;
 * p_fail_this_per;				if s_onart gt 0 then p_fail_this_per = s_fail_this_per/s_onart;
 
-* rate_child_hiv;				rate_child_hiv = (s_birth_with_inf_child + s_child_infected_breastfeeding)/(s_give_birth_with_hiv + s_hiv_breastfeeding);
+* rate_child_hiv;				if (s_give_birth_with_hiv + s_hiv_breastfeeding) gt 0 then 
+								rate_child_hiv = (s_birth_with_inf_child + s_child_infected_breastfeeding)/(s_give_birth_with_hiv + s_hiv_breastfeeding);
 
 
 keep run option cald 
@@ -274,9 +275,9 @@ data &v ; merge  y_26 t_46 t_26_46 t_26_76;
 %var(v=incidence1549m);	  %var(v=p_diag);	 			%var(v=p_diag_m);	 	 	%var(v=p_diag_w);
 %var(v=p_onart_diag);  	  %var(v=p_onart_diag_m);   	%var(v=p_onart_diag_w);  	%var(v=p_onart_vl1000_); 	%var(v=p_onart_vl1000_m); 
 %var(v=p_onart_vl1000_w); %var(v=p_vg1000_);			%var(v=p_vl1000_); 			%var(v=prevalence_vg1000_); %var(v=p_diag_vl1000_);
-%var(v=p_inf_vlsupp);	  %var(v=hivrel_death_rate);
+%var(v=p_inf_vlsupp);	  %var(v=hivrel_death_rate);	
 
-%var(v=n_vm_this_yr);	  %var(v=p_fail_this_per);
+%var(v=n_vm_this_yr);	  %var(v=p_fail_this_per);		%var(v=rate_child_hiv);
 
 %var(v=dcost);			  %var(v=dvl_cost);			    %var(v=ddaly);
 run;
@@ -288,8 +289,8 @@ n_alive_w		  	n_alive
 prevalence1549m 	prevalence1549w 	prevalence1549_ 	incidence1549_ 		incidence1549w  	
 incidence1549m		p_diag	 			p_diag_m	 	 	p_diag_w
 p_onart_diag  	  	p_onart_diag_m   	p_onart_diag_w  	p_onart_vl1000_ 	p_onart_vl1000_m 
-p_onart_vl1000_w 	p_vg1000_			p_vl1000_ 			prevalence_vg1000_	p_inf_vlsupp
-hivrel_death_rate	n_vm_this_yr	  	p_fail_this_per		p_diag_vl1000_
+p_onart_vl1000_w 	p_vg1000_			p_vl1000_ 			prevalence_vg1000_	p_diag_vl1000_
+p_inf_vlsupp		hivrel_death_rate	n_vm_this_yr	  	p_fail_this_per		rate_child_hiv		
 dcost				dvl_cost			ddaly;
 run;
 

@@ -12,24 +12,60 @@ set a;
 
 proc means n median mean p5 p95 lclm uclm;var
 
-n_vm_this_yr_26_46_1 p_onart_diag_26_46_1 p_onart_vl1000__26_46_1 p_vg1000__26_46_1 prevalence1549__26_46_1	incidence1549m_26_46_1  hivrel_death_rate_26_46_1
-n_vm_this_yr_26_46_2 p_onart_diag_26_46_2 p_onart_vl1000__26_46_2 p_vg1000__26_46_2 prevalence1549__26_46_2	incidence1549m_26_46_2  hivrel_death_rate_26_46_2
-n_vm_this_yr_26_46_3 p_onart_diag_26_46_3 p_onart_vl1000__26_46_3 p_vg1000__26_46_3 prevalence1549__26_46_3	incidence1549m_26_46_3  hivrel_death_rate_26_46_3
-n_vm_this_yr_26_46_4 p_onart_diag_26_46_4 p_onart_vl1000__26_46_4 p_vg1000__26_46_4 prevalence1549__26_46_4	incidence1549m_26_46_4  hivrel_death_rate_26_46_4
-n_vm_this_yr_26_46_5 p_onart_diag_26_46_5 p_onart_vl1000__26_46_5 p_vg1000__26_46_5 prevalence1549__26_46_5	incidence1549m_26_46_5  hivrel_death_rate_26_46_5
-n_vm_this_yr_26_46_6 p_onart_diag_26_46_6 p_onart_vl1000__26_46_6 p_vg1000__26_46_6 prevalence1549__26_46_6	incidence1549m_26_46_6  hivrel_death_rate_26_46_6
-n_vm_this_yr_26_46_7 p_onart_diag_26_46_7 p_onart_vl1000__26_46_7 p_vg1000__26_46_7 prevalence1549__26_46_7	incidence1549m_26_46_7  hivrel_death_rate_26_46_7
-n_vm_this_yr_26_46_8 p_onart_diag_26_46_8 p_onart_vl1000__26_46_8 p_vg1000__26_46_8 prevalence1549__26_46_8	incidence1549m_26_46_8  hivrel_death_rate_26_46_8
-n_vm_this_yr_26_46_9 p_onart_diag_26_46_9 p_onart_vl1000__26_46_9 p_vg1000__26_46_9 prevalence1549__26_46_9	incidence1549m_26_46_9  hivrel_death_rate_26_46_9
-n_vm_this_yr_26_46_10 p_onart_diag_26_46_10 p_onart_vl1000__26_46_10 p_vg1000__26_46_10 prevalence1549__26_46_10	incidence1549m_26_46_10  hivrel_death_rate_26_46_10
-n_vm_this_yr_26_46_11 p_onart_diag_26_46_11 p_onart_vl1000__26_46_11 p_vg1000__26_46_11 prevalence1549__26_46_11	incidence1549m_26_46_11  hivrel_death_rate_26_46_11
-n_vm_this_yr_26_46_12 p_onart_diag_26_46_12 p_onart_vl1000__26_46_12 p_vg1000__26_46_12 prevalence1549__26_46_12	incidence1549m_26_46_12  hivrel_death_rate_26_46_12
-n_vm_this_yr_26_46_13 p_onart_diag_26_46_13 p_onart_vl1000__26_46_13 p_vg1000__26_46_13 prevalence1549__26_46_13	incidence1549m_26_46_13  hivrel_death_rate_26_46_13
-n_vm_this_yr_26_46_14 p_onart_diag_26_46_14 p_onart_vl1000__26_46_14 p_vg1000__26_46_14 prevalence1549__26_46_14	incidence1549m_26_46_14  hivrel_death_rate_26_46_14
-n_vm_this_yr_26_46_15 p_onart_diag_26_46_15 p_onart_vl1000__26_46_15 p_vg1000__26_46_15 prevalence1549__26_46_15	incidence1549m_26_46_15  hivrel_death_rate_26_46_15
-n_vm_this_yr_26_46_16 p_onart_diag_26_46_16 p_onart_vl1000__26_46_16 p_vg1000__26_46_16 prevalence1549__26_46_16	incidence1549m_26_46_16  hivrel_death_rate_26_46_16
-n_vm_this_yr_26_46_17 p_onart_diag_26_46_17 p_onart_vl1000__26_46_17 p_vg1000__26_46_17 prevalence1549__26_46_17	incidence1549m_26_46_17  hivrel_death_rate_26_46_17
-n_vm_this_yr_26_46_18 p_onart_diag_26_46_18 p_onart_vl1000__26_46_18 p_vg1000__26_46_18 prevalence1549__26_46_18	incidence1549m_26_46_18  hivrel_death_rate_26_46_18
+n_vm_this_yr_26_46_1  	  p_onart_diag_26_46_1  	p_diag_vl1000__26_46_1  	p_onart_vl1000__26_46_1  	p_vg1000__26_46_1  
+prevalence1549__26_46_1	  incidence1549m_26_46_1  	hivrel_death_rate_26_46_1	rate_child_hiv_26_46_1
+
+n_vm_this_yr_26_46_2  	  p_onart_diag_26_46_2  	p_diag_vl1000__26_46_2  	p_onart_vl1000__26_46_2  	p_vg1000__26_46_2  
+prevalence1549__26_46_2	  incidence1549m_26_46_2  	hivrel_death_rate_26_46_2	rate_child_hiv_26_46_2
+
+n_vm_this_yr_26_46_3  	  p_onart_diag_26_46_3  	p_diag_vl1000__26_46_3  	p_onart_vl1000__26_46_3  	p_vg1000__26_46_3  
+prevalence1549__26_46_3	  incidence1549m_26_46_3  	hivrel_death_rate_26_46_3	rate_child_hiv_26_46_3
+
+n_vm_this_yr_26_46_4  	  p_onart_diag_26_46_4  	p_diag_vl1000__26_46_4  	p_onart_vl1000__26_46_4  	p_vg1000__26_46_4  
+prevalence1549__26_46_4	  incidence1549m_26_46_4  	hivrel_death_rate_26_46_4	rate_child_hiv_26_46_4
+
+n_vm_this_yr_26_46_5  	  p_onart_diag_26_46_5  	p_diag_vl1000__26_46_5  	p_onart_vl1000__26_46_5  	p_vg1000__26_46_5  
+prevalence1549__26_46_5	  incidence1549m_26_46_5  	hivrel_death_rate_26_46_5	rate_child_hiv_26_46_5
+
+n_vm_this_yr_26_46_6  	  p_onart_diag_26_46_6  	p_diag_vl1000__26_46_6  	p_onart_vl1000__26_46_6  	p_vg1000__26_46_6  
+prevalence1549__26_46_6	  incidence1549m_26_46_6  	hivrel_death_rate_26_46_6	rate_child_hiv_26_46_6
+
+n_vm_this_yr_26_46_7  	  p_onart_diag_26_46_7  	p_diag_vl1000__26_46_7  	p_onart_vl1000__26_46_7  	p_vg1000__26_46_7  
+prevalence1549__26_46_7	  incidence1549m_26_46_7	hivrel_death_rate_26_46_7	rate_child_hiv_26_46_7
+
+n_vm_this_yr_26_46_8  	  p_onart_diag_26_46_8  	p_diag_vl1000__26_46_8  	p_onart_vl1000__26_46_8  	p_vg1000__26_46_8  
+prevalence1549__26_46_8	  incidence1549m_26_46_8  	hivrel_death_rate_26_46_8	rate_child_hiv_26_46_8
+
+n_vm_this_yr_26_46_9  	  p_onart_diag_26_46_9  	p_diag_vl1000__26_46_9  	p_onart_vl1000__26_46_9  	p_vg1000__26_46_9  
+prevalence1549__26_46_9	  incidence1549m_26_46_9  	hivrel_death_rate_26_46_9	rate_child_hiv_26_46_9
+
+n_vm_this_yr_26_46_10  	  p_onart_diag_26_46_10  	p_diag_vl1000__26_46_10  	p_onart_vl1000__26_46_10  	p_vg1000__26_46_10  
+prevalence1549__26_46_10  incidence1549m_26_46_10  	hivrel_death_rate_26_46_10	rate_child_hiv_26_46_10
+
+n_vm_this_yr_26_46_11  	  p_onart_diag_26_46_11  	p_diag_vl1000__26_46_11  	p_onart_vl1000__26_46_11  	p_vg1000__26_46_11  
+prevalence1549__26_46_11  incidence1549m_26_46_11  	hivrel_death_rate_26_46_11	rate_child_hiv_26_46_11
+
+n_vm_this_yr_26_46_12  	  p_onart_diag_26_46_12  	p_diag_vl1000__26_46_12  	p_onart_vl1000__26_46_12  	p_vg1000__26_46_12  
+prevalence1549__26_46_12  incidence1549m_26_46_12  	hivrel_death_rate_26_46_12	rate_child_hiv_26_46_12
+
+n_vm_this_yr_26_46_13  	  p_onart_diag_26_46_13  	p_diag_vl1000__26_46_13  	p_onart_vl1000__26_46_13  	p_vg1000__26_46_13  
+prevalence1549__26_46_13  incidence1549m_26_46_13  	hivrel_death_rate_26_46_13	rate_child_hiv_26_46_13
+
+n_vm_this_yr_26_46_14  	  p_onart_diag_26_46_14  	p_diag_vl1000__26_46_14  	p_onart_vl1000__26_46_14  	p_vg1000__26_46_14  
+prevalence1549__26_46_14  incidence1549m_26_46_14  	hivrel_death_rate_26_46_14	rate_child_hiv_26_46_14
+
+n_vm_this_yr_26_46_15  	  p_onart_diag_26_46_15  	p_diag_vl1000__26_46_15  	p_onart_vl1000__26_46_15  	p_vg1000__26_46_15  
+prevalence1549__26_46_15  incidence1549m_26_46_15  	hivrel_death_rate_26_46_15	rate_child_hiv_26_46_15
+
+n_vm_this_yr_26_46_16  	  p_onart_diag_26_46_16  	p_diag_vl1000__26_46_16  	p_onart_vl1000__26_46_16  	p_vg1000__26_46_16  
+prevalence1549__26_46_16  incidence1549m_26_46_16 	hivrel_death_rate_26_46_16	rate_child_hiv_26_46_16
+
+n_vm_this_yr_26_46_17  	  p_onart_diag_26_46_17  	p_diag_vl1000__26_46_17  	p_onart_vl1000__26_46_17  	p_vg1000__26_46_17  
+prevalence1549__26_46_17  incidence1549m_26_46_17  	hivrel_death_rate_26_46_17	rate_child_hiv_26_46_17
+
+n_vm_this_yr_26_46_18  	  p_onart_diag_26_46_18  	p_diag_vl1000__26_46_18  	p_onart_vl1000__26_46_18  	p_vg1000__26_46_18  
+prevalence1549__26_46_18  incidence1549m_26_46_18  	hivrel_death_rate_26_46_18	rate_child_hiv_26_46_18
+
 ;run;
 
 
@@ -143,7 +179,7 @@ netdalys_16 =  ddaly_26_76_16 + (dcost_26_76_16)/0.0001;
 netdalys_17 =  ddaly_26_76_17 + (dcost_26_76_17)/0.0001;
 netdalys_18 =  ddaly_26_76_18 + (dcost_26_76_18)/0.0001;
 
-proc means n p50 mean p5 p95;var 
+proc means n p50 mean p5 p95 lclm uclm;var 
 diff_dcost_2  		diff_dvl_cost_2		diff_ddaly_2	ICER2 	netdalys_2
 diff_dcost_3  		diff_dvl_cost_3		diff_ddaly_3	ICER3 	netdalys_3
 diff_dcost_4  		diff_dvl_cost_4		diff_ddaly_4	ICER4 	netdalys_4
