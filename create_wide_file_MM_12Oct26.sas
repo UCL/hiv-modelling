@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_11nov26; 
+set a.mm_18nov2026; 
 if run=. then delete; 
 
 proc sort;
@@ -134,21 +134,34 @@ n_mm_prog_visit =  s_mm_prog_visit * sf;
 n_prep_any = s_prep_any * sf;
 
 ***Annual cost;
-cost_mobile_clin_1 = 178/1000000 * sf * s_mm_prog_visit * 0.25;
-cost_mobile_clin_2 = 178/1000000 * sf * s_mm_prog_visit * 0.50;
-cost_mobile_clin_3 = 178/1000000 * sf * s_mm_prog_visit * 0.75;
-cost_mobile_clin_4 = 178/1000000 * sf * s_mm_prog_visit * 1.00;
 
-dcost_mobile_clin_1 = cost_mobile_clin_1 * discount_3py;
-dcost_mobile_clin_2 = cost_mobile_clin_2 * discount_3py;
-dcost_mobile_clin_3 = cost_mobile_clin_3 * discount_3py;
-dcost_mobile_clin_4 = cost_mobile_clin_4 * discount_3py;
+if s_mm_prog_visit >0 then do;
+	dcost_prep_vis_oral = 
 
-dcost_total_prep= dcost_prep + dcost_prep_visit;
-dcost_total_prep_1= dcost_prep + dcost_prep_visit + dcost_mobile_clin_1;
-dcost_total_prep_2= dcost_prep + dcost_prep_visit + dcost_mobile_clin_2;
-dcost_total_prep_3= dcost_prep + dcost_prep_visit + dcost_mobile_clin_3;
-dcost_total_prep_4= dcost_prep + dcost_prep_visit + dcost_mobile_clin_4;
+dcost_prep_vis_cab=0;dcost_prep_vis_len=0;
+
+	cost_mobile_clin_1 = 178/1000000 * sf * s_mm_prog_visit * 0.25; ***this should be 0 for options 0 and 1;
+	cost_mobile_clin_2 = 178/1000000 * sf * s_mm_prog_visit * 0.50;
+	cost_mobile_clin_3 = 178/1000000 * sf * s_mm_prog_visit * 0.75;
+	cost_mobile_clin_4 = 178/1000000 * sf * s_mm_prog_visit * 1.00;
+
+	dcost_mobile_clin_1 = cost_mobile_clin_1 * discount_3py;
+	dcost_mobile_clin_2 = cost_mobile_clin_2 * discount_3py;
+	dcost_mobile_clin_3 = cost_mobile_clin_3 * discount_3py;
+	dcost_mobile_clin_4 = cost_mobile_clin_4 * discount_3py;
+end;
+
+
+dcost_total_prep_1= dcost_prep + dcost_mobile_clin_1 + dcost_prep_vis_oral + dcost_prep_vis_cab + dcost_prep_vis_len;
+dcost_total_prep_2= dcost_prep + dcost_mobile_clin_2 + dcost_prep_vis_oral + dcost_prep_vis_cab + dcost_prep_vis_len;
+dcost_total_prep_3= dcost_prep + dcost_mobile_clin_3 + dcost_prep_vis_oral + dcost_prep_vis_cab + dcost_prep_vis_len;
+dcost_total_prep_4= dcost_prep + dcost_mobile_clin_4 + dcost_prep_vis_oral + dcost_prep_vis_cab + dcost_prep_vis_len;
+
+proc means;var dcost_total_prep_1;where option=0 and 2026 < cald<=2036;run;
+proc means;var dcost_total_prep_1;where option=5 and 2026 < cald<=2036;run;
+
+proc means;var s_mm_prog_visit dcost_mobile_clin_1 dcost_prep_vis_oral  dcost_prep_vis_cab dcost_prep_vis_len;where option=0 and 2026 < cald<=2036;run;
+
 
 dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
 dcost_circ = s_dcost_circ * sf * 4 / 1000; 
@@ -400,28 +413,34 @@ dcost_total_prep_1	dcost_total_prep_2		dcost_total_prep_3		dcost_total_prep_4
 run;
 
 proc sort data=y1;by run option;run;
+proc freq;table prevalence1549_;where option=0 and cald=2026;run;
 
 ****Prevalence is too high, remove highest 20% of runs;
 data y;
 set y1;
-/*
-proc freq;table prevalence1549_;where option=0 and cald=2026;run;
-*/
+
 if prevalence1549_ > 0.27 then  high_prev=1;
 /*
 proc freq;table run;where high_prev=1 and option=0 and cald=2026;run;
 */
 
 if run in (
-86925066
-160891551
-272837640
-388246958
-431421706
-544021663
-574412986
-591492762
-787717742
+155016598
+316488124
+317288342
+327368901
+384834599
+427750556
+549936990
+605362013
+680716706
+691630720
+854823247
+860268223
+860822612
+896250987
+952033544
+
 )
 
 
@@ -446,7 +465,7 @@ set y;
 proc sort; by cald run ;run;
 data b;set b;count_csim+1;by cald ;if first.cald then count_csim=1;run;***counts the number of runs;
 proc means max data=b;var count_csim;run; ***number of runs - this is manually inputted in nfit below;
-%let nfit = 320;
+%let nfit = 340;
 %let year_end = 2045.00 ;
 run;
 proc sort;by cald option ;run;
@@ -1112,7 +1131,7 @@ p_rred_p				p_hsb_p;
 ;proc sort; by run;run;
 
 ***SAVE DATASET READY FOR ANALYSIS;
-data a.wide_MM11Nov26;;
+data a.wide_MM18Nov26;;
 merge   wide_outputs  wide_par ;  
 by run;run;
 
