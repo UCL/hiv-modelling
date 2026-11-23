@@ -2,7 +2,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.mm_11nov26; 
+set a.mm_18nov26; 
 if run=. then delete; 
 
 proc sort;
@@ -133,6 +133,11 @@ by various numbers as per below;
 n_mm_prog_visit =  s_mm_prog_visit * sf;
 n_prep_any = s_prep_any * sf;
 
+
+178/dcost_prep_visit_cab
+178/
+
+
 ***Annual cost;
 cost_mobile_clin_1 = 178/1000000 * sf * s_mm_prog_visit * 0.25;
 cost_mobile_clin_2 = 178/1000000 * sf * s_mm_prog_visit * 0.50;
@@ -149,6 +154,8 @@ dcost_total_prep_1= dcost_prep + dcost_prep_visit + dcost_mobile_clin_1;
 dcost_total_prep_2= dcost_prep + dcost_prep_visit + dcost_mobile_clin_2;
 dcost_total_prep_3= dcost_prep + dcost_prep_visit + dcost_mobile_clin_3;
 dcost_total_prep_4= dcost_prep + dcost_prep_visit + dcost_mobile_clin_4;
+
+
 
 dfullvis_cost = s_dfull_vis_cost * sf * 4 / 1000;
 dcost_circ = s_dcost_circ * sf * 4 / 1000; 
