@@ -3,7 +3,7 @@
 libname a "C:\Users\Loveleen\UCL Dropbox\Loveleen bansi-matharu\hiv synthesis ssa unified program\output files\Mobile Men\";
 
 data a;
-set a.wide_MM18Nov26;
+set a.wide_MM18Nov26;*_1 is higher proportion on prep;
 run;
 
 data b;
@@ -31,6 +31,12 @@ p_mm_prog_visit_36_2
 p_mm_prog_visit_36_3
 p_mm_prog_visit_36_4	
 ;run;
+
+proc means;var p_elig_onprep_mm_36_3 n_prep_any_mm_36_3 p_elig_onprep_36_3 n_onprep_36_3 n_onprep_exc_mm_36_3
+p_elig_onprep_mm_36_1 n_prep_any_mm_36_1 p_elig_onprep_36_1 n_onprep_36_1 n_onprep_exc_mm_36_1
+;run;
+
+proc means;var  n_onprep_36_1 n_onprep_36_3;run;
 
 ***Table 3: Separate according to whether CAB or Len is SQ;
 *SQ treatment coverage, 3% decline, 20% decline;
@@ -65,6 +71,9 @@ incidence1549__36_4		prevalence1549__36_4		p_elig_onprep_36_4
 
 ;run;
 
+
+
+
 data c;
 set b;
 
@@ -82,16 +91,15 @@ set b;
 ***CEA:
 *difference in costs between SQ CAB and Intervention CAB,SQ Len and Intervention Len ;
 diff_dcost_3 = dcost_26_76_3 - dcost_26_76_1;
-diff_dcost1_3 = dcost_1_26_76_3 - dcost_1_26_76_1;
-diff_dcost2_3 = dcost_2_26_76_3 - dcost_2_26_76_1;
-diff_dcost3_3 = dcost_3_26_76_3 - dcost_3_26_76_1;
-diff_dcost4_3 = dcost_4_26_76_3 - dcost_4_26_76_1;
+diff_dcost1_3 = dcost1_26_76_3 - dcost1_26_76_1;
+diff_dcost2_3 = dcost2_26_76_3 - dcost2_26_76_1;
 
-diff_total_prep_cost_3 = dcost_total_prep_26_76_3 - dcost_total_prep_26_76_1;
-diff_total_prep_cost_1_3 = dcost_total_prep_1_26_76_3 - dcost_total_prep_1_26_76_1;
-diff_total_prep_cost_2_3 = dcost_total_prep_2_26_76_3 - dcost_total_prep_2_26_76_1;
-diff_total_prep_cost_3_3 = dcost_total_prep_3_26_76_3 - dcost_total_prep_3_26_76_1;
-diff_total_prep_cost_4_3 = dcost_total_prep_4_26_76_3 - dcost_total_prep_4_26_76_1;
+diff_total_prep_drug_cost_3 = total_prep_drug_cost_26_76_3 - total_prep_drug_cost_26_76_1;
+diff_total_vis_drug_cost_3 = total_prep_vis_cost_26_76_3 - total_prep_vis_cost_26_76_1;
+diff_total_vis_drug_cost1_3 = total_prep_vis_cost1_26_76_3 - total_prep_vis_cost1_26_76_1;
+diff_total_vis_drug_cost2_3 = total_prep_vis_cost2_26_76_3 - total_prep_vis_cost2_26_76_1;
+
+
 
 *DALYs averted;
 *SQ treatment strategy;
@@ -100,30 +108,23 @@ diff_ddaly_3 = ddaly_26_76_1 - ddaly_26_76_3;
 
 *net dalys using $100;
 netdalys_1 =  ddaly_26_76_1 + (dcost_26_76_1)/0.0001;
-netdalys_cost1_1 =  ddaly_26_76_1 + (dcost_1_26_76_1)/0.0001;
-netdalys_cost2_1 =  ddaly_26_76_1 + (dcost_2_26_76_1)/0.0001;
-netdalys_cost3_1 =  ddaly_26_76_1 + (dcost_3_26_76_1)/0.0001;
-netdalys_cost4_1 =  ddaly_26_76_1 + (dcost_4_26_76_1)/0.0001;
+netdalys_cost1_1 =  ddaly_26_76_1 + (dcost1_26_76_1)/0.0001;
+netdalys_cost2_1 =  ddaly_26_76_1 + (dcost2_26_76_1)/0.0001;
 
 netdalys_3 =  ddaly_26_76_3 + (dcost_26_76_3)/0.0001;
-netdalys_cost1_3 =  ddaly_26_76_3 + (dcost_1_26_76_3)/0.0001;
-netdalys_cost2_3 =  ddaly_26_76_3 + (dcost_2_26_76_3)/0.0001;
-netdalys_cost3_3 =  ddaly_26_76_3+ (dcost_3_26_76_3)/0.0001;
-netdalys_cost4_3 =  ddaly_26_76_3 + (dcost_4_26_76_3)/0.0001;
+netdalys_cost1_3 =  ddaly_26_76_3 + (dcost1_26_76_3)/0.0001;
+netdalys_cost2_3 =  ddaly_26_76_3 + (dcost2_26_76_3)/0.0001;
 
 ***repeat for Len;
 
 diff_dcost_4 = dcost_26_76_4 - dcost_26_76_2;
-diff_dcost1_4 = dcost_1_26_76_4 - dcost_1_26_76_2;
-diff_dcost2_4 = dcost_2_26_76_4 - dcost_2_26_76_2;
-diff_dcost3_4 = dcost_3_26_76_4 - dcost_3_26_76_2;
-diff_dcost4_4 = dcost_4_26_76_4 - dcost_4_26_76_2;
+diff_dcost1_4 = dcost1_26_76_4 - dcost1_26_76_2;
+diff_dcost2_4 = dcost2_26_76_4 - dcost2_26_76_2;
 
-diff_total_prep_cost_4 = dcost_total_prep_26_76_4 - dcost_total_prep_26_76_2;
-diff_total_prep_cost_1_4 = dcost_total_prep_1_26_76_4 - dcost_total_prep_1_26_76_2;
-diff_total_prep_cost_2_4 = dcost_total_prep_2_26_76_4 - dcost_total_prep_2_26_76_2;
-diff_total_prep_cost_3_4 = dcost_total_prep_3_26_76_4 - dcost_total_prep_3_26_76_2;
-diff_total_prep_cost_4_4 = dcost_total_prep_4_26_76_4 - dcost_total_prep_4_26_76_2;
+diff_total_prep_drug_cost_4 = total_prep_drug_cost_26_76_4 - total_prep_drug_cost_26_76_1;
+diff_total_vis_drug_cost_4 = total_prep_vis_cost_26_76_4 - total_prep_vis_cost_26_76_1;
+diff_total_vis_drug_cost1_4 = total_prep_vis_cost1_26_76_4 - total_prep_vis_cost1_26_76_1;
+diff_total_vis_drug_cost2_4 = total_prep_vis_cost2_26_76_4 - total_prep_vis_cost2_26_76_1;
 
 *DALYs averted;
 *SQ treatment strategy;
@@ -132,28 +133,21 @@ diff_ddaly_4 = ddaly_26_76_2 - ddaly_26_76_4;
 
 *net dalys using $100;
 netdalys_2 =  ddaly_26_76_2 + (dcost_26_76_2)/0.0001;
-netdalys_cost1_2 =  ddaly_26_76_2 + (dcost_1_26_76_2)/0.0001;
-netdalys_cost2_2 =  ddaly_26_76_2 + (dcost_2_26_76_2)/0.0001;
-netdalys_cost3_2 =  ddaly_26_76_2 + (dcost_3_26_76_2)/0.0001;
-netdalys_cost4_2 =  ddaly_26_76_2 + (dcost_4_26_76_2)/0.0001;
+netdalys_cost1_2 =  ddaly_26_76_2 + (dcost1_26_76_2)/0.0001;
+netdalys_cost2_2 =  ddaly_26_76_2 + (dcost2_26_76_2)/0.0001;
 
 netdalys_4 =  ddaly_26_76_4 + (dcost_26_76_4)/0.0001;
-netdalys_cost1_4 =  ddaly_26_76_4 + (dcost_1_26_76_4)/0.0001;
-netdalys_cost2_4 =  ddaly_26_76_4 + (dcost_2_26_76_4)/0.0001;
-netdalys_cost3_4 =  ddaly_26_76_4 + (dcost_3_26_76_4)/0.0001;
-netdalys_cost4_4 =  ddaly_26_76_4 + (dcost_4_26_76_4)/0.0001;
+netdalys_cost1_4 =  ddaly_26_76_4 + (dcost1_26_76_4)/0.0001;
+netdalys_cost2_4 =  ddaly_26_76_4 + (dcost2_26_76_4)/0.0001;
 
 proc means n mean p5 p95 lclm uclm;var 
-dcost_1_26_76_1				dcost_2_26_76_1	 			dcost_3_26_76_1				dcost_4_26_76_1
-dcost_1_26_76_3  			dcost_2_26_76_3  			dcost_3_26_76_3  			dcost_4_26_76_3
-diff_dcost1_3				diff_dcost2_3				diff_dcost3_3				diff_dcost4_3
+dcost1_26_76_1				dcost1_26_76_3  			diff_dcost1_3							
 
 ddaly_26_76_1				ddaly_26_76_3				diff_ddaly_3
-dcost_26_76_1				dcost_26_76_3				diff_dcost_3
 
-dcost_1_26_76_2				dcost_2_26_76_2	 			dcost_3_26_76_2				dcost_4_26_76_2
-dcost_1_26_76_4  			dcost_2_26_76_4  			dcost_3_26_76_4  			dcost_4_26_76_4
-diff_dcost1_4				diff_dcost2_4				diff_dcost3_4				diff_dcost4_4
+dcost_26_76_1				dcost_26_76_3  				diff_dcost_3							
+
+dcost1_26_76_2				dcost1_26_76_4  			diff_dcost1_4				
 
 ddaly_26_76_2				ddaly_26_76_4				diff_ddaly_4
 
@@ -170,6 +164,8 @@ dcost_total_prep_1_26_76_1  dcost_total_prep_2_26_76_1	dcost_total_prep_3_26_76_
 dcost_total_prep_1_26_76_3  dcost_total_prep_2_26_76_3	dcost_total_prep_3_26_76_3 	dcost_total_prep_4_26_76_3
 diff_total_prep_cost_1_3 	diff_total_prep_cost_2_3  	diff_total_prep_cost_3_3	diff_total_prep_cost_4_3
 ;run;
+
+
 
 
 proc means;var 
