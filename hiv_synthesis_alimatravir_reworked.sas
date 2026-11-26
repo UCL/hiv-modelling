@@ -73,7 +73,7 @@ options ps=1000 ls=220 cpucount=4 spool fullstimer ;
 
 * procs ;
 %let hiv_people_vars =
-    cald gender age death hiv prep_any_strategy change_prep_any_strategy change_prep_testing_policy change_prep_ami_avail
+    cald gender age death hiv prep_any_strategy change_prep_any_strategy change_prep_testing_policy prep_testing_policy prob_self_test_onprep change_prep_ami_avail
 	date_prep_oral_intro date_prep_cab_intro date_prep_len_intro date_prep_ami_intro
 /*	option*/
 	highest_prep_pref prep_any_elig
@@ -910,7 +910,6 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 3000);	* Introduction of injectable cab PrEP ;	* consider len as the only la prep option;
 * date_prep_len_intro;			date_prep_len_intro=2026;	* Introduction of injectable len PrEP ;		* Note for BMGF analysis we may want to sample across (2026, 3000) to introduce ami with and without len;
-* date_prep_len_intro;			date_prep_len_intro=2019;	* QUERY - remove once finished checking code;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;						* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;						* Assume 5 years to scale up injectable len prep;
 
@@ -6345,7 +6344,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_first_intro > . then do
 	if prep_any_strategy=21 then do;
       	if sw=1																				/* FSW */
 		or ( msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65)		/* MSM - as in strategy 19 */
-		or ( pwid = 1 and r2_prep < prob_prep_elig_pwid )									/* PWID - as in strategy 19 - QUERY  do we need age restriction here?  */
+		or ( pwid = 1 and r2_prep < prob_prep_elig_pwid )									/* PWID - as in strategy 19 - QUERY  do we need age restriction here (as for MSM)?  */
 		or ( plw=1 and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) )			/* PLW - as in strategy 16 */
 		then prep_any_elig=1; 
 	end;
@@ -6354,7 +6353,7 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_first_intro > . then do
 	if prep_any_strategy=22 then do;
       	if sw=1																				/* FSW */
 		or ( msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65)		/* MSM - as in strategy 19 */
-		or ( pwid = 1 and r2_prep < prob_prep_elig_pwid )									/* PWID - as in strategy 19 - QUERY  do we need age restriction here?  */
+		or ( pwid = 1 and r2_prep < prob_prep_elig_pwid )									/* PWID - as in strategy 19 - QUERY  do we need age restriction here (as for MSM)?  */
 		or ( agyw=1 and ( newp ge 1 or ep=1 ) )												/* AGYW */
 		then prep_any_elig=1; 
 	end;
@@ -6473,8 +6472,8 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 
 		** QUERY - correct place for this code? ; * JAS Nov2026;
 		start_without_test=0;
-		_sv_dt_last_test=dt_last_test; _sv_ever_tested=ever_tested; _sv_date1test=date1test;
-		_sv_np_lasttest=np_lasttest; _sv_newp_lasttest=newp_lasttest; _sv_nltp=newp_lasttest_tested_this_per;
+		save_dt_last_test=dt_last_test; save_ever_tested=ever_tested; 		save_date1test=date1test;
+		save_np_lasttest=np_lasttest; 	save_newp_lasttest=newp_lasttest; 	save_nltp=newp_lasttest_tested_this_per;
 
 		*Testing before ever starting PrEP;
 
@@ -6749,11 +6748,11 @@ if t ge 4 and not missing(date_prep_first_intro) and caldate{t} ge date_prep_fir
 	** QUERY - correct place for this code? ; * JAS Nov2026;
 	if prep_testing_policy=1 and tested_prep_any_start=1 then do;
 		tested=0; start_without_test=1;
-		dt_last_test=_sv_dt_last_test; ever_tested=_sv_ever_tested; date1test=_sv_date1test;		** QUERY - these are suggested by claude, check update is correct ;
-		np_lasttest=_sv_np_lasttest; newp_lasttest=_sv_newp_lasttest; newp_lasttest_tested_this_per=_sv_nltp;
+		dt_last_test=save_dt_last_test; ever_tested=save_ever_tested; 		date1test=save_date1test;		** QUERY - these are suggested by claude, check update is correct ;
+		np_lasttest=save_np_lasttest; 	newp_lasttest=save_newp_lasttest;	newp_lasttest_tested_this_per=save_nltp;
 	end;
 
-	if prep_any_ever ne 1 and (tested=1 or start_without_test=1) and (start_without_test=1 or hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		** QUERY - check self-testing option here;
+	if prep_any_ever ne 1 and (start_without_test=1 or (tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)))) then do;	*start_without_test addition JAS Nov2026;
 	* starting PrEP for the first time ever;
 	 
 		if prep_any_willing=1 and hard_reach ne 1 then do; 
