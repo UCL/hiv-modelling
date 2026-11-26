@@ -1,4 +1,7 @@
 
+** QUERY - remember to adapt the cost and visit logic for the six-month len injection. Also consider whether to prune the mutable lists, keeping only these: 
+	CHANGE_PREP_AMI_AVAIL, CHANGE_PREP_ANY_STRATEGY, CHANGE_PREP_TESTING_POLICY, D_HIV_EPI_MW, D_HIV_EPI_WM, DISCOUNT, HIGHER_FUTURE_PREP_ORAL_COV, INITIAL_PR_SWITCH_LINE, INITIAL_PROB_VL_MEAS_DONE, 
+	M15R to M55R, W15R to W55R, NON_HIV_TB_RISK, OPTION, POP_WIDE_TLD, PREP_ANY_STRATEGY, PROB_PREP_POP_WIDE_TLD, PROB_SBP_INCREASE	;
 * 3 nov 2026: removed set_in_options in code;
 * 2 nov 2026: made prob_prep_xxx_b independent of each other to reflect differing availability of each; 
 * 22nd Oct 2026: decided not to model ami tail initially ;
@@ -67,8 +70,11 @@ options ps=1000 ls=220 cpucount=4 spool fullstimer ;
    SERIAL_NO is added separately as the identifying column.
    To select different people, edit the IF before OUTPUT _hiv_diagnostic_people.
 */
+
+* procs ;
 %let hiv_people_vars =
-    cald gender age death hiv 
+    cald gender age death hiv prep_any_strategy change_prep_any_strategy change_prep_testing_policy change_prep_ami_avail
+	date_prep_oral_intro date_prep_cab_intro date_prep_len_intro date_prep_ami_intro
 /*	option*/
 	highest_prep_pref prep_any_elig
     prep_any tested self_tested prep_oral prep_len prep_ami 
@@ -828,21 +834,30 @@ end;
 
 * These parameters apply to all forms of PrEP: daily oral (ORAL), injectable (CAB and LEN) and monthly oral alimatravir MK-8527 (AMI);
  
-* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14 19);		** QUERY - 4 and 8 are now the same, so we are sampling that twice, is that ok? ;
+* prep_any_strategy;			%sample_uniform(prep_any_strategy, 4 8 14 19);					* Note that 4 and 8 are the same, so we are sampling these with double the probability ;
+* change_prep_any_strategy;  	%sample(change_prep_any_strategy, 1 2 3 4, 0.6 0.2 0.1 0.1);	* Marker for changing prep_any_strategy in options ;
 
-* prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up;
-* rate_test_onprep_any;			rate_test_onprep_any=1.00; 		* Probability per period of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on oral prep (this will need to be considered again) ;
-																* Changed from rate_test_onprep_oral. Now applies to all PrEP types but could split out. Consider again whether we want to keep this ;
-								* dependent_on_time_step_length ;
 * prep_willingness_threshold;	prep_willingness_threshold=0.2;	* Preference threshold above which someone is willing to take a particular type of PrEP;
-
-* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.80 0.20); * does prep use depend on the prevalence of vl > 1000 in population; * cioa_j ;
-* prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
 
 * rate_test_startprep_any; 		%sample_uniform(rate_test_startprep_any, 0.05 0.10 0.15);
 								* probability per period of being tested for hiv with the intent to start prep, if all criteria are fullfilled, including prep_any_willing;
 								* dependent_on_time_step_length ;
+* rate_test_onprep_any;			rate_test_onprep_any=1.00; 		* Probability per period of being tested for HIV whilst on PrEP; * may17  ####  was 0.95 - changed to remove effect of this on number on oral prep (this will need to be considered again) ;
+																* Changed from rate_test_onprep_oral. Now applies to all PrEP types but could split out. Consider again whether we want to keep this ;
+								* dependent_on_time_step_length ;
+
+* change_prep_testing_policy;	%sample(change_prep_testing_policy, 0 1, 0.8 0.2);				* Marker for changing testing policy for PrEP users in options;
+* prep_testing_policy; 			prep_testing_policy=0;											* default: 0 = no change;
+* prob_self_test_onprep;		%sample_uniform(prob_self_test_onprep, 0.1 0.3 0.5 0.7 0.9);	* per time step probability of taking a self test whilst on prep, when this recommendation is implemented in options code;
+																								* QUERY - discuss values;
+
+* prob_prep_any_visit_counsel;	prob_prep_any_visit_counsel=0; 	* Probability of PrEP adherence counselling happening at drug pick-up;
+
+* prep_dependent_prev_vg1000;	%sample(prep_dependent_prev_vg1000, 0 1, 0.80 0.20); * does prep use depend on the prevalence of vl > 1000 in population; * cioa_j ;
+* prep_vlg1000_threshold;		%sample(prep_vlg1000_threshold, 0.005 0.01, 0.5 0.5); * if prep use depends on prevalence of vl > 1000 in population, what is the threshold ?;
+
 * add_prep_any_uptake_sw;		add_prep_any_uptake_sw=0; 		***this may be sampled at a later date; 
+
 
 
 * ORAL PREP ;
@@ -854,8 +869,9 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * a person prep_any_elig=1 will only actually have a chance of starting prep if prep_any_willing=1;
 
 
-* date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
+
+* date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
 * prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1); 			* Probability of starting oral PrEP in people who are eligible and willing who have 
 																							tested for HIV for other reasons (ie not explicitly for starting PrEP);
@@ -889,11 +905,12 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ;
 
+* prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
+* prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
+
 * date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 3000);	* Introduction of injectable cab PrEP ;	* consider len as the only la prep option;
 * date_prep_len_intro;			date_prep_len_intro=2026;	* Introduction of injectable len PrEP ;		* Note for BMGF analysis we may want to sample across (2026, 3000) to introduce ami with and without len;
 * date_prep_len_intro;			date_prep_len_intro=2019;	* QUERY - remove once finished checking code;
-* prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
-* prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;						* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;						* Assume 5 years to scale up injectable len prep;
 
@@ -909,9 +926,12 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 														* REF HIV MC joint project - this takes into account delayed or skipped injections ;
 														* QUERY we may need to revisit this 0.25 for len - think it should be 0.5;
 
-* rate_choose_stop_prep_cab; 	%sample_uniform(rate_choose_stop_prep_cab, 0.01  0.03  0.05  0.1 0.15);  * len_prep ;
-* rate_choose_stop_prep_len; 	rate_choose_stop_prep_len = rate_choose_stop_prep_cab ;
+* rate_choose_stop_prep_cab; 	%sample_uniform(rel_rate_choose_stop_prep_cab, 0.2 0.33);
+								rate_choose_stop_prep_cab = rel_rate_choose_stop_prep_cab * rate_choose_stop_prep_oral;
+* rate_choose_stop_prep_len; 	%sample_uniform(rel_rate_choose_stop_prep_len, 0.2 0.33);
+								rate_choose_stop_prep_len = rel_rate_choose_stop_prep_len * rate_choose_stop_prep_oral;
 								* dependent_on_time_step_length ;
+
 * cablen_extra_pref;			%sample_uniform(cablen_extra_pref,      0.5 0.7 1) ; 
 * pref_prep_cablen_beta_s1;		pref_prep_cablen_beta_s1 = pref_prep_oral_beta_s1 + cablen_extra_pref ; * tends to be more preference for inj ;
 
@@ -989,22 +1009,26 @@ end;
 
 
 
-* MONTHLY ORAL MK-8527 PrEP;	*ami = alimatravir ;
+* MONTHLY ORAL AMI PrEP;	*ami = alimatravir, MK-8527 ;
 * m184v mutation selected in presence of alimatravir (same as islatravir);
 * tail after cessation of product is not coded;
 
-* date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
-* prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 					* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
-* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3);
+* prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 						* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
 
-* prob_prep_ami_b;				%sample_uniform(prob_prep_ami_b, 0.01 0.05 0.1 0.3);  		* sampled from same distribution as CAB & LEN PrEP initially;
+* date_prep_ami_intro;			date_prep_ami_intro=3000;										* Introduction of ami PrEP ;
+* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3);
+* change_prep_ami_avail;		%sample(change_prep_ami_avail, 1 2 3 4, 0.7 0.1 0.1 0.1);		* Marker for changing availability of ami prep in options ;
+* rel_prep_ami_avail;			rel_prep_ami_avail=1;											* Default value for rel_prep_ami_avail - continued availability;
+
+* prob_prep_ami_b;				%sample_uniform(prob_prep_ami_b, 0.01 0.05 0.1 0.3);  			* sampled from same distribution as CAB & LEN PrEP initially;
 								* probability of starting ami PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
 * prob_prep_ami_restart_choice; %sample_uniform(prob_prep_ami_restart_choice, 0.05 0.10 0.20);
 
 * annual_testing_prep_ami;		annual_testing_prep_ami=0.25;	* frequency of HIV testing for people on MK-8527 PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 
-* rate_choose_stop_prep_ami; 	%sample_uniform(rate_choose_stop_prep_ami, 0.01  0.03  0.05  0.1 0.15);		* sampled from same distribution as CAB PrEP initially;
-								* dependent_on_time_step_length ;                                          
+* rate_choose_stop_prep_ami; 	%sample_uniform(rel_rate_choose_stop_prep_ami, 0.2 0.33 0.67);
+								rate_choose_stop_prep_ami = rel_rate_choose_stop_prep_ami * rate_choose_stop_prep_oral;
+								* dependent_on_time_step_length ;
 
 * add_pref_prep_ami;			%sample_uniform(add_pref_prep_ami, 0.1 0.2 0.3);
 * pref_prep_ami_beta_s1;		pref_prep_ami_beta_s1 = pref_prep_oral_beta_s1 + add_pref_prep_ami ; 		* assume ami is more preferable than daily oral pill;
@@ -2536,7 +2560,8 @@ data r&da1(drop=
     cd4_lt200_uvl21 cd4_lt200_uvl22 cd4_monitoring cd4_per1_art_int cd4_per1_art_int_100200
     cd4_per1_art_int_lt100 cd4_per2_art_int cd4_per2_art_int_100200 cd4_per2_art_int_lt100
     cd4art_started_this_period cd4diag_diag_this_period ceb_w1524 ceb_w2534 ceb_w3544
-    ceb_w4549 ch_risk_diag ch_risk_diag_newp circ_inc_15_19 circ_inc_rate
+    ceb_w4549 ch_risk_diag ch_risk_diag_newp change_prep_ami_avail change_prep_any_strategy change_prep_testing_policy
+	circ_inc_15_19 circ_inc_rate
     circ_inc_rate_year_i circ_red_10_14 circ_red_20_30 circ_red_30_50 clinic_not_aw_int_frac
     cm_1stvis_return_vlmg1000 conc conc_ep condom_change_year_i condom_disrup_covid
     continuous_prep_oral_ge1yr cotrim_disrup_covid cov_death_risk_mult crag_cd4_l100
@@ -2552,8 +2577,9 @@ data r&da1(drop=
     cva_inc_all_modsev_6069m cva_inc_all_modsev_6069w cva_inc_all_modsev_7079m
     cva_inc_all_modsev_7079w cva_inc_all_modsev_ge18m cva_inc_all_modsev_ge18w
     cva_inc_all_modsev_ge65 cva_inc_all_modsev_ge80m cva_inc_all_modsev_ge80w d_diag_m
-    d_diag_w d_hiv_epi_mw d_hiv_epi_wm d_onart d_s_newp d_vls daly_mtct date_prep_cab_intro
-    date_prep_len_intro date_test_rate_plateau ddaly_mtct ddaly_non_aids_pre_death dead_a_yn
+    d_diag_w d_hiv_epi_mw d_hiv_epi_wm d_onart d_s_newp d_vls daly_mtct 
+	date_prep_cab_intro	date_prep_len_intro
+	date_test_rate_plateau ddaly_mtct ddaly_non_aids_pre_death dead_a_yn
     dead_all dead_art_1p dead_cvd dead_cvd_2544 dead_cvd_3039m dead_cvd_3039w dead_cvd_4049m
     dead_cvd_4049w dead_cvd_4564 dead_cvd_5059m dead_cvd_5059w dead_cvd_6069m dead_cvd_6069w
     dead_cvd_7079m dead_cvd_7079w dead_cvd_ge18 dead_cvd_ge65 dead_cvd_ge80m dead_cvd_ge80w
@@ -2774,7 +2800,7 @@ data r&da1(drop=
     prep_any_strategy prep_cab_effect_inm_partner prep_cab_efficacy
     prep_dependent_prev_vg1000 prep_len_effect_cam_partner prep_len_efficacy prep_newp
     prep_newpg0 prep_newpg1 prep_newpg2 prep_newpg3 prep_newpg4 prep_oral_disrup_covid
-    prep_oral_efficacy prep_vlg1000_threshold prev_ratio_1524 prev_vg1000_1549
+    prep_oral_efficacy prep_testing_policy prep_vlg1000_threshold prev_ratio_1524 prev_vg1000_1549
     prevalence1524m prevalence1524w prevalence1549 prevalence2534m prevalence2534w
     prevalence3544m prevalence3544w prevalence4554m prevalence4554w prevalence5564m
     prevalence5564w primary1519m primary1519w primary1524m_ep primary1524m_epnewp
@@ -2799,7 +2825,7 @@ data r&da1(drop=
     prob_prep_ami_restart_choice prob_prep_cab_restart_choice prob_prep_len_restart_choice prob_prep_oral_restart_choice
 	prob_prep_any_visit_counsel prob_prep_cab_b
     prob_prep_elig_msm prob_prep_elig_pwid prob_prep_len_b prob_prep_oral_b
-    prob_prep_pop_wide_tld prob_return_adc prob_sbp_increase prob_self_test_hard_reach
+    prob_prep_pop_wide_tld prob_return_adc prob_sbp_increase prob_self_test_hard_reach prob_self_test_onprep
     prob_start_pwid prob_stop_pwid prob_strong_pref_lencab prob_test_2ndtrim
     prob_test_pop_wide_tld_prep prob_test_postdel prob_test_sbp_diagnosed
     prob_test_sbp_undiagnosed prob_tld_hiv_concern prob_vl_meas_done prop_bmi_ge23 prop_m_msm
@@ -2822,7 +2848,9 @@ data r&da1(drop=
     recent_vm_gt1000_dol recent_vm_gt1000_efa recent_vm_gt1000_zdv red_adh_multi_pill_pop
     red_adh_tb_adc red_adh_tox_pop red_chance_ep_msm red_int_risk_poc_vl
     reg_option_107_after_cab rel_dol_tox rel_pr_cam_len_prep_tail_primary
-    rel_pr_inm_cab_prep_tail_primary rel_prep_oral_adh_younger rel_rate_death_crypm_diag_e
+    rel_pr_inm_cab_prep_tail_primary rel_prep_ami_avail rel_prep_oral_adh_younger 
+	rel_rate_choose_stop_prep_ami rel_rate_choose_stop_prep_cab rel_rate_choose_stop_prep_len
+	rel_rate_death_crypm_diag_e
     rel_rate_death_oth_adc_diag_e rel_rate_death_sbi_diag_e rel_rate_death_tb_diag_e
     rel_rate_interrupt_lencab rel_sw_lower_adh res_level_dol_cab_mut res_level_len_mut
     res_trans_factor_ca res_trans_factor_ii res_trans_factor_nn res_vfail1 return_lost_yn risk_nip_m risk_nip_w
@@ -3877,7 +3905,39 @@ who may be dead and hence have caldate{t} missing;
 
  	*Option 1;
 	if option = 1 then do;
-		date_prep_ami_intro=2028;										 
+
+		* Introduce ami prep from 2028;
+		date_prep_ami_intro=2028;
+
+		* Select prep_any_strategy for all prep types;
+		select (change_prep_any_strategy);
+			when (2) prep_any_strategy=20; * FSW;
+			when (3) prep_any_strategy=21; * FSW, MSM, PWID, PLW;
+			when (4) prep_any_strategy=22; * FSW, MSM, PWID, PLW, AGYW;
+			otherwise;	* (1) = no change;
+		end;
+
+		* Select future availability of ami prep (from 5 years after introduction);
+		select (change_prep_ami_avail);
+			when (1) rel_prep_ami_avail=1; 		* no change;
+			when (2) rel_prep_ami_avail=0.75;	* 75%;
+			when (3) rel_prep_ami_avail=0.50;	* 50%;
+			when (4) rel_prep_ami_avail=0.25;	* 25%;
+			otherwise rel_prep_ami_avail=1;		* default no change;
+		end;
+
+		* Select testing policy for prep;
+		select (change_prep_testing_policy);
+			when (0) prep_testing_policy=0;		* continue existing testing policy (3-monthly rapid Ab test delivered by health worker);
+			when (1) prep_testing_policy=1;		* self-test is recommended but not required to start, continue or switch PrEP ;
+			otherwise prep_testing_policy=0;	* default no change;
+		end;
+
+/*		if prep_testing_policy=1 */
+/*			then eff_prob_self_test_onprep=prob_self_test_onprep */
+/*			else eff_prob_self_test_onprep=0;*/
+			** QUERY - this is breaking code, why?? ;
+
 	end;
  
 end;
@@ -3957,8 +4017,14 @@ if (caldate{t} = date_prep_len_intro > . and age ge 15) or (age = 15 and caldate
 end;
 
 if (caldate{t} = date_prep_ami_intro > . and age ge 15) or (age = 15 and caldate{t} >= date_prep_ami_intro > .) then do;
-	* pref_prep_ami;	pref_prep_ami=rand('beta',pref_prep_ami_beta_s1,5);			
+	* pref_prep_ami;	pref_prep_ami=rand('beta',pref_prep_ami_beta_s1,5);		
+	r_ami_avail = rand('uniform');			* random number drawn once per person - decides who keeps access to ami if availability declines JAS 2026;;	
 end;	
+
+* from 5 years after introduction only a proportion of people can get ami - JAS Nov2026;
+if date_prep_ami_intro > . and caldate{t} >= (date_prep_ami_intro + 5) and rel_prep_ami_avail < r_ami_avail then do;
+	pref_prep_ami=0;  prep_ami_willing=0;
+end;
 
 if . < caldate{t} < date_prep_oral_intro or date_prep_oral_intro=. then pref_prep_oral = 0;
 if . < caldate{t} < date_prep_cab_intro or date_prep_cab_intro=. or caldate{t} >= date_prep_len_intro > . then pref_prep_cab = 0; * once len available we want len to be preferred;
@@ -6151,14 +6217,14 @@ end;
 if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_first_intro > . then do;   
 * note that hard_reach = 0 removed from here and inserted as a condition when comes to assess starting prep;
 
-	* Define random variables r and s that are held constant for continuous periods of prep eligibility;
+	* Define random variables r and r2 that are held constant for continuous periods of prep eligibility;
 	r_prep_tm1=r_prep;
 	if prep_any_elig_tm1=1 then r_prep=r_prep_tm1; 
 	else r_prep = rand('Uniform');
 
-	s_prep_tm1=s_prep;
-	if prep_any_elig_tm1=1 then s_prep=s_prep_tm1; 
-	else s_prep = rand('Uniform');
+	r2_prep_tm1=r2_prep;
+	if prep_any_elig_tm1=1 then r2_prep=r2_prep_tm1; 
+	else r2_prep = rand('Uniform');
 
 	* PrEP eligibility criteria;
 	if prep_any_strategy=1 then do;		*FSW and/or AGYW;
@@ -6176,9 +6242,9 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_first_intro > . then do
 		(newp ge 1 or (epdiag=1 and epart ne 1) or (ep=1 and epart ne 1 and (r_prep < 0.05 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
-	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	* QUERY updated to remove gender=2 and change r_prep proportion from 0.05 to 0.01 JAS Nov2026;
+	if prep_any_strategy=4 then do;	* used in oral prep ms and cab-la resistance ms;	* updated to change r_prep proportion from 0.05 to 0.01 JAS Nov2026;
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(/*gender=2 and*/ 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1))) ) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=5 then do;   
@@ -6198,9 +6264,9 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_first_intro > . then do
         and 15 <= age < 50) then prep_any_elig=1; 
     end;
 
-	if prep_any_strategy=8 then do;	* as 4 but change in prop ep;	* QUERY updated to remove gender=2 and change r_prep proportion from 0.1 to 0.01 JAS Nov2026;
+	if prep_any_strategy=8 then do;	* as 4 but change in prop ep;	* updated to change r_prep proportion from 0.1 to 0.01 - note that 8 is now the same as 4 - JAS Nov2026;
       	if (newp ge 1 or (epdiag=1 and epart ne 1) or 
-      	(/*gender=2 and*/ 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01  or (r_prep < 0.5 and epi=1))) ) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01  or (r_prep < 0.5 and epi=1))) ) then prep_any_elig=1; 
 	end;
 
     if prep_any_strategy=9 then do; * as 5 but change in prop ep;     
@@ -6228,9 +6294,9 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_first_intro > . then do
     	if gender=2 and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) then prep_any_elig=1; 
     end;
 
-	if prep_any_strategy=14 then do;	* as 4 but with newp_tm1 ge 1 also;		* QUERY updated to remove gender=2 and change r_prep proportion from 0.05 to 0.01 JAS Nov2026;
+	if prep_any_strategy=14 then do;	* as 4 but with newp_tm1 ge 1 also;		* updated to change r_prep proportion from 0.05 to 0.01 JAS Nov2026;
       	if (newp ge 1 or newp_tm1 ge 1 or (epdiag=1 and epart ne 1) or 
-      	(/*gender=2 and*/ 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)))) then prep_any_elig=1; 
 	end;
 
 	if prep_any_strategy=15 then do;	* Serodiscordant couples - new for MIHPSA Zimbabwe; *JAS Apr2023;
@@ -6257,19 +6323,46 @@ if t ge 2 and (registd ne 1) and caldate{t} >= date_prep_first_intro > . then do
 	end;
 
 	if prep_any_strategy=19 then do;	* as 4 but excludes heterosexual men and includes msm;	
-		* QUERY updated to remove gender=2 and change r_prep proportion from 0.05 to 0.01 JAS Nov2026;
+		* updated to change r_prep proportion from 0.05 to 0.01 JAS Nov2026;
       	if 
-		(newp ge 1/* and gender=2*/) 
+		(newp ge 1 and gender=2) 
 		or 
-		(epdiag=1 and epart ne 1/* and gender=2*/) 
+		(epdiag=1 and epart ne 1 and gender=2) 
 		or 
-      	(/*gender=2 and */15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)))
+      	(gender=2 and 15 <= age < 50 and ep=1 and epart ne 1 and (r_prep < 0.01 or (r_prep < 0.5 and epi=1)))
  		then prep_any_elig=1; 
 
-		if (msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65) or (pwid = 1 and s_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
+		if (msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65) or (pwid = 1 and r2_prep < prob_prep_elig_pwid ) then prep_any_elig=1; 
 		* MSM PrEP eligibility restricted to 15-64 because HIV risk stops from age 65;
 	end;
 
+	* New PrEP strategies for ami analysis (20-22);	* JAS Nov2026;
+	* 60% of runs will continue with SQ (sampled from 4, 8, 14, 19);
+	*** QUERY - add sexual risk component for FSW and MSM?? Currently included for PLW and AGYW only ;
+
+	* 20: FSW;
+	if prep_any_strategy=20 then do;
+		if sw=1 		/* FSW */ 	
+		then prep_any_elig=1;	
+	end;
+
+	* 21: FSW, MSM, PWID, PLW;
+	if prep_any_strategy=21 then do;
+      	if sw=1																				/* FSW */
+		or ( msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65)		/* MSM - as in strategy 19 */
+		or ( pwid = 1 and r2_prep < prob_prep_elig_pwid )									/* PWID - as in strategy 19 - QUERY  do we need age restriction here?  */
+		or ( plw=1 and ( newp ge 1 or newp_tm1 ge 1 or newp_tm2 ge 1 or ep=1 ) )			/* PLW - as in strategy 16 */
+		then prep_any_elig=1; 
+	end;
+
+	* 22: FSW, MSM, PWID, PLW, AGYW;
+	if prep_any_strategy=22 then do;
+      	if sw=1																				/* FSW */
+		or ( msm=1 and msm_random_this_period < prob_prep_elig_msm and 15 <= age < 65)		/* MSM - as in strategy 19 */
+		or ( pwid = 1 and r2_prep < prob_prep_elig_pwid )									/* PWID - as in strategy 19 - QUERY  do we need age restriction here?  */
+		or ( agyw=1 and ( newp ge 1 or ep=1 ) )												/* AGYW */
+		then prep_any_elig=1; 
+	end;
 
 	if prep_any_elig=1 then date_most_recent_prep_any_elig=caldate{t};
 
@@ -6278,28 +6371,35 @@ end;
 
 
 
-	* SELF-TESTING;
+* SELF-TESTING;
 
-	eff_self_test_targeting = self_test_targeting;
+eff_self_test_targeting = self_test_targeting;
 
-	w = rand('uniform');	
-	if caldate{t} ge date_self_test_intro and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
-
-		u_self_test=rand('uniform');
- 		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
-		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
-		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < eff_rate_self_test then do;
-			self_tested=1; 
-			dt_last_self_test=caldate{t}; 
-		end;
+w = rand('uniform');	
+if caldate{t} ge date_self_test_intro and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
+	u_self_test=rand('uniform');
+ 	if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
+	if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
+	if tested ne 1 and (caldate{t}-max(0,dt_last_self_test) >= 0.25) and u_self_test < eff_rate_self_test then do;		** QUERY - check caldate{t] ?? ;
+		self_tested=1; 
+		dt_last_self_test=caldate{t}; 
 	end;
+end;
 
-	v = rand('uniform'); z = rand('uniform');
-	if self_tested = 1 and hiv = 1 and z < prob_pos_self_test_conf and v < self_test_sens then do; 
-	tested=1; tested_due_to_self_test=1;
-	dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
-	end;
-	* note this depends on primary infection lasting 3 months - ts1m ;
+* Self-testing on prep when recommended by prep testing policy (prep_testing_policy=1) JAS Nov2026;
+u_self_test_prep=rand('uniform');
+if prep_testing_policy=1 and prep_any_tm1=1 and tested ne 1 and (caldate{t}-max(0,dt_last_self_test) >= 0.25) and u_self_test_prep < eff_prob_self_test_onprep then do;
+		self_tested=1; 
+		dt_last_self_test=caldate{t}; 
+end;
+
+
+v = rand('uniform'); z = rand('uniform');
+if self_tested = 1 and hiv = 1 and z < prob_pos_self_test_conf and v < self_test_sens then do; 
+tested=1; tested_due_to_self_test=1;
+dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+end;
+* note this depends on primary infection lasting 3 months - ts1m ;
 
 
 
@@ -6376,6 +6476,11 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 	then do;
 
 
+		** QUERY - correct place for this code? ; * JAS Nov2026;
+		start_without_test=0;
+		_sv_dt_last_test=dt_last_test; _sv_ever_tested=ever_tested; _sv_date1test=date1test;
+		_sv_np_lasttest=np_lasttest; _sv_newp_lasttest=newp_lasttest; _sv_nltp=newp_lasttest_tested_this_per;
+
 		*Testing before ever starting PrEP;
 
 		*only people eligible for PrEP have the additional testing rate (otherwise lots of people will get tested additionally
@@ -6421,7 +6526,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 					end;
 
 					* Only ami PrEP available;
-					when (caldate{t} ge date_prep_ami_intro > . and 
+					when (caldate{t} ge date_prep_ami_intro > . and
 					(. < caldate{t} < min(date_prep_oral_intro, date_prep_cab_intro, date_prep_len_intro) or min(date_prep_oral_intro, date_prep_cab_intro, date_prep_len_intro)=.)) do;	
 					if prep_ami_willing=1 then do;		*Regardless of preference, person will test for ami PrEP if willing;
 							tested=1; tested_prep_any_start=1; tested_prep_ami_start=1;
@@ -6500,7 +6605,7 @@ and ((testing_disrup_covid ne 1 or covid_disrup_affected ne 1 )) then do;
 		end;
 
 		*Routine testing while on PREP;
-		else if prep_any_ever=1 and prep_any_elig=1 then do;
+		else if prep_any_ever=1 and prep_any_elig=1 and prep_testing_policy ne 1 then do;	* QUERY prep_testing_policy ne 1 added to skip testing when continung PrEP in self-test scenario JAS Nov2026 ;
 
 			* PrEP testing 2: testing during continuous PrEP use ;
 			* Oral PrEP ;
@@ -6646,7 +6751,14 @@ if t ge 4 and not missing(date_prep_first_intro) and caldate{t} ge date_prep_fir
 	*it was tested_tm1=1 and hiv_tm1=0. Now changed to tested=1 and commented out hiv_tm1=0 because
 	we want people who are false negative to also start PrEP, this is the reason why hiv=0 is now commented out;
 
-	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
+	** QUERY - correct place for this code? ; * JAS Nov2026;
+	if prep_testing_policy=1 and tested_prep_any_start=1 then do;
+		tested=0; start_without_test=1;
+		dt_last_test=_sv_dt_last_test; ever_tested=_sv_ever_tested; date1test=_sv_date1test;		** QUERY - these are suggested by claude, check update is correct ;
+		np_lasttest=_sv_np_lasttest; newp_lasttest=_sv_newp_lasttest; newp_lasttest_tested_this_per=_sv_nltp;
+	end;
+
+	if prep_any_ever ne 1 and (tested=1 or start_without_test=1) and (start_without_test=1 or hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		** QUERY - check self-testing option here;
 	* starting PrEP for the first time ever;
 	 
 		if prep_any_willing=1 and hard_reach ne 1 then do; 
@@ -6936,7 +7048,7 @@ if t ge 4 and not missing(date_prep_first_intro) and caldate{t} ge date_prep_fir
 			* prep_xxx_restart_date_choice		date of PrEP restart following decision to stop PrEP (previously dt_prep_xxx_rs);
 			* prep_xxx_restart_date_eligible	date of PrEP restart following pause due to ineligibility (np=0) (previously dt_prep_xxx_c);
 
-			if tested=1 then do; * dependent_on_time_step_length;
+			if tested=1 or prep_testing_policy=1 then do; * dependent_on_time_step_length;		** QUERY - added JAS Nov2026;
 				if stop_prep_any_choice=1 then do;				* person previously chose to discontinue PrEP;
 					r=rand('uniform'); 
 					select;			
@@ -7146,6 +7258,7 @@ if hiv=1 and tested=1 and prep_any=1 then prep_falseneg=1;
 
 *PrEP clinic visits - modified Jan2017 f_prep;
 * assume 3-monthly visits for this section;
+** QUERY - update if we change testing frequency to 6 months (or less often)? ;
 visit_prep_any=0; visit_prep_oral=0; visit_prep_cab=0; visit_prep_len=0; visit_prep_ami=0;	* JAS Nov2026;
 if caldate{t} ge date_prep_first_intro and not missing(date_prep_first_intro) and registd ne 1 and prep_any_elig=1 and (pop_wide_tld ne 1 or tested=1) then do;
 	if prep_any=0 then do;
@@ -7169,12 +7282,14 @@ if caldate{t} ge date_prep_first_intro and not missing(date_prep_first_intro) an
 				end;
 			end;
 			when (prep_cab=1) do;
+				if tested ne 1 then visit_prep_cab=1; 		*drug pick-up only;
 				if tested=1 then do;
 					visit_prep_cab=2; 	* incl HIV test;
 					if r < prob_prep_any_visit_counsel then do; visit_prep_cab=3; end; *drug pick-up and counselling;
 				end;
 			end;
 			when (prep_len=1) do;
+				if tested ne 1 then visit_prep_len=1; 		*drug pick-up only;
 				if tested=1 then do;
 					visit_prep_len=2; 	* incl HIV test;
 					if r < prob_prep_any_visit_counsel then do; visit_prep_len=3; end; *drug pick-up and counselling;	* QUERY - check costs all make sense ;
@@ -23259,19 +23374,21 @@ base_rate_sw
 sw_art_disadv  sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
 zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
-prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
+prep_any_strategy change_prep_any_strategy change_prep_testing_policy prep_testing_policy prob_self_test_onprep 
+prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
 rel_prep_oral_adh_younger 
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
-prep_oral_efficacy							prob_prep_oral_b	rate_choose_stop_prep_oral	annual_testing_prep_oral
-prep_cab_efficacy	date_prep_cab_intro		prob_prep_cab_b		rate_choose_stop_prep_cab	annual_testing_prep_cab
-prep_len_efficacy	date_prep_len_intro		prob_prep_len_b		rate_choose_stop_prep_len	annual_testing_prep_len
-prep_ami_efficacy	dur_prep_ami_scaleup	prob_prep_ami_b		rate_choose_stop_prep_ami	annual_testing_prep_ami
+prep_oral_efficacy							prob_prep_oral_b									rate_choose_stop_prep_oral	annual_testing_prep_oral
+prep_cab_efficacy	date_prep_cab_intro		prob_prep_cab_b		rel_rate_choose_stop_prep_cab	rate_choose_stop_prep_cab	annual_testing_prep_cab
+prep_len_efficacy	date_prep_len_intro		prob_prep_len_b		rel_rate_choose_stop_prep_len	rate_choose_stop_prep_len	annual_testing_prep_len
+prep_ami_efficacy	dur_prep_ami_scaleup	prob_prep_ami_b		rel_rate_choose_stop_prep_ami	rate_choose_stop_prep_ami	annual_testing_prep_ami
 
 higher_future_prep_oral_cov
 prep_cab_effect_inm_partner		cab_time_to_lower_threshold_g	incr_res_risk_cab_inf_3m
 prep_len_effect_cam_partner		len_time_to_lower_threshold_g	incr_res_risk_len_inf_3m
 cablen_extra_pref		pref_prep_cablen_beta_s1
+change_prep_ami_avail	rel_prep_ami_avail
 pref_prep_ami_beta_s1	add_pref_prep_ami		prep_ami_effect_res_partner		prep_ami_adh_uplift
 prop_pep  pep_efficacy 
 
@@ -24452,316 +24569,223 @@ run;
    The descriptor guard detects unexpected fields or overlap with compact people.
    Obsolete KEEP-only names may be absent; they do not create feedback variables.
    Reaudit the mutable subset if the model gains new assignments in future.
+   Each list is typed ONCE below, in UPPER CASE (the comparison uses upcase(name)):
+     _ami_mutable        = feedback fields the person step can MODIFY (saved/restored for each person)
+     _ami_extra_allowed  = all other fields allowed in _hiv_feedback (read-only parameters, t_ summaries etc.)
+   Allowed fields = _ami_mutable + _ami_extra_allowed.
+   A new feedback field must also be in: the person-record drop list, the sums keep list and the final keep list.
 */
 %if not %symexist(_ami_fb_numeric_count) %then %do;
     %global _ami_fb_numeric _ami_fb_numeric_count
             _ami_fb_character _ami_fb_character_count _ami_fb_character_length;
-    %local _ami_fb_unexpected _ami_fb_overlap;
+    %local _ami_fb_unexpected _ami_fb_overlap _ami_mutable _ami_extra_allowed;
     %let _ami_fb_numeric=;
     %let _ami_fb_character=;
+
+    %let _ami_mutable =
+            'ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ART_LOW_ADH_DISRUP_COVID',
+            'ART_TLD_DISRUP_COVID', 'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH',
+            'CD4_MONITORING', 'CIRC_INC_RATE_YEAR_I', 'CM_1STVIS_RETURN_VLMG1000',
+            'CONDOM_CHANGE_YEAR_I', 'CONDOM_DISRUP_COVID', 'COTRIM_DISRUP_COVID',
+            'COV_DEATH_RISK_MULT', 'CRAG_CD4_L100', 'CRAG_CD4_L200', 'D_HIV_EPI_MW', 'D_HIV_EPI_WM',
+            'DATE_PREP_CAB_INTRO', 'DISCOUNT', 'EXP_SETTING_LOWER_P_VL1000', 'FX',
+            'HIGHER_FUTURE_PREP_ORAL_COV', 'HIGHER_NEWP_LESS_ENGAGEMENT',
+            'HIGHER_NEWP_WITH_LOWER_ADHAV', 'HIVTEST_TYPE_1_INIT_PREP_CAB',
+            'HIVTEST_TYPE_1_INIT_PREP_LEN', 'HIVTEST_TYPE_1_PREP_CAB', 'HIVTEST_TYPE_1_PREP_LEN',
+            'INC_DEATH_RATE_AIDS_DISRUP_COVID', 'INCR_MORT_RISK_DOL_WEIGHTG',
+            'INITIAL_PR_SWITCH_LINE', 'INITIAL_PROB_VL_MEAS_DONE', 'M15R', 'M25R', 'M35R', 'M45R',
+            'M55R', 'NNRTI_RES_NO_EFFECT', 'NO_ART_DISRUP_COVID', 'NON_HIV_TB_RISK', 'OPTION',
+            'POC_VL_MONITORING_I', 'POORER_CD4RISE_FAIL_II', 'POP_WIDE_TLD', 'POP_WIDE_TLD_YEAR_I',
+            'PREP_ANY_STRATEGY', 'PREP_DEPENDENT_PREV_VG1000', 'PREP_ORAL_DISRUP_COVID',
+            'PROB_PREP_POP_WIDE_TLD', 'PROB_SBP_INCREASE', 'REG_OPTION_107_AFTER_CAB',
+            'REL_PREP_AMI_AVAIL', 'SEX_AGE_MIXING_MATRIX_M', 'SEX_AGE_MIXING_MATRIX_W',
+            'SEX_BEH_TRANS_MATRIX_M', 'SEX_BEH_TRANS_MATRIX_W', 'SUPER_INFECTION_POP',
+            'SWITCH_FOR_TOX', 'SWPROG_DISRUP_COVID', 'T_PROP_TAM1', 'T_PROP_TAM2', 'TBLAM_CD4_L100',
+            'TBLAM_CD4_L200', 'TESTING_DISRUP_COVID', 'TR_RATE_UNDETEC_VL',
+            'VL_ADH_SWITCH_DISRUP_COVID', 'VMMC_DISRUP_COVID', 'W15R', 'W25R', 'W35R', 'W45R',
+            'W55R', 'ZDV_POTENCY_P75', 'ZERO_3TC_ACTIVITY_M184', 'ZERO_TDF_ACTIVITY_K65R';
+
+    %let _ami_extra_allowed =
+            'ADD_EFF_ADH_NNRTI', 'ADD_PREF_PREP_AMI', 'ADD_PREP_ANY_UPTAKE_SW',
+            'ADH_EFFECT_OF_MEAS_ALERT', 'ADH_PATTERN', 'AMI_HIGHER_POTENCY',
+            'ANNUAL_TESTING_PREP_AMI', 'ANNUAL_TESTING_PREP_CAB', 'ANNUAL_TESTING_PREP_LEN',
+            'ANNUAL_TESTING_PREP_ORAL', 'AN_LIN_INCR_TEST', 'ART_INIT_DISRUP_COVID',
+            'BASE_RATE_STOP_SEXWORK', 'BASE_RATE_SW', 'CABLEN_EXTRA_PREF', 'CAB_HIGHER_POTENCY',
+            'CAB_TIME_TO_LOWER_THRESHOLD_G', 'CHANGE_PREP_AMI_AVAIL', 'CHANGE_PREP_ANY_STRATEGY',
+			'CHANGE_PREP_TESTING_POLICY', 
+            'CH_RISK_DIAG', 'CH_RISK_DIAG_NEWP', 'CIRC_INC_15_19', 'CIRC_INC_RATE',
+            'CIRC_RED_10_14', 'CIRC_RED_20_30', 'CIRC_RED_30_50', 'CLINIC_NOT_AW_INT_FRAC',
+            'CONC_EP', 'CRAG_EFF_PROB_DIAG_L', 'CRYPM_BASE_PROB_DIAG_L', 'CUM_RATIO_NEWP_MW',
+            'DATE_PREP_LEN_INTRO', 'DATE_TEST_RATE_PLATEAU', 'DEATH_R_IRIS_POP_WIDE_TLD',
+            'DOUBLE_RATE_GAS_TOX_TAZ', 'DUR_PREP_AMI_SCALEUP', 'D_DIAG_M', 'D_DIAG_W', 'D_ONART',
+            'D_S_NEWP', 'D_VLS', 'EFFECT_CRYPM_PROPH', 'EFFECT_SBI_PROPH', 'EFFECT_SW_PROG_6MTEST',
+            'EFFECT_SW_PROG_ADH', 'EFFECT_SW_PROG_INT', 'EFFECT_SW_PROG_LOSSDIAG',
+            'EFFECT_SW_PROG_NEWP', 'EFFECT_SW_PROG_PERS_STI', 'EFFECT_SW_PROG_PREP_ANY',
+            'EFFECT_TB_PROPH', 'EFFECT_VISIT_PROB_DIAG_L', 'EPRATE', 'EXTERNAL_EXP_FACTOR',
+            'FOLD_CHANGE_MUT_RISK', 'FOLD_CHANGE_STI', 'FOLD_CHANGE_W', 'FOLD_CHANGE_YW', 'FOLD_TR',
+            'FOLD_TR_NEWP', 'FOLD_TR_PWID', 'GREATER_DISABILITY_TOX', 'GREATER_TOX_ZDV', 'GX',
+            'HARD_REACH_HIGHER_IN_MEN', 'INCIDENCE1524M_EPNEWP', 'INCIDENCE1524W_EPNEWP',
+            'INCIDENCE1549', 'INCIDENCE1549M', 'INCIDENCE1549W', 'INCIDENCE2534M_EPNEWP',
+            'INCIDENCE2534W_EPNEWP', 'INCIDENCE3544M_EPNEWP', 'INCIDENCE3544W_EPNEWP',
+            'INCIDENCE4554M_EPNEWP', 'INCIDENCE4554W_EPNEWP', 'INCIDENCE5564M_EPNEWP',
+            'INCIDENCE5564W_EPNEWP', 'INCR_ADH_POC_VL', 'INCR_DEATH_RATE_CRYPM',
+            'INCR_DEATH_RATE_OTH_ADC', 'INCR_DEATH_RATE_SBI', 'INCR_DEATH_RATE_TB',
+            'INCR_LEN_RES_MONO', 'INCR_RATE_INT_LOW_ADH', 'INCR_RES_RISK_CAB_INF_3M',
+            'INCR_RES_RISK_LEN_INF_3M', 'INCR_TEST_RATE_SYMPT', 'INC_CAT',
+            'IND_EFFECT_ART_HIV_DISEASE_DEATH', 'ISL_HIGHER_POTENCY', 'ISL_OLE_ADH_IMPROVE',
+            'KEEP_GOING_1999', 'KEEP_GOING_2004', 'KEEP_GOING_2016', 'KEEP_GOING_2020',
+            'LENCAB_UPTAKE', 'LENCAB_UPTAKE_VLG1000', 'LEN_HIGHER_POTENCY',
+            'LEN_TIME_TO_LOWER_THRESHOLD_G', 'LOWER_FUTURE_ART_COV', 'MAX_FREQ_TESTING',
+            'MSM_RISK_CLS', 'MSM_RRED', 'MSM_RR_LOSS_AT_DIAG', 'MSM_TR_FACTOR', 'N', 'NEWP_FACTOR',
+            'NON_HIV_TB_DEATH_RISK', 'NON_HIV_TB_PROB_DIAG_E', 'NTD_RISK_DOL',
+            'ORAL_PREP_EFF_3TC_TEN_RES', 'OTH_DOL_ADV_BIRTH_E_RISK', 'PEP_EFFICACY',
+            'POORER_CD4RISE_FAIL_NN', 'POP_WIDE_PREP_ADH_EFFECT', 'POP_WIDE_TLD_SELECTIVE_HIV',
+            'PREF_PREP_AMI_BETA_S1', 'PREF_PREP_CABLEN_BETA_S1', 'PREF_PREP_ORAL_BETA_S1',
+            'PREP_AMI_ADH_UPLIFT', 'PREP_AMI_EFFECT_RES_PARTNER', 'PREP_AMI_EFFICACY',
+            'PREP_CAB_EFFECT_INM_PARTNER', 'PREP_CAB_EFFICACY', 'PREP_LEN_EFFECT_CAM_PARTNER',
+            'PREP_LEN_EFFICACY', 'PREP_ORAL_EFFICACY', 'PREP_TESTING_POLICY', 
+			'PREP_VLG1000_THRESHOLD', 'PREVALENCE1524M',
+            'PREVALENCE1524W', 'PREVALENCE1549', 'PREVALENCE2534M', 'PREVALENCE2534W',
+            'PREVALENCE3544M', 'PREVALENCE3544W', 'PREVALENCE4554M', 'PREVALENCE4554W',
+            'PREVALENCE5564M', 'PREVALENCE5564W', 'PREV_RATIO_1524', 'PREV_VG1000_1549',
+            'PROB_INTENSIFY_1_2', 'PROB_INTENSIFY_2_3', 'PROB_LOSSDIAG_ADCTB',
+            'PROB_LOSSDIAG_NON_TB_WHO3E', 'PROB_LOSS_AT_DIAG', 'PROB_LOST_ART',
+            'PROB_ONARTVIS0_0_TO_1', 'PROB_ONARTVIS0_1_TO_0', 'PROB_POS_SELF_TEST_CONF',
+            'PROB_PREGNANCY_BASE', 'PROB_PREP_AMI_B', 'PROB_PREP_AMI_RESTART_CHOICE',
+            'PROB_PREP_ANY_VISIT_COUNSEL', 'PROB_PREP_CAB_B', 'PROB_PREP_CAB_RESTART_CHOICE',
+            'PROB_PREP_ELIG_MSM', 'PROB_PREP_ELIG_PWID', 'PROB_PREP_LEN_B',
+            'PROB_PREP_LEN_RESTART_CHOICE', 'PROB_PREP_ORAL_B', 'PROB_PREP_ORAL_RESTART_CHOICE',
+            'PROB_RETURN_ADC', 'PROB_SELF_TEST_HARD_REACH', 'PROB_SELF_TEST_ONPREP', 'PROB_START_PWID', 'PROB_STOP_PWID',
+            'PROB_STRONG_PREF_LENCAB', 'PROB_TEST_2NDTRIM', 'PROB_TEST_POP_WIDE_TLD_PREP',
+            'PROB_TEST_POSTDEL', 'PROB_TEST_SBP_DIAGNOSED', 'PROB_TEST_SBP_UNDIAGNOSED',
+            'PROB_TLD_HIV_CONCERN', 'PROB_VL_MEAS_DONE', 'PROP_BMI_GE23', 'PROP_MONO_M_1524',
+            'PROP_MONO_M_2534', 'PROP_MONO_M_3544', 'PROP_MONO_M_4554', 'PROP_MONO_M_5564',
+            'PROP_MONO_W_1524', 'PROP_MONO_W_2534', 'PROP_MONO_W_3544', 'PROP_MONO_W_4554',
+            'PROP_MONO_W_5564', 'PROP_M_MSM', 'PROP_PEP', 'PROP_REDATTR_EP_CONDOMS',
+            'PROP_USE_CONDOM_INT_NEWP', 'PROP_V_ALERT_PERM', 'PR_184M_ORAL_PREP_PRIMARY',
+            'PR_65M_ORAL_PREP_PRIMARY', 'PR_ART_INIT', 'PR_CAM_LEN_PREP_PRIMARY',
+            'PR_INM_CAB_PREP_PRIMARY', 'PR_RES_DOL', 'PR_RES_LEN', 'PR_SWITCH_LINE', 'PTNEWP15_M',
+            'PTNEWP15_W', 'PTNEWP25_M', 'PTNEWP25_W', 'PTNEWP35_M', 'PTNEWP35_W', 'PTNEWP45_M',
+            'PTNEWP45_W', 'PTNEWP55_M', 'PTNEWP55_W', 'PWID_RR_LOSS_AT_DIAG', 'P_DIAG',
+            'P_DIAG_EPONART', 'P_DIAG_M', 'P_DIAG_ONART', 'P_DIAG_W', 'P_EPDIAG_M', 'P_EPDIAG_W',
+            'P_HARD_REACH_M', 'P_HARD_REACH_W', 'P_HSB_P', 'P_ONART_EPVLS', 'P_ONART_VLS',
+            'P_RRED_P', 'P_RRED_SW_NEWP', 'P_VL1000', 'RATE_ANC_INC',
+            'RATE_BIRTH_WITH_INFECTED_CHILD', 'RATE_CHOOSE_STOP_PREP_AMI',
+            'RATE_CHOOSE_STOP_PREP_CAB', 'RATE_CHOOSE_STOP_PREP_LEN', 'RATE_CHOOSE_STOP_PREP_ORAL',
+            'RATE_CH_ART_INIT_STR_10', 'RATE_CH_ART_INIT_STR_3', 'RATE_CH_ART_INIT_STR_4',
+            'RATE_CH_ART_INIT_STR_9', 'RATE_CRYPM_PROPH_INIT', 'RATE_DISENGAGE_SW_PROGRAM',
+            'RATE_ENGAGE_SW_PROGRAM', 'RATE_EXP_SET_LOWER_P_VL1000', 'RATE_INT_CHOICE',
+            'RATE_LENCAB_TO_TLD', 'RATE_LOSS_PERSISTENCE', 'RATE_LOST', 'RATE_RESTART',
+            'RATE_RES_TEN', 'RATE_RETURN', 'RATE_RETURN_FOR_LENCAB', 'RATE_SBI_PROPH_INIT',
+            'RATE_SELF_TEST', 'RATE_TB_PROPH_INIT', 'RATE_TEST_ONPREP_ANY',
+            'RATE_TEST_STARTPREP_ANY', 'RATE_TRANS_BREASTFEEDING', 'RED_ADH_MULTI_PILL_POP',
+            'RED_ADH_TB_ADC', 'RED_ADH_TOX_POP', 'RED_CHANCE_EP_MSM', 'RED_INT_RISK_POC_VL',
+            'REL_DOL_TOX', 'REL_PREP_ORAL_ADH_YOUNGER', 'REL_PR_CAM_LEN_PREP_TAIL_PRIMARY',
+            'REL_PR_INM_CAB_PREP_TAIL_PRIMARY', 'REL_RATE_CHOOSE_STOP_PREP_AMI',
+            'REL_RATE_CHOOSE_STOP_PREP_CAB', 'REL_RATE_CHOOSE_STOP_PREP_LEN',
+            'REL_RATE_DEATH_CRYPM_DIAG_E', 'REL_RATE_DEATH_OTH_ADC_DIAG_E',
+            'REL_RATE_DEATH_SBI_DIAG_E', 'REL_RATE_DEATH_TB_DIAG_E', 'REL_RATE_INTERRUPT_LENCAB',
+            'REL_SW_LOWER_ADH', 'RES_LEVEL_DOL_CAB_MUT', 'RES_LEVEL_LEN_MUT', 'RES_TRANS_FACTOR_II',
+            'RES_TRANS_FACTOR_NN', 'RRED_A_P', 'RRED_INITIAL', 'RR_INTERRUPT_POP_WIDE_TLD',
+            'RR_INT_TOX', 'RR_MORT_TDF_PREP', 'RR_NON_AIDS_DEATH_HIV_OFF_ART',
+            'RR_NON_AIDS_DEATH_HIV_ON_ART', 'RR_PWID_FEMALE', 'RR_RES_CAB_DOL',
+            'RR_RETURN_POP_WIDE_TLD', 'RR_TESTING_FEMALE', 'RUN', 'R_EP_MW', 'R_HIV_EPI_BOTH',
+            'R_S_EP_M15W15', 'R_S_EP_M25W25', 'R_S_EP_M35W35', 'R_S_EP_M45W45', 'R_S_EP_M55W55',
+            'SBI_BASE_PROB_DIAG_L', 'SECONDARY_DIST_SELF_TEST', 'SECONDARY_SELF_TEST_TARGETING',
+            'SELF_TEST_SENS', 'SELF_TEST_TARGETING', 'SENS_PRIMARY_TESTTYPE3',
+            'SENS_TESTS_PREP_CAB', 'SENS_TESTS_PREP_LEN', 'SENS_TTYPE1_PREP_CAB_INF3M',
+            'SENS_TTYPE1_PREP_CAB_INFGE6M', 'SENS_TTYPE1_PREP_CAB_PRIMARY',
+            'SENS_TTYPE1_PREP_LEN_INF3M', 'SENS_TTYPE1_PREP_LEN_INFGE6M',
+            'SENS_TTYPE1_PREP_LEN_PRIMARY', 'SENS_TTYPE3_PREP_CAB_INF3M',
+            'SENS_TTYPE3_PREP_CAB_INFGE6M', 'SENS_TTYPE3_PREP_CAB_PRIMARY',
+            'SENS_TTYPE3_PREP_LEN_INF3M', 'SENS_TTYPE3_PREP_LEN_INFGE6M',
+            'SENS_TTYPE3_PREP_LEN_PRIMARY', 'SENS_VCT_TESTTYPE3_CAB_TAIL',
+            'SENS_VCT_TESTTYPE3_LEN_TAIL', 'SUPER_INF_RES', 'SW_ART_DISADV', 'SW_HIGHER_INT',
+            'SW_HIGHER_PROB_LOSS_AT_DIAG', 'SW_PROGRAM', 'SW_TRANS_MATRIX', 'TBLAM_EFF_PROB_DIAG_L',
+            'TB_BASE_PROB_DIAG_L', 'TESTT1_PREP_CAB_EFF_ON_RES_PRIM',
+            'TESTT1_PREP_LEN_EFF_ON_RES_PRIM', 'TEST_TARGETING', 'T_M_NEWP', 'T_PROP_AGEG1_M_VLG1',
+            'T_PROP_AGEG1_M_VLG2', 'T_PROP_AGEG1_M_VLG3', 'T_PROP_AGEG1_M_VLG4',
+            'T_PROP_AGEG1_M_VLG5', 'T_PROP_AGEG1_M_VLG6', 'T_PROP_AGEG1_W_VLG1',
+            'T_PROP_AGEG1_W_VLG2', 'T_PROP_AGEG1_W_VLG3', 'T_PROP_AGEG1_W_VLG4',
+            'T_PROP_AGEG1_W_VLG5', 'T_PROP_AGEG1_W_VLG6', 'T_PROP_AGEG2_M_VLG1',
+            'T_PROP_AGEG2_M_VLG2', 'T_PROP_AGEG2_M_VLG3', 'T_PROP_AGEG2_M_VLG4',
+            'T_PROP_AGEG2_M_VLG5', 'T_PROP_AGEG2_M_VLG6', 'T_PROP_AGEG2_W_VLG1',
+            'T_PROP_AGEG2_W_VLG2', 'T_PROP_AGEG2_W_VLG3', 'T_PROP_AGEG2_W_VLG4',
+            'T_PROP_AGEG2_W_VLG5', 'T_PROP_AGEG2_W_VLG6', 'T_PROP_AGEG3_M_VLG1',
+            'T_PROP_AGEG3_M_VLG2', 'T_PROP_AGEG3_M_VLG3', 'T_PROP_AGEG3_M_VLG4',
+            'T_PROP_AGEG3_M_VLG5', 'T_PROP_AGEG3_M_VLG6', 'T_PROP_AGEG3_W_VLG1',
+            'T_PROP_AGEG3_W_VLG2', 'T_PROP_AGEG3_W_VLG3', 'T_PROP_AGEG3_W_VLG4',
+            'T_PROP_AGEG3_W_VLG5', 'T_PROP_AGEG3_W_VLG6', 'T_PROP_AGEG4_M_VLG1',
+            'T_PROP_AGEG4_M_VLG2', 'T_PROP_AGEG4_M_VLG3', 'T_PROP_AGEG4_M_VLG4',
+            'T_PROP_AGEG4_M_VLG5', 'T_PROP_AGEG4_M_VLG6', 'T_PROP_AGEG4_W_VLG1',
+            'T_PROP_AGEG4_W_VLG2', 'T_PROP_AGEG4_W_VLG3', 'T_PROP_AGEG4_W_VLG4',
+            'T_PROP_AGEG4_W_VLG5', 'T_PROP_AGEG4_W_VLG6', 'T_PROP_AGEG5_M_VLG1',
+            'T_PROP_AGEG5_M_VLG2', 'T_PROP_AGEG5_M_VLG3', 'T_PROP_AGEG5_M_VLG4',
+            'T_PROP_AGEG5_M_VLG5', 'T_PROP_AGEG5_M_VLG6', 'T_PROP_AGEG5_W_VLG1',
+            'T_PROP_AGEG5_W_VLG2', 'T_PROP_AGEG5_W_VLG3', 'T_PROP_AGEG5_W_VLG4',
+            'T_PROP_AGEG5_W_VLG5', 'T_PROP_AGEG5_W_VLG6', 'T_PROP_CA66M', 'T_PROP_G190M',
+            'T_PROP_IN118M', 'T_PROP_IN140M', 'T_PROP_IN148M', 'T_PROP_IN155M', 'T_PROP_IN263M',
+            'T_PROP_I_MSM', 'T_PROP_I_PWID', 'T_PROP_K103M', 'T_PROP_K65M', 'T_PROP_M184M',
+            'T_PROP_MSM_VLG1', 'T_PROP_MSM_VLG2', 'T_PROP_MSM_VLG3', 'T_PROP_MSM_VLG4',
+            'T_PROP_MSM_VLG5', 'T_PROP_MSM_VLG6', 'T_PROP_M_VLG1', 'T_PROP_M_VLG2', 'T_PROP_M_VLG3',
+            'T_PROP_M_VLG4', 'T_PROP_M_VLG5', 'T_PROP_M_VLG6', 'T_PROP_NEWP_I_M_1524',
+            'T_PROP_NEWP_I_M_2534', 'T_PROP_NEWP_I_M_3544', 'T_PROP_NEWP_I_M_4554',
+            'T_PROP_NEWP_I_M_5564', 'T_PROP_NEWP_I_W_1524', 'T_PROP_NEWP_I_W_2534',
+            'T_PROP_NEWP_I_W_3544', 'T_PROP_NEWP_I_W_4554', 'T_PROP_NEWP_I_W_5564', 'T_PROP_P32M',
+            'T_PROP_P33M', 'T_PROP_P46M', 'T_PROP_P47M', 'T_PROP_P50LM', 'T_PROP_P50VM',
+            'T_PROP_P54M', 'T_PROP_P76M', 'T_PROP_P82M', 'T_PROP_P84M', 'T_PROP_P88M',
+            'T_PROP_P90M', 'T_PROP_PWID_VLG1', 'T_PROP_PWID_VLG2', 'T_PROP_PWID_VLG3',
+            'T_PROP_PWID_VLG4', 'T_PROP_PWID_VLG5', 'T_PROP_PWID_VLG6', 'T_PROP_Q151M',
+            'T_PROP_TAM3', 'T_PROP_VLG1_RM', 'T_PROP_VLG1_RM0_DIAG', 'T_PROP_VLG1_RM0_NAIVE',
+            'T_PROP_VLG1_RM1_DIAG', 'T_PROP_VLG1_RM1_NAIVE', 'T_PROP_VLG2_RM',
+            'T_PROP_VLG2_RM0_DIAG', 'T_PROP_VLG2_RM0_NAIVE', 'T_PROP_VLG2_RM1_DIAG',
+            'T_PROP_VLG2_RM1_NAIVE', 'T_PROP_VLG3_RM', 'T_PROP_VLG3_RM0_DIAG',
+            'T_PROP_VLG3_RM0_NAIVE', 'T_PROP_VLG3_RM1_DIAG', 'T_PROP_VLG3_RM1_NAIVE',
+            'T_PROP_VLG4_RM', 'T_PROP_VLG4_RM0_DIAG', 'T_PROP_VLG4_RM0_NAIVE',
+            'T_PROP_VLG4_RM1_DIAG', 'T_PROP_VLG4_RM1_NAIVE', 'T_PROP_VLG5_RM',
+            'T_PROP_VLG5_RM0_DIAG', 'T_PROP_VLG5_RM0_NAIVE', 'T_PROP_VLG5_RM1_DIAG',
+            'T_PROP_VLG5_RM1_NAIVE', 'T_PROP_VLG6_RM', 'T_PROP_VLG6_RM0_DIAG',
+            'T_PROP_VLG6_RM0_NAIVE', 'T_PROP_VLG6_RM1_DIAG', 'T_PROP_VLG6_RM1_NAIVE',
+            'T_PROP_W_VLG1', 'T_PROP_W_VLG2', 'T_PROP_W_VLG3', 'T_PROP_W_VLG4', 'T_PROP_W_VLG5',
+            'T_PROP_W_VLG6', 'T_PROP_Y181M', 'T_W_NEWP', 'YCH2_RISK_BEH_NEWP', 'YCH_RISK_BEH_EP',
+            'YCH_RISK_BEH_NEWP';
+
     proc sql noprint;
+        /* read the feedback columns once */
+        create table _ami_fb_cols as
+        select name, upcase(name) as uname, type, length, varnum
+        from dictionary.columns
+        where libname='WORK' and memname='_HIV_FEEDBACK';
+
         select name into :_ami_fb_numeric separated by ' '
-        from dictionary.columns
-        where libname='WORK' and memname='_HIV_FEEDBACK' and type='num'
-          and upcase(name) in (
-                'ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ART_LOW_ADH_DISRUP_COVID',
-                'ART_TLD_DISRUP_COVID', 'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH', 'CD4_MONITORING',
-                'CIRC_INC_RATE_YEAR_I', 'CM_1STVIS_RETURN_VLMG1000', 'CONDOM_CHANGE_YEAR_I',
-                'CONDOM_DISRUP_COVID', 'COTRIM_DISRUP_COVID', 'COV_DEATH_RISK_MULT', 'CRAG_CD4_L100',
-                'CRAG_CD4_L200', 'D_HIV_EPI_MW', 'D_HIV_EPI_WM', 'DATE_PREP_CAB_INTRO', 'DISCOUNT',
-                'EXP_SETTING_LOWER_P_VL1000', 'FX', 'HIGHER_FUTURE_PREP_ORAL_COV',
-                'HIGHER_NEWP_LESS_ENGAGEMENT', 'HIGHER_NEWP_WITH_LOWER_ADHAV',
-                'HIVTEST_TYPE_1_INIT_PREP_CAB', 'HIVTEST_TYPE_1_INIT_PREP_LEN', 'HIVTEST_TYPE_1_PREP_CAB',
-                'HIVTEST_TYPE_1_PREP_LEN', 'INC_DEATH_RATE_AIDS_DISRUP_COVID',
-                'INCR_MORT_RISK_DOL_WEIGHTG', 'INITIAL_PR_SWITCH_LINE', 'INITIAL_PROB_VL_MEAS_DONE',
-                'M15R', 'M25R', 'M35R', 'M45R', 'M55R', 'NNRTI_RES_NO_EFFECT', 'NO_ART_DISRUP_COVID',
-                'NON_HIV_TB_RISK', 'OPTION', 'POC_VL_MONITORING_I', 'POORER_CD4RISE_FAIL_II',
-                'POP_WIDE_TLD', 'POP_WIDE_TLD_YEAR_I', 'PREP_ANY_STRATEGY', 'PREP_DEPENDENT_PREV_VG1000',
-                'PREP_ORAL_DISRUP_COVID', 'PROB_PREP_POP_WIDE_TLD', 'PROB_SBP_INCREASE',
-                'REG_OPTION_107_AFTER_CAB', 
-				'SEX_AGE_MIXING_MATRIX_M', 'SEX_AGE_MIXING_MATRIX_W',
-                'SEX_BEH_TRANS_MATRIX_M', 'SEX_BEH_TRANS_MATRIX_W', 'SUPER_INFECTION_POP',
-                'SWITCH_FOR_TOX', 'SWPROG_DISRUP_COVID', 'T_PROP_TAM1', 'T_PROP_TAM2', 'TBLAM_CD4_L100',
-                'TBLAM_CD4_L200', 'TESTING_DISRUP_COVID', 'TR_RATE_UNDETEC_VL',
-                'VL_ADH_SWITCH_DISRUP_COVID', 'VMMC_DISRUP_COVID', 'W15R', 'W25R', 'W35R', 'W45R', 'W55R',
-                'ZDV_POTENCY_P75', 'ZERO_3TC_ACTIVITY_M184', 'ZERO_TDF_ACTIVITY_K65R'
-          )
+        from _ami_fb_cols
+        where type='num' and uname in (&_ami_mutable)
         order by varnum;
+
         select count(*) into :_ami_fb_numeric_count trimmed
-        from dictionary.columns
-        where libname='WORK' and memname='_HIV_FEEDBACK' and type='num'
-          and upcase(name) in (
-                'ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ART_LOW_ADH_DISRUP_COVID',
-                'ART_TLD_DISRUP_COVID', 'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH', 'CD4_MONITORING',
-                'CIRC_INC_RATE_YEAR_I', 'CM_1STVIS_RETURN_VLMG1000', 'CONDOM_CHANGE_YEAR_I',
-                'CONDOM_DISRUP_COVID', 'COTRIM_DISRUP_COVID', 'COV_DEATH_RISK_MULT', 'CRAG_CD4_L100',
-                'CRAG_CD4_L200', 'D_HIV_EPI_MW', 'D_HIV_EPI_WM', 'DATE_PREP_CAB_INTRO', 'DISCOUNT',
-                'EXP_SETTING_LOWER_P_VL1000', 'FX', 'HIGHER_FUTURE_PREP_ORAL_COV',
-                'HIGHER_NEWP_LESS_ENGAGEMENT', 'HIGHER_NEWP_WITH_LOWER_ADHAV',
-                'HIVTEST_TYPE_1_INIT_PREP_CAB', 'HIVTEST_TYPE_1_INIT_PREP_LEN', 'HIVTEST_TYPE_1_PREP_CAB',
-                'HIVTEST_TYPE_1_PREP_LEN', 'INC_DEATH_RATE_AIDS_DISRUP_COVID',
-                'INCR_MORT_RISK_DOL_WEIGHTG', 'INITIAL_PR_SWITCH_LINE', 'INITIAL_PROB_VL_MEAS_DONE',
-                'M15R', 'M25R', 'M35R', 'M45R', 'M55R', 'NNRTI_RES_NO_EFFECT', 'NO_ART_DISRUP_COVID',
-                'NON_HIV_TB_RISK', 'OPTION', 'POC_VL_MONITORING_I', 'POORER_CD4RISE_FAIL_II',
-                'POP_WIDE_TLD', 'POP_WIDE_TLD_YEAR_I', 'PREP_ANY_STRATEGY', 'PREP_DEPENDENT_PREV_VG1000',
-                'PREP_ORAL_DISRUP_COVID', 'PROB_PREP_POP_WIDE_TLD', 'PROB_SBP_INCREASE',
-                'REG_OPTION_107_AFTER_CAB', 
-				'SEX_AGE_MIXING_MATRIX_M', 'SEX_AGE_MIXING_MATRIX_W',
-                'SEX_BEH_TRANS_MATRIX_M', 'SEX_BEH_TRANS_MATRIX_W', 'SUPER_INFECTION_POP',
-                'SWITCH_FOR_TOX', 'SWPROG_DISRUP_COVID', 'T_PROP_TAM1', 'T_PROP_TAM2', 'TBLAM_CD4_L100',
-                'TBLAM_CD4_L200', 'TESTING_DISRUP_COVID', 'TR_RATE_UNDETEC_VL',
-                'VL_ADH_SWITCH_DISRUP_COVID', 'VMMC_DISRUP_COVID', 'W15R', 'W25R', 'W35R', 'W45R', 'W55R',
-                'ZDV_POTENCY_P75', 'ZERO_3TC_ACTIVITY_M184', 'ZERO_TDF_ACTIVITY_K65R'
-          );
+        from _ami_fb_cols
+        where type='num' and uname in (&_ami_mutable);
+
         select name into :_ami_fb_character separated by ' '
-        from dictionary.columns
-        where libname='WORK' and memname='_HIV_FEEDBACK' and type='char'
-          and upcase(name) in (
-                'ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ART_LOW_ADH_DISRUP_COVID',
-                'ART_TLD_DISRUP_COVID', 'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH', 'CD4_MONITORING',
-                'CIRC_INC_RATE_YEAR_I', 'CM_1STVIS_RETURN_VLMG1000', 'CONDOM_CHANGE_YEAR_I',
-                'CONDOM_DISRUP_COVID', 'COTRIM_DISRUP_COVID', 'COV_DEATH_RISK_MULT', 'CRAG_CD4_L100',
-                'CRAG_CD4_L200', 'D_HIV_EPI_MW', 'D_HIV_EPI_WM', 'DATE_PREP_CAB_INTRO', 'DISCOUNT',
-                'EXP_SETTING_LOWER_P_VL1000', 'FX', 'HIGHER_FUTURE_PREP_ORAL_COV',
-                'HIGHER_NEWP_LESS_ENGAGEMENT', 'HIGHER_NEWP_WITH_LOWER_ADHAV',
-                'HIVTEST_TYPE_1_INIT_PREP_CAB', 'HIVTEST_TYPE_1_INIT_PREP_LEN', 'HIVTEST_TYPE_1_PREP_CAB',
-                'HIVTEST_TYPE_1_PREP_LEN', 'INC_DEATH_RATE_AIDS_DISRUP_COVID',
-                'INCR_MORT_RISK_DOL_WEIGHTG', 'INITIAL_PR_SWITCH_LINE', 'INITIAL_PROB_VL_MEAS_DONE',
-                'M15R', 'M25R', 'M35R', 'M45R', 'M55R', 'NNRTI_RES_NO_EFFECT', 'NO_ART_DISRUP_COVID',
-                'NON_HIV_TB_RISK', 'OPTION', 'POC_VL_MONITORING_I', 'POORER_CD4RISE_FAIL_II',
-                'POP_WIDE_TLD', 'POP_WIDE_TLD_YEAR_I', 'PREP_ANY_STRATEGY', 'PREP_DEPENDENT_PREV_VG1000',
-                'PREP_ORAL_DISRUP_COVID', 'PROB_PREP_POP_WIDE_TLD', 'PROB_SBP_INCREASE',
-                'REG_OPTION_107_AFTER_CAB', 
-				'SEX_AGE_MIXING_MATRIX_M', 'SEX_AGE_MIXING_MATRIX_W',
-                'SEX_BEH_TRANS_MATRIX_M', 'SEX_BEH_TRANS_MATRIX_W', 'SUPER_INFECTION_POP',
-                'SWITCH_FOR_TOX', 'SWPROG_DISRUP_COVID', 'T_PROP_TAM1', 'T_PROP_TAM2', 'TBLAM_CD4_L100',
-                'TBLAM_CD4_L200', 'TESTING_DISRUP_COVID', 'TR_RATE_UNDETEC_VL',
-                'VL_ADH_SWITCH_DISRUP_COVID', 'VMMC_DISRUP_COVID', 'W15R', 'W25R', 'W35R', 'W45R', 'W55R',
-                'ZDV_POTENCY_P75', 'ZERO_3TC_ACTIVITY_M184', 'ZERO_TDF_ACTIVITY_K65R'
-          )
+        from _ami_fb_cols
+        where type='char' and uname in (&_ami_mutable)
         order by varnum;
+
         select count(*), coalesce(max(length),1)
         into :_ami_fb_character_count trimmed, :_ami_fb_character_length trimmed
-        from dictionary.columns
-        where libname='WORK' and memname='_HIV_FEEDBACK' and type='char'
-          and upcase(name) in (
-                'ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ART_LOW_ADH_DISRUP_COVID',
-                'ART_TLD_DISRUP_COVID', 'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH', 'CD4_MONITORING',
-                'CIRC_INC_RATE_YEAR_I', 'CM_1STVIS_RETURN_VLMG1000', 'CONDOM_CHANGE_YEAR_I',
-                'CONDOM_DISRUP_COVID', 'COTRIM_DISRUP_COVID', 'COV_DEATH_RISK_MULT', 'CRAG_CD4_L100',
-                'CRAG_CD4_L200', 'D_HIV_EPI_MW', 'D_HIV_EPI_WM', 'DATE_PREP_CAB_INTRO', 'DISCOUNT',
-                'EXP_SETTING_LOWER_P_VL1000', 'FX', 'HIGHER_FUTURE_PREP_ORAL_COV',
-                'HIGHER_NEWP_LESS_ENGAGEMENT', 'HIGHER_NEWP_WITH_LOWER_ADHAV',
-                'HIVTEST_TYPE_1_INIT_PREP_CAB', 'HIVTEST_TYPE_1_INIT_PREP_LEN', 'HIVTEST_TYPE_1_PREP_CAB',
-                'HIVTEST_TYPE_1_PREP_LEN', 'INC_DEATH_RATE_AIDS_DISRUP_COVID',
-                'INCR_MORT_RISK_DOL_WEIGHTG', 'INITIAL_PR_SWITCH_LINE', 'INITIAL_PROB_VL_MEAS_DONE',
-                'M15R', 'M25R', 'M35R', 'M45R', 'M55R', 'NNRTI_RES_NO_EFFECT', 'NO_ART_DISRUP_COVID',
-                'NON_HIV_TB_RISK', 'OPTION', 'POC_VL_MONITORING_I', 'POORER_CD4RISE_FAIL_II',
-                'POP_WIDE_TLD', 'POP_WIDE_TLD_YEAR_I', 'PREP_ANY_STRATEGY', 'PREP_DEPENDENT_PREV_VG1000',
-                'PREP_ORAL_DISRUP_COVID', 'PROB_PREP_POP_WIDE_TLD', 'PROB_SBP_INCREASE',
-                'REG_OPTION_107_AFTER_CAB', 
-				'SEX_AGE_MIXING_MATRIX_M', 'SEX_AGE_MIXING_MATRIX_W',
-                'SEX_BEH_TRANS_MATRIX_M', 'SEX_BEH_TRANS_MATRIX_W', 'SUPER_INFECTION_POP',
-                'SWITCH_FOR_TOX', 'SWPROG_DISRUP_COVID', 'T_PROP_TAM1', 'T_PROP_TAM2', 'TBLAM_CD4_L100',
-                'TBLAM_CD4_L200', 'TESTING_DISRUP_COVID', 'TR_RATE_UNDETEC_VL',
-                'VL_ADH_SWITCH_DISRUP_COVID', 'VMMC_DISRUP_COVID', 'W15R', 'W25R', 'W35R', 'W45R', 'W55R',
-                'ZDV_POTENCY_P75', 'ZERO_3TC_ACTIVITY_M184', 'ZERO_TDF_ACTIVITY_K65R'
-          );
+        from _ami_fb_cols
+        where type='char' and uname in (&_ami_mutable);
+
         select count(*) into :_ami_fb_unexpected trimmed
-        from dictionary.columns
-        where libname='WORK' and memname='_HIV_FEEDBACK'
-          and upcase(name) not in (
-			'ABSENCE_CD4_YEAR_I', 'ABSENCE_VL_YEAR_I', 'ADD_EFF_ADH_NNRTI',
-            'ADD_PREF_PREP_AMI', 'ADD_PREP_ANY_UPTAKE_SW', 'ADH_EFFECT_OF_MEAS_ALERT',
-            'ADH_PATTERN', 'AMI_HIGHER_POTENCY', 'AN_LIN_INCR_TEST',
-            'ANNUAL_TESTING_PREP_AMI', 'ANNUAL_TESTING_PREP_CAB', 'ANNUAL_TESTING_PREP_LEN', 
-			'ANNUAL_TESTING_PREP_ORAL', 'ART_INIT_DISRUP_COVID',
-            'ART_LOW_ADH_DISRUP_COVID', 'ART_TLD_DISRUP_COVID',
-            'ART_TLD_EOD_DISRUP_COVID', 'ARTVIS0_LOWER_ADH', 'BASE_RATE_STOP_SEXWORK',
-            'BASE_RATE_SW', 'CAB_HIGHER_POTENCY', 'CAB_TIME_TO_LOWER_THRESHOLD_G',
-            'CABLEN_EXTRA_PREF', 'CD4_MONITORING', 'CH_RISK_DIAG',
-            'CH_RISK_DIAG_NEWP', 'CIRC_INC_15_19', 'CIRC_INC_RATE',
-            'CIRC_INC_RATE_YEAR_I', 'CIRC_RED_10_14', 'CIRC_RED_20_30',
-            'CIRC_RED_30_50', 'CLINIC_NOT_AW_INT_FRAC', 'CM_1STVIS_RETURN_VLMG1000',
-            'CONC_EP', 'CONDOM_CHANGE_YEAR_I', 'CONDOM_DISRUP_COVID',
-            'COTRIM_DISRUP_COVID', 'COV_DEATH_RISK_MULT', 'CRAG_CD4_L100',
-            'CRAG_CD4_L200', 'CRAG_EFF_PROB_DIAG_L', 'CRYPM_BASE_PROB_DIAG_L',
-            'CUM_RATIO_NEWP_MW', 'D_DIAG_M', 'D_DIAG_W', 'D_HIV_EPI_MW',
-            'D_HIV_EPI_WM', 'D_ONART', 'D_S_NEWP', 'D_VLS', 'DATE_PREP_CAB_INTRO',
-            'DATE_PREP_LEN_INTRO', 'DATE_TEST_RATE_PLATEAU',
-            'DEATH_R_IRIS_POP_WIDE_TLD', 'DISCOUNT', 'DOUBLE_RATE_GAS_TOX_TAZ',
-            'DUR_PREP_AMI_SCALEUP', 'EFFECT_CRYPM_PROPH', 'EFFECT_SBI_PROPH',
-            'EFFECT_SW_PROG_6MTEST', 'EFFECT_SW_PROG_ADH', 'EFFECT_SW_PROG_INT',
-            'EFFECT_SW_PROG_LOSSDIAG', 'EFFECT_SW_PROG_NEWP',
-            'EFFECT_SW_PROG_PERS_STI', 'EFFECT_SW_PROG_PREP_ANY', 'EFFECT_TB_PROPH',
-            'EFFECT_VISIT_PROB_DIAG_L', 'EPRATE', 'EXP_SETTING_LOWER_P_VL1000',
-            'EXTERNAL_EXP_FACTOR', 'FOLD_CHANGE_MUT_RISK', 'FOLD_CHANGE_STI',
-            'FOLD_CHANGE_W', 'FOLD_CHANGE_YW', 'FOLD_TR', 'FOLD_TR_NEWP',
-            'FOLD_TR_PWID', 'FX', 'GREATER_DISABILITY_TOX', 'GREATER_TOX_ZDV', 'GX',
-            'HARD_REACH_HIGHER_IN_MEN', 'HIGHER_FUTURE_PREP_ORAL_COV',
-            'HIGHER_NEWP_LESS_ENGAGEMENT', 'HIGHER_NEWP_WITH_LOWER_ADHAV',
-            'HIVTEST_TYPE_1_INIT_PREP_CAB', 'HIVTEST_TYPE_1_INIT_PREP_LEN',
-            'HIVTEST_TYPE_1_PREP_CAB', 'HIVTEST_TYPE_1_PREP_LEN', 'INC_CAT',
-            'INC_DEATH_RATE_AIDS_DISRUP_COVID', 'INCIDENCE1524M_EPNEWP',
-            'INCIDENCE1524W_EPNEWP', 'INCIDENCE1549', 'INCIDENCE1549M',
-            'INCIDENCE1549W', 'INCIDENCE2534M_EPNEWP', 'INCIDENCE2534W_EPNEWP',
-            'INCIDENCE3544M_EPNEWP', 'INCIDENCE3544W_EPNEWP', 'INCIDENCE4554M_EPNEWP',
-            'INCIDENCE4554W_EPNEWP', 'INCIDENCE5564M_EPNEWP', 'INCIDENCE5564W_EPNEWP',
-            'INCR_ADH_POC_VL', 'INCR_DEATH_RATE_CRYPM', 'INCR_DEATH_RATE_OTH_ADC',
-            'INCR_DEATH_RATE_SBI', 'INCR_DEATH_RATE_TB', 'INCR_LEN_RES_MONO',
-            'INCR_MORT_RISK_DOL_WEIGHTG', 'INCR_RATE_INT_LOW_ADH',
-            'INCR_RES_RISK_CAB_INF_3M', 'INCR_RES_RISK_LEN_INF_3M',
-            'INCR_TEST_RATE_SYMPT', 'IND_EFFECT_ART_HIV_DISEASE_DEATH',
-            'INITIAL_PR_SWITCH_LINE', 'INITIAL_PROB_VL_MEAS_DONE',
-            'ISL_HIGHER_POTENCY', 'ISL_OLE_ADH_IMPROVE', 'KEEP_GOING_1999',
-            'KEEP_GOING_2004', 'KEEP_GOING_2016', 'KEEP_GOING_2020',
-            'LEN_HIGHER_POTENCY', 'LEN_TIME_TO_LOWER_THRESHOLD_G', 'LENCAB_UPTAKE',
-            'LENCAB_UPTAKE_VLG1000', 'LOWER_FUTURE_ART_COV', 'M15R', 'M25R', 'M35R',
-            'M45R', 'M55R', 'MAX_FREQ_TESTING', 'MSM_RISK_CLS', 'MSM_RR_LOSS_AT_DIAG',
-            'MSM_RRED', 'MSM_TR_FACTOR', 'N', 'NEWP_FACTOR', 'NNRTI_RES_NO_EFFECT',
-            'NO_ART_DISRUP_COVID', 'NON_HIV_TB_DEATH_RISK', 'NON_HIV_TB_PROB_DIAG_E',
-            'NON_HIV_TB_RISK', 'NTD_RISK_DOL', 'OPTION', 'ORAL_PREP_EFF_3TC_TEN_RES',
-            'OTH_DOL_ADV_BIRTH_E_RISK', 'P_DIAG', 'P_DIAG_EPONART', 'P_DIAG_M',
-            'P_DIAG_ONART', 'P_DIAG_W', 'P_EPDIAG_M', 'P_EPDIAG_W', 'P_HARD_REACH_M',
-            'P_HARD_REACH_W', 'P_HSB_P', 'P_ONART_EPVLS', 'P_ONART_VLS', 'P_RRED_P',
-            'P_RRED_SW_NEWP', 'P_VL1000', 'PEP_EFFICACY', 'POC_VL_MONITORING_I',
-            'POORER_CD4RISE_FAIL_II', 'POORER_CD4RISE_FAIL_NN',
-            'POP_WIDE_PREP_ADH_EFFECT', 'POP_WIDE_TLD', 'POP_WIDE_TLD_SELECTIVE_HIV',
-            'POP_WIDE_TLD_YEAR_I', 'PR_184M_ORAL_PREP_PRIMARY',
-            'PR_65M_ORAL_PREP_PRIMARY', 'PR_ART_INIT', 'PR_CAM_LEN_PREP_PRIMARY',
-            'PR_INM_CAB_PREP_PRIMARY', 'PR_RES_DOL', 'PR_RES_LEN', 'PR_SWITCH_LINE',
-            'PREF_PREP_AMI_BETA_S1', 'PREF_PREP_CABLEN_BETA_S1',
-            'PREF_PREP_ORAL_BETA_S1', 'PREP_AMI_ADH_UPLIFT',
-            'PREP_AMI_EFFECT_RES_PARTNER', 'PREP_AMI_EFFICACY', 'PREP_ANY_STRATEGY',
-            'PREP_CAB_EFFECT_INM_PARTNER', 'PREP_CAB_EFFICACY',
-            'PREP_DEPENDENT_PREV_VG1000', 'PREP_LEN_EFFECT_CAM_PARTNER',
-            'PREP_LEN_EFFICACY', 'PREP_ORAL_DISRUP_COVID', 'PREP_ORAL_EFFICACY',
-            'PREP_VLG1000_THRESHOLD', 'PREV_RATIO_1524', 'PREV_VG1000_1549',
-            'PREVALENCE1524M', 'PREVALENCE1524W', 'PREVALENCE1549', 'PREVALENCE2534M',
-            'PREVALENCE2534W', 'PREVALENCE3544M', 'PREVALENCE3544W',
-            'PREVALENCE4554M', 'PREVALENCE4554W', 'PREVALENCE5564M',
-            'PREVALENCE5564W', 'PROB_INTENSIFY_1_2', 'PROB_INTENSIFY_2_3',
-            'PROB_LOSS_AT_DIAG', 'PROB_LOSSDIAG_ADCTB', 'PROB_LOSSDIAG_NON_TB_WHO3E',
-            'PROB_LOST_ART', 'PROB_ONARTVIS0_0_TO_1', 'PROB_ONARTVIS0_1_TO_0',
-            'PROB_POS_SELF_TEST_CONF', 'PROB_PREGNANCY_BASE', 'PROB_PREP_AMI_B',
-            'PROB_PREP_AMI_RESTART_CHOICE', 'PROB_PREP_CAB_RESTART_CHOICE', 'PROB_PREP_LEN_RESTART_CHOICE', 'PROB_PREP_ORAL_RESTART_CHOICE', 
-			'PROB_PREP_ANY_VISIT_COUNSEL',
-            'PROB_PREP_CAB_B', 'PROB_PREP_ELIG_MSM', 'PROB_PREP_ELIG_PWID',
-            'PROB_PREP_LEN_B', 'PROB_PREP_ORAL_B', 'PROB_PREP_POP_WIDE_TLD',
-            'PROB_RETURN_ADC', 'PROB_SBP_INCREASE', 'PROB_SELF_TEST_HARD_REACH',
-            'PROB_START_PWID', 'PROB_STOP_PWID', 'PROB_STRONG_PREF_LENCAB',
-            'PROB_TEST_2NDTRIM', 'PROB_TEST_POP_WIDE_TLD_PREP', 'PROB_TEST_POSTDEL',
-            'PROB_TEST_SBP_DIAGNOSED', 'PROB_TEST_SBP_UNDIAGNOSED',
-            'PROB_TLD_HIV_CONCERN', 'PROB_VL_MEAS_DONE', 'PROP_BMI_GE23',
-            'PROP_M_MSM', 'PROP_MONO_M_1524', 'PROP_MONO_M_2534', 'PROP_MONO_M_3544',
-            'PROP_MONO_M_4554', 'PROP_MONO_M_5564', 'PROP_MONO_W_1524',
-            'PROP_MONO_W_2534', 'PROP_MONO_W_3544', 'PROP_MONO_W_4554',
-            'PROP_MONO_W_5564', 'PROP_PEP', 'PROP_REDATTR_EP_CONDOMS',
-            'PROP_USE_CONDOM_INT_NEWP', 'PROP_V_ALERT_PERM', 'PTNEWP15_M',
-            'PTNEWP15_W', 'PTNEWP25_M', 'PTNEWP25_W', 'PTNEWP35_M', 'PTNEWP35_W',
-            'PTNEWP45_M', 'PTNEWP45_W', 'PTNEWP55_M', 'PTNEWP55_W',
-            'PWID_RR_LOSS_AT_DIAG', 'R_EP_MW', 'R_HIV_EPI_BOTH', 'R_S_EP_M15W15',
-            'R_S_EP_M25W25', 'R_S_EP_M35W35', 'R_S_EP_M45W45', 'R_S_EP_M55W55',
-            'RATE_ANC_INC', 'RATE_BIRTH_WITH_INFECTED_CHILD',
-            'RATE_CH_ART_INIT_STR_10', 'RATE_CH_ART_INIT_STR_3',
-            'RATE_CH_ART_INIT_STR_4', 'RATE_CH_ART_INIT_STR_9',
-            'RATE_CHOOSE_STOP_PREP_AMI', 'RATE_CHOOSE_STOP_PREP_CAB',
-            'RATE_CHOOSE_STOP_PREP_LEN', 'RATE_CHOOSE_STOP_PREP_ORAL',
-            'RATE_CRYPM_PROPH_INIT', 'RATE_DISENGAGE_SW_PROGRAM',
-            'RATE_ENGAGE_SW_PROGRAM', 'RATE_EXP_SET_LOWER_P_VL1000',
-            'RATE_INT_CHOICE', 'RATE_LENCAB_TO_TLD', 'RATE_LOSS_PERSISTENCE',
-            'RATE_LOST', 'RATE_RES_TEN', 'RATE_RESTART', 'RATE_RETURN',
-            'RATE_RETURN_FOR_LENCAB', 'RATE_SBI_PROPH_INIT', 'RATE_SELF_TEST',
-            'RATE_TB_PROPH_INIT', 'RATE_TEST_ONPREP_ANY', 'RATE_TEST_STARTPREP_ANY',
-            'RATE_TRANS_BREASTFEEDING', 'RED_ADH_MULTI_PILL_POP', 'RED_ADH_TB_ADC',
-            'RED_ADH_TOX_POP', 'RED_CHANCE_EP_MSM', 'RED_INT_RISK_POC_VL',
-            'REG_OPTION_107_AFTER_CAB', 'REL_DOL_TOX',
-            'REL_PR_CAM_LEN_PREP_TAIL_PRIMARY', 'REL_PR_INM_CAB_PREP_TAIL_PRIMARY',
-            'REL_PREP_ORAL_ADH_YOUNGER', 'REL_RATE_DEATH_CRYPM_DIAG_E',
-            'REL_RATE_DEATH_OTH_ADC_DIAG_E', 'REL_RATE_DEATH_SBI_DIAG_E',
-            'REL_RATE_DEATH_TB_DIAG_E', 'REL_RATE_INTERRUPT_LENCAB',
-            'REL_SW_LOWER_ADH', 'RES_LEVEL_DOL_CAB_MUT', 'RES_LEVEL_LEN_MUT',
-            'RES_TRANS_FACTOR_II', 'RES_TRANS_FACTOR_NN', 'RR_INT_TOX',
-            'RR_INTERRUPT_POP_WIDE_TLD', 'RR_MORT_TDF_PREP',
-            'RR_NON_AIDS_DEATH_HIV_OFF_ART', 'RR_NON_AIDS_DEATH_HIV_ON_ART',
-            'RR_PWID_FEMALE', 'RR_RES_CAB_DOL', 'RR_RETURN_POP_WIDE_TLD',
-            'RR_TESTING_FEMALE', 'RRED_A_P', 'RRED_INITIAL', 'RUN', 
-            'SBI_BASE_PROB_DIAG_L', 'SECONDARY_DIST_SELF_TEST',
-            'SECONDARY_SELF_TEST_TARGETING', 'SELF_TEST_SENS', 'SELF_TEST_TARGETING',
-            'SENS_PRIMARY_TESTTYPE3', 'SENS_TESTS_PREP_CAB', 'SENS_TESTS_PREP_LEN',
-            'SENS_TTYPE1_PREP_CAB_INF3M', 'SENS_TTYPE1_PREP_CAB_INFGE6M',
-            'SENS_TTYPE1_PREP_CAB_PRIMARY', 'SENS_TTYPE1_PREP_LEN_INF3M',
-            'SENS_TTYPE1_PREP_LEN_INFGE6M', 'SENS_TTYPE1_PREP_LEN_PRIMARY',
-            'SENS_TTYPE3_PREP_CAB_INF3M', 'SENS_TTYPE3_PREP_CAB_INFGE6M',
-            'SENS_TTYPE3_PREP_CAB_PRIMARY', 'SENS_TTYPE3_PREP_LEN_INF3M',
-            'SENS_TTYPE3_PREP_LEN_INFGE6M', 'SENS_TTYPE3_PREP_LEN_PRIMARY',
-            'SENS_VCT_TESTTYPE3_CAB_TAIL', 'SENS_VCT_TESTTYPE3_LEN_TAIL',
-            'SEX_AGE_MIXING_MATRIX_M', 'SEX_AGE_MIXING_MATRIX_W',
-            'SEX_BEH_TRANS_MATRIX_M', 'SEX_BEH_TRANS_MATRIX_W', 'SUPER_INF_RES',
-            'SUPER_INFECTION_POP', 'SW_ART_DISADV', 'SW_HIGHER_INT',
-            'SW_HIGHER_PROB_LOSS_AT_DIAG', 'SW_PROGRAM', 'SW_TRANS_MATRIX',
-            'SWITCH_FOR_TOX', 'SWPROG_DISRUP_COVID', 'T_M_NEWP',
-            'T_PROP_AGEG1_M_VLG1', 'T_PROP_AGEG1_M_VLG2', 'T_PROP_AGEG1_M_VLG3',
-            'T_PROP_AGEG1_M_VLG4', 'T_PROP_AGEG1_M_VLG5', 'T_PROP_AGEG1_M_VLG6',
-            'T_PROP_AGEG1_W_VLG1', 'T_PROP_AGEG1_W_VLG2', 'T_PROP_AGEG1_W_VLG3',
-            'T_PROP_AGEG1_W_VLG4', 'T_PROP_AGEG1_W_VLG5', 'T_PROP_AGEG1_W_VLG6',
-            'T_PROP_AGEG2_M_VLG1', 'T_PROP_AGEG2_M_VLG2', 'T_PROP_AGEG2_M_VLG3',
-            'T_PROP_AGEG2_M_VLG4', 'T_PROP_AGEG2_M_VLG5', 'T_PROP_AGEG2_M_VLG6',
-            'T_PROP_AGEG2_W_VLG1', 'T_PROP_AGEG2_W_VLG2', 'T_PROP_AGEG2_W_VLG3',
-            'T_PROP_AGEG2_W_VLG4', 'T_PROP_AGEG2_W_VLG5', 'T_PROP_AGEG2_W_VLG6',
-            'T_PROP_AGEG3_M_VLG1', 'T_PROP_AGEG3_M_VLG2', 'T_PROP_AGEG3_M_VLG3',
-            'T_PROP_AGEG3_M_VLG4', 'T_PROP_AGEG3_M_VLG5', 'T_PROP_AGEG3_M_VLG6',
-            'T_PROP_AGEG3_W_VLG1', 'T_PROP_AGEG3_W_VLG2', 'T_PROP_AGEG3_W_VLG3',
-            'T_PROP_AGEG3_W_VLG4', 'T_PROP_AGEG3_W_VLG5', 'T_PROP_AGEG3_W_VLG6',
-            'T_PROP_AGEG4_M_VLG1', 'T_PROP_AGEG4_M_VLG2', 'T_PROP_AGEG4_M_VLG3',
-            'T_PROP_AGEG4_M_VLG4', 'T_PROP_AGEG4_M_VLG5', 'T_PROP_AGEG4_M_VLG6',
-            'T_PROP_AGEG4_W_VLG1', 'T_PROP_AGEG4_W_VLG2', 'T_PROP_AGEG4_W_VLG3',
-            'T_PROP_AGEG4_W_VLG4', 'T_PROP_AGEG4_W_VLG5', 'T_PROP_AGEG4_W_VLG6',
-            'T_PROP_AGEG5_M_VLG1', 'T_PROP_AGEG5_M_VLG2', 'T_PROP_AGEG5_M_VLG3',
-            'T_PROP_AGEG5_M_VLG4', 'T_PROP_AGEG5_M_VLG5', 'T_PROP_AGEG5_M_VLG6',
-            'T_PROP_AGEG5_W_VLG1', 'T_PROP_AGEG5_W_VLG2', 'T_PROP_AGEG5_W_VLG3',
-            'T_PROP_AGEG5_W_VLG4', 'T_PROP_AGEG5_W_VLG5', 'T_PROP_AGEG5_W_VLG6',
-            'T_PROP_CA66M', 'T_PROP_G190M', 'T_PROP_I_MSM', 'T_PROP_I_PWID',
-            'T_PROP_IN118M', 'T_PROP_IN140M', 'T_PROP_IN148M', 'T_PROP_IN155M',
-            'T_PROP_IN263M', 'T_PROP_K103M', 'T_PROP_K65M', 'T_PROP_M184M',
-            'T_PROP_M_VLG1', 'T_PROP_M_VLG2', 'T_PROP_M_VLG3', 'T_PROP_M_VLG4',
-            'T_PROP_M_VLG5', 'T_PROP_M_VLG6', 'T_PROP_MSM_VLG1', 'T_PROP_MSM_VLG2',
-            'T_PROP_MSM_VLG3', 'T_PROP_MSM_VLG4', 'T_PROP_MSM_VLG5',
-            'T_PROP_MSM_VLG6', 'T_PROP_NEWP_I_M_1524', 'T_PROP_NEWP_I_M_2534',
-            'T_PROP_NEWP_I_M_3544', 'T_PROP_NEWP_I_M_4554', 'T_PROP_NEWP_I_M_5564',
-            'T_PROP_NEWP_I_W_1524', 'T_PROP_NEWP_I_W_2534', 'T_PROP_NEWP_I_W_3544',
-            'T_PROP_NEWP_I_W_4554', 'T_PROP_NEWP_I_W_5564', 'T_PROP_P32M',
-            'T_PROP_P33M', 'T_PROP_P46M', 'T_PROP_P47M', 'T_PROP_P50LM',
-            'T_PROP_P50VM', 'T_PROP_P54M', 'T_PROP_P76M', 'T_PROP_P82M',
-            'T_PROP_P84M', 'T_PROP_P88M', 'T_PROP_P90M', 'T_PROP_PWID_VLG1',
-            'T_PROP_PWID_VLG2', 'T_PROP_PWID_VLG3', 'T_PROP_PWID_VLG4',
-            'T_PROP_PWID_VLG5', 'T_PROP_PWID_VLG6', 'T_PROP_Q151M', 'T_PROP_TAM1',
-            'T_PROP_TAM2', 'T_PROP_TAM3', 'T_PROP_VLG1_RM', 'T_PROP_VLG1_RM0_DIAG',
-            'T_PROP_VLG1_RM0_NAIVE', 'T_PROP_VLG1_RM1_DIAG', 'T_PROP_VLG1_RM1_NAIVE',
-            'T_PROP_VLG2_RM', 'T_PROP_VLG2_RM0_DIAG', 'T_PROP_VLG2_RM0_NAIVE',
-            'T_PROP_VLG2_RM1_DIAG', 'T_PROP_VLG2_RM1_NAIVE', 'T_PROP_VLG3_RM',
-            'T_PROP_VLG3_RM0_DIAG', 'T_PROP_VLG3_RM0_NAIVE', 'T_PROP_VLG3_RM1_DIAG',
-            'T_PROP_VLG3_RM1_NAIVE', 'T_PROP_VLG4_RM', 'T_PROP_VLG4_RM0_DIAG',
-            'T_PROP_VLG4_RM0_NAIVE', 'T_PROP_VLG4_RM1_DIAG', 'T_PROP_VLG4_RM1_NAIVE',
-            'T_PROP_VLG5_RM', 'T_PROP_VLG5_RM0_DIAG', 'T_PROP_VLG5_RM0_NAIVE',
-            'T_PROP_VLG5_RM1_DIAG', 'T_PROP_VLG5_RM1_NAIVE', 'T_PROP_VLG6_RM',
-            'T_PROP_VLG6_RM0_DIAG', 'T_PROP_VLG6_RM0_NAIVE', 'T_PROP_VLG6_RM1_DIAG',
-            'T_PROP_VLG6_RM1_NAIVE', 'T_PROP_W_VLG1', 'T_PROP_W_VLG2',
-            'T_PROP_W_VLG3', 'T_PROP_W_VLG4', 'T_PROP_W_VLG5', 'T_PROP_W_VLG6',
-            'T_PROP_Y181M', 'T_W_NEWP', 'TB_BASE_PROB_DIAG_L', 'TBLAM_CD4_L100',
-            'TBLAM_CD4_L200', 'TBLAM_EFF_PROB_DIAG_L', 'TEST_TARGETING',
-            'TESTING_DISRUP_COVID', 'TESTT1_PREP_CAB_EFF_ON_RES_PRIM',
-            'TESTT1_PREP_LEN_EFF_ON_RES_PRIM', 'TR_RATE_UNDETEC_VL',
-            'VL_ADH_SWITCH_DISRUP_COVID', 'VMMC_DISRUP_COVID', 'W15R', 'W25R', 'W35R',
-            'W45R', 'W55R', 'YCH2_RISK_BEH_NEWP', 'YCH_RISK_BEH_EP',
-         	'YCH_RISK_BEH_NEWP', 'ZDV_POTENCY_P75', 'ZERO_3TC_ACTIVITY_M184',
-            'ZERO_TDF_ACTIVITY_K65R'
-          );
+        from _ami_fb_cols
+        where uname not in (&_ami_mutable, &_ami_extra_allowed);
+
         select count(*) into :_ami_fb_overlap trimmed
-        from dictionary.columns as p inner join dictionary.columns as f
-          on upcase(p.name)=upcase(f.name)
-        where p.libname='WORK' and p.memname="R&da1"
-          and f.libname='WORK' and f.memname='_HIV_FEEDBACK';
+        from dictionary.columns as p inner join _ami_fb_cols as f
+          on upcase(p.name)=f.uname
+        where p.libname='WORK' and p.memname="R&da1";
+
+        drop table _ami_fb_cols;
     quit;
     %if &_ami_fb_unexpected ne 0 or &_ami_fb_overlap ne 0 %then %do;
         %put ERROR: Feedback schema does not match the audited reworked layout.;
@@ -24906,6 +24930,7 @@ Inputs are:
 
 
 *   Run from caldate1 to intervention year;
+/*options mprint source2 mlogic;*/	* for testing QUERY - remove;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
 *    Save dataset at this point;
@@ -25933,19 +25958,21 @@ base_rate_sw
 sw_art_disadv  sw_trans_matrix  p_rred_sw_newp  effect_sw_prog_newp
 zero_3tc_activity_m184  zero_tdf_activity_k65r  lower_future_art_cov  higher_future_prep_oral_cov rate_crypm_proph_init
 rate_tb_proph_init rate_sbi_proph_init death_r_iris_pop_wide_tld
-prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
+prep_any_strategy change_prep_any_strategy change_prep_testing_policy prep_testing_policy prob_self_test_onprep
+prob_prep_any_visit_counsel rate_test_onprep_any prep_dependent_prev_vg1000  prep_vlg1000_threshold rr_mort_tdf_prep
 rel_prep_oral_adh_younger 
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
-prep_oral_efficacy							prob_prep_oral_b	rate_choose_stop_prep_oral	annual_testing_prep_oral
-prep_cab_efficacy	date_prep_cab_intro		prob_prep_cab_b		rate_choose_stop_prep_cab	annual_testing_prep_cab
-prep_len_efficacy	date_prep_len_intro		prob_prep_len_b		rate_choose_stop_prep_len	annual_testing_prep_len
-prep_ami_efficacy	dur_prep_ami_scaleup	prob_prep_ami_b		rate_choose_stop_prep_ami	annual_testing_prep_ami
+prep_oral_efficacy							prob_prep_oral_b									rate_choose_stop_prep_oral	annual_testing_prep_oral
+prep_cab_efficacy	date_prep_cab_intro		prob_prep_cab_b		rel_rate_choose_stop_prep_cab	rate_choose_stop_prep_cab	annual_testing_prep_cab
+prep_len_efficacy	date_prep_len_intro		prob_prep_len_b		rel_rate_choose_stop_prep_len	rate_choose_stop_prep_len	annual_testing_prep_len
+prep_ami_efficacy	dur_prep_ami_scaleup	prob_prep_ami_b		rel_rate_choose_stop_prep_ami	rate_choose_stop_prep_ami	annual_testing_prep_ami
 
 higher_future_prep_oral_cov
 prep_cab_effect_inm_partner		cab_time_to_lower_threshold_g	incr_res_risk_cab_inf_3m
 prep_len_effect_cam_partner		len_time_to_lower_threshold_g	incr_res_risk_len_inf_3m
 cablen_extra_pref		pref_prep_cablen_beta_s1
+change_prep_ami_avail	rel_prep_ami_avail
 pref_prep_ami_beta_s1	add_pref_prep_ami		prep_ami_effect_res_partner		prep_ami_adh_uplift
 prop_pep  pep_efficacy 
 

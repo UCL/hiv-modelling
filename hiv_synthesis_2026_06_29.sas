@@ -784,8 +784,10 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 * a person prep_any_elig=1 will only actually have a chance of starting prep if prep_any_willing=1;
 
 
-* date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
+
 * prep_oral_efficacy;			%sample(prep_oral_efficacy, 0.90 0.95, 0.2 0.8); 		* Oral PrEP effectiveness with 100% adherence ;
+
+* date_prep_oral_intro;			date_prep_oral_intro=2018.25; 	* Introduction of oral PrEP ;
 * dur_prep_oral_scaleup;		dur_prep_oral_scaleup=4;		* Assume 4 years to scale up oral prep to be consistent with previous analyses;
 * prob_prep_oral_b;				%sample_uniform(prob_prep_oral_b, 0.05  0.1); 			* Probability of starting oral PrEP in people who are eligible and willing who have 
 																							tested for HIV for other reasons (ie not explicitly for starting PrEP);
@@ -819,11 +821,12 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 
 * INJECTABLE CABOTEGRAVIR AND LENACAPAVIR PREP ;
 
+* prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
+* prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
+
 * date_prep_cab_intro;			%sample_uniform(date_prep_cab_intro, 3000);	* Introduction of injectable cab PrEP ;	* consider len as the only la prep option;
 * date_prep_len_intro;			date_prep_len_intro=2026;	* Introduction of injectable len PrEP ;		* Note for BMGF analysis we may want to sample across (2026, 3000) to introduce ami with and without len;
 * date_prep_len_intro;			date_prep_len_intro=2019;	* QUERY - remove once finished checking code;
-* prep_cab_efficacy;			%sample(prep_cab_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* cab prep efficacy  ;
-* prep_len_efficacy;			%sample(prep_len_efficacy, 0.90 0.95 0.98, 0.2 0.4 0.4); 		* len efficacy     ;
 * dur_prep_cab_scaleup;			dur_prep_cab_scaleup=5;						* Assume 5 years to scale up injectable cab prep;
 * dur_prep_len_scaleup;			dur_prep_len_scaleup=5;						* Assume 5 years to scale up injectable len prep;
 
@@ -839,9 +842,12 @@ and prep_any_willing = 1 and pref_prep_oral > pref_prep_cab / pref_prep_len and 
 														* REF HIV MC joint project - this takes into account delayed or skipped injections ;
 														* QUERY we may need to revisit this 0.25 for len - think it should be 0.5;
 
-* rate_choose_stop_prep_cab; 	%sample_uniform(rate_choose_stop_prep_cab, 0.01  0.03  0.05  0.1 0.15);  * len_prep ;
-* rate_choose_stop_prep_len; 	rate_choose_stop_prep_len = rate_choose_stop_prep_cab ;
+* rate_choose_stop_prep_cab; 	%sample_uniform(rel_rate_choose_stop_prep_cab, 0.2 0.33);
+								rate_choose_stop_prep_cab = rel_rate_choose_stop_prep_cab * rate_choose_stop_prep_oral;
+* rate_choose_stop_prep_len; 	%sample_uniform(rel_rate_choose_stop_prep_len, 0.2 0.33);
+								rate_choose_stop_prep_len = rel_rate_choose_stop_prep_len * rate_choose_stop_prep_oral;
 								* dependent_on_time_step_length ;
+
 * cablen_extra_pref;			%sample_uniform(cablen_extra_pref,      0.5 0.7 1) ; 
 * pref_prep_cablen_beta_s1;		pref_prep_cablen_beta_s1 = pref_prep_oral_beta_s1 + cablen_extra_pref ; * tends to be more preference for inj ;
 
@@ -919,23 +925,26 @@ end;
 
 
 
-* MONTHLY ORAL MK-8527 PrEP;	*ami = alimatravir ;
+* MONTHLY ORAL AMI PrEP;	*ami = alimatravir, MK-8527 ;
 * m184v mutation selected in presence of alimatravir (same as islatravir);
 * tail after cessation of product is not coded;
 
-* date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
-* prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 					* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
-* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3);
+* prep_ami_efficacy;			prep_ami_efficacy = prep_oral_efficacy; 						* MK-8527 PrEP efficacy set to same as oral PrEP as initial assumption ; 
 
-* prob_prep_ami_b;				%sample_uniform(prob_prep_ami_b, 0.01 0.05 0.1 0.3);  		* sampled from same distribution as CAB & LEN PrEP initially;
+* date_prep_ami_intro;			date_prep_ami_intro=3000;		* Introduction of ami PrEP ;
+																																			 
+* dur_prep_ami_scaleup;			%sample_uniform(dur_prep_ami_scaleup, 1 3);
+* rel_prep_ami_avail;			%sample(rel_prep_ami_avail, 1 0.75 0.5 0.25, 0.7 0.1 0.1 0.1);	* relative availability of ami prep from 5 years after initial introduction
+
+* prob_prep_ami_b;				%sample_uniform(prob_prep_ami_b, 0.01 0.05 0.1 0.3);  			* sampled from same distribution as CAB & LEN PrEP initially;
 								* probability of starting ami PrEP in people (who are eligible and willing) tested for HIV according to the base rate of testing;
 * prob_prep_ami_restart_choice; %sample_uniform(prob_prep_ami_restart_choice, 0.05 0.10 0.20);
 
 * annual_testing_prep_ami;		annual_testing_prep_ami=0.25;	* frequency of HIV testing for people on MK-8527 PrEP (1=annual, 0.5= every 6 months, 0.25=every 3 months); 
 
-* rate_choose_stop_prep_ami; 	%sample_uniform(rate_choose_stop_prep_ami, 0.01  0.03  0.05  0.1 0.15);		* sampled from same distribution as CAB PrEP initially;
-								* dependent_on_time_step_length ;                                          
-
+* rate_choose_stop_prep_ami; 	%sample_uniform(rel_rate_choose_stop_prep_ami, 0.2 0.33 0.67);
+								rate_choose_stop_prep_ami = rel_rate_choose_stop_prep_ami * rate_choose_stop_prep_oral;
+								* dependent_on_time_step_length ;
 * add_pref_prep_ami;			%sample_uniform(add_pref_prep_ami, 0.1 0.2 0.3);
 * pref_prep_ami_beta_s1;		pref_prep_ami_beta_s1 = pref_prep_oral_beta_s1 + add_pref_prep_ami ; 		* assume ami is more preferable than daily oral pill;
 
@@ -2532,7 +2541,6 @@ agyw=0;	if gender=2 and 15<=age<25 then agyw=1;		* MIHPSA JAS Jul23;
 * INTERVENTIONS / CHANGES in year_interv ;
 
 option = &s;
-option = 1;
 
 
 if caldate_never_dot >= &year_interv then do;
@@ -4949,29 +4957,29 @@ end;
 
 
 
-	* SELF-TESTING;
+* SELF-TESTING;
 
-	eff_self_test_targeting = self_test_targeting;
+eff_self_test_targeting = self_test_targeting;
 
-	w = rand('uniform');	
-	if caldate{t} ge date_self_test_intro and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
+w = rand('uniform');	
+if caldate{t} ge date_self_test_intro and (hard_reach=0 or (hard_reach = 1 and w < prob_self_test_hard_reach)) then do;
 
-		u_self_test=rand('uniform');
- 		if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
-		if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
-		if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < eff_rate_self_test then do;
-			self_tested=1; 
-			dt_last_self_test=caldate{t}; 
-		end;
+	u_self_test=rand('uniform');
+ 	if . < np_lasttest <= 0 then u_self_test = u_self_test * eff_self_test_targeting;  
+	if newp_lasttest ge 1 then u_self_test=u_self_test/eff_self_test_targeting;  
+	if tested ne 1 and (caldate{t]-max(0,dt_last_self_test) >= 0.25) and u_self_test < eff_rate_self_test then do;
+		self_tested=1; 
+		dt_last_self_test=caldate{t}; 
+	  
 	end;
+end;
 
-	v = rand('uniform'); z = rand('uniform');
-	if self_tested = 1 and hiv = 1 and z < prob_pos_self_test_conf and v < self_test_sens then do; 
-	tested=1; tested_due_to_self_test=1;
-	dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
-	end;
-	* note this depends on primary infection lasting 3 months - ts1m ;
-
+v = rand('uniform'); z = rand('uniform');
+if self_tested = 1 and hiv = 1 and z < prob_pos_self_test_conf and v < self_test_sens then do; 
+tested=1; tested_due_to_self_test=1;
+dt_last_test=caldate{t}; ever_tested=1; 	np_lasttest=0; newp_lasttest_tested_this_per=newp_lasttest; newp_lasttest=0;
+end;
+* note this depends on primary infection lasting 3 months - ts1m ;
 
 
 * HIV TESTING; * consider moving this higher in section 3b so it applies also to those aged over 65 (although note testing due to symptoms can occur at older ages);
@@ -5317,7 +5325,7 @@ if t ge 4 and not missing(date_prep_first_intro) and caldate{t} ge date_prep_fir
 	*it was tested_tm1=1 and hiv_tm1=0. Now changed to tested=1 and commented out hiv_tm1=0 because
 	we want people who are false negative to also start PrEP, this is the reason why hiv=0 is now commented out;
 
-	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		
+	if prep_any_ever ne 1 and tested=1 and (hiv=0 or (hiv=1 and unisensprep > eff_sens_vct)) then do;		** QUERY - add self-testing option here;
 	* starting PrEP for the first time ever;
 	 
 		if prep_any_willing=1 and hard_reach ne 1 then do; 
@@ -21968,10 +21976,10 @@ prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependen
 rel_prep_oral_adh_younger 
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
-prep_oral_efficacy							prob_prep_oral_b	rate_choose_stop_prep_oral	annual_testing_prep_oral
-prep_cab_efficacy	date_prep_cab_intro		prob_prep_cab_b		rate_choose_stop_prep_cab	annual_testing_prep_cab
-prep_len_efficacy	date_prep_len_intro		prob_prep_len_b		rate_choose_stop_prep_len	annual_testing_prep_len
-prep_ami_efficacy	dur_prep_ami_scaleup	prob_prep_ami_b		rate_choose_stop_prep_ami	annual_testing_prep_ami
+prep_oral_efficacy							prob_prep_oral_b									rate_choose_stop_prep_oral	annual_testing_prep_oral
+prep_cab_efficacy	date_prep_cab_intro		prob_prep_cab_b		rel_rate_choose_stop_prep_cab	rate_choose_stop_prep_cab	annual_testing_prep_cab
+prep_len_efficacy	date_prep_len_intro		prob_prep_len_b		rel_rate_choose_stop_prep_len	rate_choose_stop_prep_len	annual_testing_prep_len
+prep_ami_efficacy	dur_prep_ami_scaleup	prob_prep_ami_b		rel_rate_choose_stop_prep_ami	rate_choose_stop_prep_ami	annual_testing_prep_ami
 
 higher_future_prep_oral_cov
 prep_cab_effect_inm_partner		cab_time_to_lower_threshold_g	incr_res_risk_cab_inf_3m
@@ -24210,10 +24218,10 @@ prep_any_strategy prob_prep_any_visit_counsel rate_test_onprep_any prep_dependen
 rel_prep_oral_adh_younger 
 prob_self_test_hard_reach self_test_targeting rate_self_test self_test_sens prob_pos_self_test_conf secondary_dist_self_test secondary_self_test_targeting
 
-prep_oral_efficacy							prob_prep_oral_b	rate_choose_stop_prep_oral	annual_testing_prep_oral
-prep_cab_efficacy	date_prep_cab_intro		prob_prep_cab_b		rate_choose_stop_prep_cab	annual_testing_prep_cab
-prep_len_efficacy	date_prep_len_intro		prob_prep_len_b		rate_choose_stop_prep_len	annual_testing_prep_len
-prep_ami_efficacy	dur_prep_ami_scaleup	prob_prep_ami_b		rate_choose_stop_prep_ami	annual_testing_prep_ami
+prep_oral_efficacy							prob_prep_oral_b									rate_choose_stop_prep_oral	annual_testing_prep_oral
+prep_cab_efficacy	date_prep_cab_intro		prob_prep_cab_b		rel_rate_choose_stop_prep_cab	rate_choose_stop_prep_cab	annual_testing_prep_cab
+prep_len_efficacy	date_prep_len_intro		prob_prep_len_b		rel_rate_choose_stop_prep_len	rate_choose_stop_prep_len	annual_testing_prep_len
+prep_ami_efficacy	dur_prep_ami_scaleup	prob_prep_ami_b		rel_rate_choose_stop_prep_ami	rate_choose_stop_prep_ami	annual_testing_prep_ami
 
 higher_future_prep_oral_cov
 prep_cab_effect_inm_partner		cab_time_to_lower_threshold_g	incr_res_risk_cab_inf_3m
