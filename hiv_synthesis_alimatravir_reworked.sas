@@ -3933,11 +3933,6 @@ who may be dead and hence have caldate{t} missing;
 			otherwise prep_testing_policy=0;	* default no change;
 		end;
 
-/*		if prep_testing_policy=1 */
-/*			then eff_prob_self_test_onprep=prob_self_test_onprep */
-/*			else eff_prob_self_test_onprep=0;*/
-			** QUERY - this is breaking code, why?? ;
-
 	end;
  
 end;
@@ -6388,7 +6383,7 @@ end;
 
 * Self-testing on prep when recommended by prep testing policy (prep_testing_policy=1) JAS Nov2026;
 u_self_test_prep=rand('uniform');
-if prep_testing_policy=1 and prep_any_tm1=1 and tested ne 1 and (caldate{t}-max(0,dt_last_self_test) >= 0.25) and u_self_test_prep < eff_prob_self_test_onprep then do;
+if prep_testing_policy=1 and prep_any_tm1=1 and tested ne 1 and (caldate{t}-max(0,dt_last_self_test) >= 0.25) and u_self_test_prep < prob_self_test_onprep then do;
 		self_tested=1; 
 		dt_last_self_test=caldate{t}; 
 end;
@@ -24930,7 +24925,6 @@ Inputs are:
 
 
 *   Run from caldate1 to intervention year;
-/*options mprint source2 mlogic;*/	* for testing QUERY - remove;
 %run_update_r1(&caldate1,&year_interv-0.25,0);
 
 *    Save dataset at this point;
