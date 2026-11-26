@@ -174,7 +174,7 @@ dcost_prep_visit_cab2 =
 
 dcost_prep_visit_len2 =
   (((s_dcost_prep_visit_len * sf * 4 / 1000) * 0.7) +
-  (((s_dcost_prep_visit_len * sf * 4 * ((64*2)+(16.5*2))/60) / 1000) * 0.3))*0.25;
+  (((s_dcost_prep_visit_len * sf * 4 * ((64*2)+(16.5*2))/28) / 1000) * 0.3))*0.25;
 
 
 
