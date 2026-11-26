@@ -373,6 +373,8 @@ s_alive = s_alive_m + s_alive_w ;
 
 * p_mm_prog_visit;				if s_alive1564mm then p_mm_prog_visit = s_mm_prog_visit /s_alive1564mm;
 
+* hivrel_death_rate;			if s_hiv1564 gt 0 then hivrel_death_rate = ((4 * 100 * s_death_hivrel) / s_hiv1564)*10 ;
+
 
 *to check balance given we've added newp to MM;
 logw15r = log(w15r+0.0001);
@@ -412,8 +414,9 @@ sex_age_mixing_matrix_w inc_risk_newp_mm	p_mm_prog_visit			rate_engage_mm_progra
 logw15r	logw25r	logw35r	logw45r	logw55r logm15r	logm25r	logm35r	logm45r	logm55r
 newp_factor  ych_risk_beh_newp	p_rred_p	p_hsb_p
 ddaly				 
-dcost	dcost1		dcost2		/*dcost_3		dcost_4*/		total_prep_drug_cost
-total_prep_vis_cost  total_prep_vis_cost1  total_prep_vis_cost2;			 
+dcost	dcost1		dcost2		/*dcost_3		dcost_4*/		total_prep_drug_cost dart_cost_y
+total_prep_vis_cost  total_prep_vis_cost1  total_prep_vis_cost2
+hivrel_death_rate;			 
 ; 
 run;
 
@@ -421,9 +424,13 @@ proc sort data=y1;by run option;run;
 
 proc means;var dcost dcost1 dcost2;where option=5 and cald=2036;run;
 
-proc means;var ddaly;where option=0 and 2026 le cald lt 2076;run;
+proc means n p50 mean p5 p95 lclm uclm;
+var n_onprep n_prep_any_mm ddaly hivrel_death_rate dcost total_prep_drug_cost total_prep_vis_cost dart_cost_y;where option=0 and 2026 le cald lt 2076;run;
 
-proc means;var ddaly;where option=5 and 2026 le cald lt 2076;run;
+proc means n p50 mean p5 p95 lclm uclm;
+var n_onprep n_prep_any_mm ddaly hivrel_death_rate dcost total_prep_drug_cost total_prep_vis_cost dart_cost_y;where option=5 and 2026 le cald lt 2076;run;
+
+
 
 proc freq;table prevalence1549_;where option=0 and cald=2026;run;
 

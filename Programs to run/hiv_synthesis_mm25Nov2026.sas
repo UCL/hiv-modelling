@@ -2490,7 +2490,7 @@ set_in_options=.;
 	*Option 5: scale up of oral PrEP and Cab, and hard to reach set to 0;
 	*Compare to option 0;
 
-	if option = 5 and curr_mobile=1 then do;
+	if option = 5 then do;
 
 	date_prep_cab_intro=&year_interv;
 
