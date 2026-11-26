@@ -425,10 +425,13 @@ proc sort data=y1;by run option;run;
 proc means;var dcost dcost1 dcost2;where option=5 and cald=2036;run;
 
 proc means n p50 mean p5 p95 lclm uclm;
-var n_onprep n_prep_any_mm ddaly hivrel_death_rate dcost total_prep_drug_cost total_prep_vis_cost dart_cost_y;where option=0 and 2026 le cald lt 2076;run;
+var n_onprep n_prep_any_mm ddaly hivrel_death_rate dcost total_prep_drug_cost total_prep_vis_cost dart_cost_y incidence1549_;
+where option=0 and 2026 le cald lt 2076;run;
 
 proc means n p50 mean p5 p95 lclm uclm;
-var n_onprep n_prep_any_mm ddaly hivrel_death_rate dcost total_prep_drug_cost total_prep_vis_cost dart_cost_y;where option=5 and 2026 le cald lt 2076;run;
+var n_onprep n_prep_any_mm ddaly hivrel_death_rate dcost total_prep_drug_cost total_prep_vis_cost dart_cost_y incidence1549_;
+where option=5 and 2026 le cald lt 2076;run;
+
 
 
 
