@@ -6745,7 +6745,8 @@ if t ge 4 and not missing(date_prep_first_intro) and caldate{t} ge date_prep_fir
 	*it was tested_tm1=1 and hiv_tm1=0. Now changed to tested=1 and commented out hiv_tm1=0 because
 	we want people who are false negative to also start PrEP, this is the reason why hiv=0 is now commented out;
 
-	** QUERY - correct place for this code? ; * JAS Nov2026;
+	** QUERY - correct place for this code? ; * JAS Nov2026;  * AP_27nov26: do we need to actually set tested=0 ? if they tested for another reason we 
+	would not want to over-write this ?;
 	if prep_testing_policy=1 and tested_prep_any_start=1 then do;
 		tested=0; start_without_test=1;
 		dt_last_test=save_dt_last_test; ever_tested=save_ever_tested; 		date1test=save_date1test;		** QUERY - these are suggested by claude, check update is correct ;
@@ -6840,6 +6841,8 @@ if t ge 4 and not missing(date_prep_first_intro) and caldate{t} ge date_prep_fir
 	* person has used PrEP before but has not started use this period, and has either not tested this period, or tested and is not infected or false negative;
 	*** QUERY - why is tested ne 1 specified here? I think this is allowing people who have self-tested into the loop below for continuing prep or switching method 
 	(not for restarting prep). Is this what is intended at baseline? If so, change to self_tested=1 to be explicit? JAS Nov2026 ;
+	* AP 27nov26: I actually cant recall why we have this - it suggests we were already allowing people not to have tested ? - I wonder if this was brought in
+	for the enabled self care paper ? ;
 
 		* Continuing PrEP use;
 		* dependent_on_time_step_length;
